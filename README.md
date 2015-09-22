@@ -49,11 +49,11 @@ A1 and A2 are same Point.
 ##Vector
 Vector aren't drawn on canvas. Vector has two constructors.
 
-* .add(n) vector addition.
-* .minus(n) vector subtraction.
-* .multiple(k) multiple vector.
-* .product(v) inner product of this with v.
-* .abs() vector absolute value.
+* `.add(n)` vector addition.
+* `.minus(n)` vector subtraction.
+* `.multiple(k)` multiple vector.
+* `.product(v)` inner product of this with v.
+* `.abs()` vector absolute value.
 
 
 ```js
@@ -126,9 +126,9 @@ var ABCD = new Quadrilateral(
 );
 ```
 
-* .getCircumcircle() return its circumcircle.
-* .getIncircle() return its incircle.
-* .getArea() return area.
+* `.getCircumcircle()` return its circumcircle.
+* `.getIncircle()` return its incircle.
+* `.getArea()` return area.
 
 ##Rect
 This constructor accepts two arguments. First argument is upper-left corner of this rect. The other is bottom-right corner of this rect.
@@ -142,10 +142,10 @@ var ABCD = new Quadrilateral(
 
 ##Text
 
-* .strokeOutline() Outline of the text aren't drawn if you don't call this method.
-* .setOutlineColor(color) set outline color.
-* .setFillColor(color) set fill color.
-* .setBaseline() set baseline.
+* `.strokeOutline()` Outline of the text aren't drawn if you don't call this method.
+* `.setOutlineColor(color)` set outline color.
+* `.setFillColor(color)` set fill color.
+* `.setBaseline()` set baseline.
 
 ```js
 var circleC = new Circle(new Point(30, 30), 30),
