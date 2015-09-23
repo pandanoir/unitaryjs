@@ -6,6 +6,7 @@ function Canvas(id) {
     this.canvasWidth = canvas.width;
     this.id = id;
     this.objects = [];
+    this.mode = 'graph';
 }
 Canvas.fn = Canvas.prototype;
 Canvas.fn.add = function(obj) {
@@ -13,9 +14,15 @@ Canvas.fn.add = function(obj) {
 };
 Canvas.fn.draw = function() {
     var X = function(x) {
+        if (this.mode === 'normal') {
+            return x + WORLD.ORIGIN.x;
+        }
         return x + WORLD.ORIGIN.x;
     }.bind(this);
     var Y = function(y) {
+        if (this.mode === 'normal') {
+            return y + WORLD.ORIGIN.y;
+        }
         return this.canvasHeight - y + WORLD.ORIGIN.y;
     }.bind(this);
 
