@@ -210,6 +210,10 @@ class Quadrilateral extends Polygon# {{{
   constructor: (A, B, C, D) ->
     if (not (@ instanceof Quadrilateral))
       throw new Error('Constructor cannot be called as a function.')
+    if (Segment(A, B).intersects(Segment(C, D)))
+      throw new Error('ABCD is not a quadrilateral.')
+    if (equals(A, B) || equals(A, C) || equals(A, D) || equals(B, C) || equals(B, D) || equals(C, D))
+      throw new Error('ABCD is not a quadrilateral.')
     super(A, B, C, D)
   name: () -> 'Quadrilateral'
 # }}}
