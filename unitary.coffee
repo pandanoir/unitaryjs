@@ -254,6 +254,7 @@ class Text# {{{
     @.fillColor = '#000'
     @.outlineColor = '#000'
     @.baseline = 'alphabetic'
+    @.font = null;
   strokeOutline: () ->
     @.strokesOutline = true
   setOutlineColor: (color) ->
@@ -262,6 +263,8 @@ class Text# {{{
     @.fillColor = color
   setBaseline: (base) ->
     @.baseline = base
+  setFont: (font) ->
+    @.font = font
   name: () -> 'Text'
 # }}}
 

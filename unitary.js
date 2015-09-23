@@ -447,6 +447,7 @@
       this.fillColor = '#000';
       this.outlineColor = '#000';
       this.baseline = 'alphabetic';
+      this.font = null;
     }
 
     Text.prototype.strokeOutline = function() {
@@ -463,6 +464,10 @@
 
     Text.prototype.setBaseline = function(base) {
       return this.baseline = base;
+    };
+
+    Text.prototype.setFont = function(font) {
+      return this.font = font;
     };
 
     Text.prototype.name = function() {

@@ -1,9 +1,10 @@
 var WORLD = Unitary.WORLD;
-function Canvas(name) {
-    var canvas = document.getElementById(name);
+function Canvas(id) {
+    var canvas = document.getElementById(id);
     this.canvas = canvas.getContext('2d');
     this.canvasHeight = canvas.height;
     this.canvasWidth = canvas.width;
+    this.id = id;
     this.objects = [];
 }
 Canvas.fn = Canvas.prototype;
@@ -56,6 +57,10 @@ Canvas.fn.draw = function() {
             this.canvas.fillStyle = obj.fillColor;
             this.canvas.textAlign = obj.align;
             this.canvas.textBaseline = obj.baseline;
+            if (obj.font !== null) {
+                var defaultFont = this.canvas.font;
+                this.canvas.font = obj.font;
+            }
             if (obj.maxWidth === null) {
                 if (obj.strokesOutline) {
                     this.canvas.strokeText(obj.text, X(obj.x), Y(obj.y));
@@ -66,6 +71,9 @@ Canvas.fn.draw = function() {
                     this.canvas.strokeText(obj.text, X(obj.x), Y(obj.y), obj.maxWidth);
                 }
                 this.canvas.fillText(obj.text, X(obj.x), Y(obj.y), obj.maxWidth);
+            }
+            if(obj.font !== null) {
+                this.canvas.font = defaultFont;
             }
         }
         if (name === 'Point') {
