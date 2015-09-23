@@ -83,3 +83,6 @@ Canvas.fn.draw = function() {
         this.canvas.stroke();
     }
 };
+Canvas.fn.toDataURL = function() {
+    return document.getElementById(this.id).toDataURL();
+};
