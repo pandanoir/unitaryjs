@@ -79,6 +79,21 @@ Canvas.fn.draw = function() {
         if (name === 'Point') {
             this.canvas.fillRect(X(obj.x), Y(obj.y), 1, 1);
         }
+        if (name === 'Image') {
+            if (obj.dx !== null && obj.sx !== null) {
+                this.canvas.drawImage(obj.src, obj.sx, obj.sy, obj.sw, obj.sh, X(obj.dx), Y(obj.dy), obj.dw, obj.dh);
+            } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
+                this.canvas.drawImage(obj.src, X(obj.dx), Y(obj.dy), obj.dw, obj.dh);
+            } else if (obj.dx !== null && obj.dw === null) {
+                // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
+                // 対偶をとり obj.dw === nullならばobj.sx === null
+                var image = new Image();
+                image.src = obj.src;
+                this.canvas.drawImage(image, X(obj.dx), Y(obj.dy));
+            } else if (obj.dx === null) {
+                this.canvas.drawImage(obj.src);
+            }
+        }
         this.canvas.closePath();
         this.canvas.stroke();
     }
@@ -86,3 +101,27 @@ Canvas.fn.draw = function() {
 Canvas.fn.toDataURL = function() {
     return document.getElementById(this.id).toDataURL();
 };
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function (oThis) {
+    if (typeof this !== "function") {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+    }
+
+    var aArgs = Array.prototype.slice.call(arguments, 1), 
+        fToBind = this, 
+        fNOP = function () {},
+        fBound = function () {
+          return fToBind.apply(this instanceof fNOP && oThis
+                 ? this
+                 : oThis,
+                 aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}

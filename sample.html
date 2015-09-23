@@ -7,9 +7,16 @@
     <script src="./canvas.js"></script>
     <script>
     window.addEventListener('load', function(){
-      for (var key in Unitary) {
-        window[key] = Unitary[key];
-      }
+      var Circle = Unitary.Circle,
+          Image_ = Unitary.Image,
+          Line = Unitary.Line,
+          Point = Unitary.Point,
+          Polygon = Unitary.Polygon,
+          Rect = Unitary.Rect,
+          Segment = Unitary.Segment,
+          Text_ = Unitary.Text,
+          Triangle = Unitary.Triangle;
+
       var A = new Point(30,30),
           B = new Point(90,90),
           AB = new Line(A, B),
@@ -28,11 +35,12 @@
           polygonCanvas = new Canvas('polygon'),
           triangleCanvas = new Canvas('triangle'),
           rectCanvas = new Canvas('rect'),
-          pentagonCanvas = new Canvas('pentagon');
+          pentagonCanvas = new Canvas('pentagon'),
+          logoCanvas = new Canvas('logo');
 
       circleCanvas.add(circleC);
       circleCanvas.add(circleC.Origin);
-      circleCanvas.add(new Text('O', circleC.Origin));
+      circleCanvas.add(new Text_('O', circleC.Origin));
       lineCanvas.add(AB);
       segmentCanvas.add(SegAB);
       polygonCanvas.add(ABCD);
@@ -49,6 +57,8 @@
           new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
       )
       );
+      logoCanvas.mode = 'normal';
+      logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
 
       circleCanvas.draw();
       lineCanvas.draw();
@@ -57,8 +67,14 @@
       triangleCanvas.draw();
       rectCanvas.draw();
       pentagonCanvas.draw();
+      logoCanvas.draw();
     });
     </script>
+    <style>
+      canvas {
+        border:2px solid #666;
+      }
+    </style>
   </head>
   <body>
     <canvas id="circle" width="200" height="200"></canvas>
@@ -68,6 +84,7 @@
     <canvas id="triangle" width="200" height="200"></canvas>
     <canvas id="rect" width="200" height="200"></canvas>
     <canvas id="pentagon" width="200" height="200"></canvas>
+    <canvas id="logo" width="200" height="200"></canvas>
   </body>
 </html>
 

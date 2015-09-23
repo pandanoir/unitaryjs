@@ -239,9 +239,10 @@ class Rect extends Polygon# {{{
     super(A, B)
   name: () -> 'Rect'
 # }}}
-class Text# {{{
+class Text_# {{{
+  # Text コンストラクタが既にブラウザに存在しているためText_とした
   constructor: (str, P, align = 'left', maxWidth = null) ->
-    if (not (@ instanceof Text))
+    if (not (@ instanceof Text_))
       throw new Error('Constructor cannot be called as a function.')
     @.x = P.x
     @.y = P.y
@@ -254,7 +255,7 @@ class Text# {{{
     @.fillColor = '#000'
     @.outlineColor = '#000'
     @.baseline = 'alphabetic'
-    @.font = null;
+    @.font = null
   strokeOutline: () ->
     @.strokesOutline = true
   setOutlineColor: (color) ->
@@ -267,6 +268,36 @@ class Text# {{{
     @.font = font
   name: () -> 'Text'
 # }}}
+class Image_# {{{
+  # Imageコンストラクタが既にブラウザに存在しているためImage_とした
+  constructor: (src, startPoint) ->
+    if (not (@ instanceof Image_))
+      throw new Error('Constructor cannot be called as a function.')
+    @.src = src
+    @.dx = startPoint.x
+    @.dy = startPoint.y
+    @.dw = null
+    @.dh = null
+    @.sw = null
+    @.sh = null
+    @.sx = null
+    @.sy = null
+  trim: (startPoint, sw, sh, dw, dh) ->
+    if (not dw?)
+      dw = sw
+    if (not dh?)
+      dh = sh
+    @.sx = startPoint.x
+    @.sy = startPoint.y
+    @.sw = sw
+    @.sh = sh
+    @.dw = dw
+    @.dh = dh
+
+  resize: (dw, dh) ->
+    @.dw = dw
+    @.dh = dh
+  name: () -> 'Image'# }}}
 
 
 WORLD = {
@@ -283,7 +314,8 @@ Module = {
   Quadrilateral: Quadrilateral
   Triangle: Triangle
   Rect: Rect
-  Text: Text
+  Text: Text_
+  Image: Image_
   distance: distance
   WORLD: WORLD
 }
