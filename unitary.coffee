@@ -96,6 +96,23 @@ class Line# {{{
   moveY: (dy) ->
     return new Line(@.points[0].move(x, y + dy), @.points[1].move(x, y + dy))
   toString: () ->
+    res = ''
+    if (@.a > 0 and @.a isnt 1) then res += '+' + @.a + 'x'
+    if (@.a is 1) then res += '+x'
+    if (@.a < 0 and @.a isnt -1) then res += '-' + -@.a + 'x'
+    if (@.a is -1) then res += '-x'
+
+    if (@.b > 0 and @.b isnt 1) then res += '+' + @.b + 'y'
+    if (@.b is 1) then res += '+y'
+    if (@.b < 0 and @.b isnt -1) then res += '-' + -@.b + 'y'
+    if (@.b is -1) then res += '-y'
+
+    if (@.c > 0) then res += '+' + @.c
+    if (@.c < 0) then res += '-' + -@.c
+
+    if res.charAt(0) is '+' then res = res.slice(1)
+
+    return res + '=0'
   inspect: () ->
     res = ''
     if (@.a > 0 and @.a isnt 1) then res += '+' + @.a + 'x'
