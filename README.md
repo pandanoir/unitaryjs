@@ -1,4 +1,7 @@
 #UnitaryJS
+
+![logo.png](logo.png)
+
 UnitaryJS is a library for handling canvas with objects.
 
 #Quick Example
