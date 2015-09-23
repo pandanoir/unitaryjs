@@ -71,6 +71,8 @@ class Line# {{{
   constructor: (A, B) ->
     if (not (@ instanceof Line))
       throw new Error('Constructor cannot be called as a function.')
+    if (equals(A, B))
+      throw new Error('A equals B. So AB couldn\'t construct line.')
     gcd = (m, n) ->
       if m < n
         return gcd(n, m)
@@ -89,6 +91,14 @@ class Line# {{{
     @.a /= g
     @.b /= g
     @.c /= g
+    if (@.a == 0)
+      # @.b != 0
+      @.c /= @.b
+      @.b = 1
+    if (@.b == 0)
+      # @.a != 0
+      @.c /= @.a
+      @.a = 1
   move: (dx, dy) ->
     return new Line(@.points[0].move(x + dx, y + dy), @.points[1].move(x + dx, y + dy))
   moveX: (dx) ->
