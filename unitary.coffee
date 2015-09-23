@@ -141,6 +141,12 @@ class Line# {{{
     if res.charAt(0) is '+' then res = res.slice(1)
 
     return res + '=0'
+  getIntersection: (CD) ->
+    if (@.a == CD.a && @.b == CD.b)
+      return false
+    y = (CD.a * @.c - @.a * CD.c) / (@.a * CD.b - CD.a * @.b)
+    x = -1 * (@.b * y + @.c) / (@.a)
+    return new Point(x, y)
   name: () -> 'Line'
 # }}}
 class Segment# {{{
@@ -344,6 +350,7 @@ Module = {
   Text: Text_
   Image: Image_
   distance: distance
+  equals: equals
   WORLD: WORLD
 }
 if ('process' of _global)

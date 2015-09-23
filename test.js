@@ -1,5 +1,5 @@
 (function(global){
-    var Unitary = require('./point.js');
+    var Unitary = require('./unitary.js');
     for (var key in Unitary) {
         global[key] = Unitary[key];
     }
@@ -23,12 +23,17 @@
     console.log(SegAB.has(B) === true);
     console.log(SegAB.has(C) === false);
     console.log(SegAB.has(D) === true);
-    console.log(A, '(3, 3)');
-    console.log(A.move(1, 1), '(4, 4)');
-    console.log(A.move(-1, -1), '(2, 2)');
-    console.log(A.moveX(1), '(4, 3)');
-    console.log(A.moveX(-1), '(2, 3)');
-    console.log(A.moveY(1), '(3, 4)');
-    console.log(A.moveY(-1), '(3, 2)');
-    console.log(A.moveTo(9, 9), '(9, 9)');
+    console.log(A.toString() === '(3, 3)');
+    console.log(A.move(1, 1).toString() === '(4, 4)');
+    console.log(A.move(-1, -1).toString() === '(2, 2)');
+    console.log(A.moveX(1).toString() === '(4, 3)');
+    console.log(A.moveX(-1).toString() === '(2, 3)');
+    console.log(A.moveY(1).toString() === '(3, 4)');
+    console.log(A.moveY(-1).toString() === '(3, 2)');
+    console.log(A.moveTo(9, 9).toString() === '(9, 9)');
+    console.log(new Line(new Point(0, 0), new Point(0, 10)).getIntersection(new Line(new Point(10,0), new Point(10,10))) === false);
+    console.log(new Line(new Point(0, 0), new Point(10, 0)).getIntersection(new Line(new Point(0,10), new Point(10,10))) === false);
+    console.log(equals(new Line(new Point(0, 0), new Point(0, 10)).getIntersection(new Line(new Point(5,10), new Point(10,10))), new Point(0, 10)));
+    console.log(new Line(new Point(0, 0), new Point(10, 10)).getIntersection(new Line(new Point(0, 0), new Point(10,10))) === false);
+    console.log(equals(new Line(new Point(0, 0), new Point(10, 10)).getIntersection(new Line(new Point(0, 20), new Point(1,19))), new Point(10, 10)));
 })((this || 0).self || global);
