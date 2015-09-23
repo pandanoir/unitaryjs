@@ -215,6 +215,11 @@ class Quadrilateral extends Polygon# {{{
     if (equals(A, B) || equals(A, C) || equals(A, D) || equals(B, C) || equals(B, D) || equals(C, D))
       throw new Error('ABCD is not a quadrilateral.')
     super(A, B, C, D)
+  getArea: () ->
+    [A, B, C, D] = @.points
+    S1 = new Triangle(A, B, C).getArea()
+    S2 = new Triangle(A, C, D).getArea()
+    return S1 + S2
   name: () -> 'Quadrilateral'
 # }}}
 class Triangle extends Polygon# {{{

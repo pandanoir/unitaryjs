@@ -129,6 +129,9 @@
       if (!(this instanceof Line)) {
         throw new Error('Constructor cannot be called as a function.');
       }
+      if (equals(A, B)) {
+        throw new Error('A equals B. So AB couldn\'t construct line.');
+      }
       gcd = function(m, n) {
         if (m < n) {
           return gcd(n, m);
@@ -152,6 +155,14 @@
       this.a /= g;
       this.b /= g;
       this.c /= g;
+      if (this.a === 0) {
+        this.c /= this.b;
+        this.b = 1;
+      }
+      if (this.b === 0) {
+        this.c /= this.a;
+        this.a = 1;
+      }
     }
 
     Line.prototype.move = function(dx, dy) {
@@ -166,7 +177,44 @@
       return new Line(this.points[0].move(x, y + dy), this.points[1].move(x, y + dy));
     };
 
-    Line.prototype.toString = function() {};
+    Line.prototype.toString = function() {
+      var res;
+      res = '';
+      if (this.a > 0 && this.a !== 1) {
+        res += '+' + this.a + 'x';
+      }
+      if (this.a === 1) {
+        res += '+x';
+      }
+      if (this.a < 0 && this.a !== -1) {
+        res += '-' + -this.a + 'x';
+      }
+      if (this.a === -1) {
+        res += '-x';
+      }
+      if (this.b > 0 && this.b !== 1) {
+        res += '+' + this.b + 'y';
+      }
+      if (this.b === 1) {
+        res += '+y';
+      }
+      if (this.b < 0 && this.b !== -1) {
+        res += '-' + -this.b + 'y';
+      }
+      if (this.b === -1) {
+        res += '-y';
+      }
+      if (this.c > 0) {
+        res += '+' + this.c;
+      }
+      if (this.c < 0) {
+        res += '-' + -this.c;
+      }
+      if (res.charAt(0) === '+') {
+        res = res.slice(1);
+      }
+      return res + '=0';
+    };
 
     Line.prototype.inspect = function() {
       var res;
@@ -205,6 +253,16 @@
         res = res.slice(1);
       }
       return res + '=0';
+    };
+
+    Line.prototype.getIntersection = function(CD) {
+      var x, y;
+      if (this.a === CD.a && this.b === CD.b) {
+        return false;
+      }
+      y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b);
+      x = -1 * (this.b * y + this.c) / this.a;
+      return new Point(x, y);
     };
 
     Line.prototype.name = function() {
@@ -252,6 +310,22 @@
         }
       }
       return false;
+    };
+
+    Segment.prototype.intersects = function(CD) {
+      var intersection, ref, ref1;
+      intersection = this.toLine().getIntersection(CD.toLine());
+      if (intersection === false) {
+        return false;
+      }
+      if ((this.points[0].x < (ref = intersection.x) && ref < this.points[1].x) && (this.points[0].y < (ref1 = intersection.y) && ref1 < this.points[1].y)) {
+        return true;
+      }
+      return false;
+    };
+
+    Segment.prototype.toLine = function() {
+      return new Line(this.points[0], this.points[1]);
     };
 
     Segment.prototype.name = function() {
@@ -320,8 +394,22 @@
       if (!(this instanceof Quadrilateral)) {
         throw new Error('Constructor cannot be called as a function.');
       }
+      if (Segment(A, B).intersects(Segment(C, D))) {
+        throw new Error('ABCD is not a quadrilateral.');
+      }
+      if (equals(A, B) || equals(A, C) || equals(A, D) || equals(B, C) || equals(B, D) || equals(C, D)) {
+        throw new Error('ABCD is not a quadrilateral.');
+      }
       Quadrilateral.__super__.constructor.call(this, A, B, C, D);
     }
+
+    Quadrilateral.prototype.getArea = function() {
+      var A, B, C, D, S1, S2, ref;
+      ref = this.points, A = ref[0], B = ref[1], C = ref[2], D = ref[3];
+      S1 = new Triangle(A, B, C).getArea();
+      S2 = new Triangle(A, C, D).getArea();
+      return S1 + S2;
+    };
 
     Quadrilateral.prototype.name = function() {
       return 'Quadrilateral';
@@ -541,6 +629,7 @@
     Text: Text_,
     Image: Image_,
     distance: distance,
+    equals: equals,
     WORLD: WORLD
   };
 
