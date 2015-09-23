@@ -172,6 +172,15 @@ class Segment# {{{
         if (A.y - B.y) / (A.x - B.x) * P.x is P.y
           return true
     return false
+  intersects: (CD) ->
+    intersection = @.toLine().getIntersection(CD.toLine())
+    if (intersection == false)
+      return false
+    if (@.points[0].x < intersection.x < @.points[1].x && @.points[0].y < intersection.y < @.points[1].y)
+      return true
+    return false
+  toLine: () ->
+    return new Line(@.points[0], @.points[1])
   name: () -> 'Segment'
 # }}}
 class Circle# {{{
