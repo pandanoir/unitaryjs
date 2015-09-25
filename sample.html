@@ -43,13 +43,21 @@
       circleCanvas.add(circleC);
       circleCanvas.add(circleC.Origin);
       circleCanvas.add(new Text_('O', circleC.Origin));
+
       lineCanvas.add(AB);
+      lineCanvas.add(new Line(new Point(20, 0), new Point(20,20)));
+      lineCanvas.add(new Line(new Point(0, 20), new Point(20,20)));
+
       segmentCanvas.add(SegAB);
+
       polygonCanvas.add(ABCD);
+
       triangleCanvas.add(ABC);
       triangleCanvas.add(circumcircleABC);
       triangleCanvas.add(incircleABC);
+
       rectCanvas.add(rectAB);
+
       pentagonCanvas.add(
         new Polygon(
           new Point(Math.cos(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30),
@@ -59,6 +67,7 @@
           new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
       )
       );
+
       logoCanvas.mode = 'normal';
       logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
 
@@ -98,5 +107,3 @@
     <canvas id="graph" width="200" height="200"></canvas>
   </body>
 </html>
-
-
