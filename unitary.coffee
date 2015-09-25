@@ -9,15 +9,10 @@ distance = (A, B) -># {{{
     return res
   if (A instanceof Line and B instanceof Point)
     return distance(B, A)# }}}
-equals = (A, B) -># {{{
-  if (A.name() != B.name())
-    return false
-  if (A.name() == 'Point')
-    return A.x == B.x && A.y == B.y
-  if (A.name() == 'Line')
-    return A.a == B.a && A.b == B.b && A.c == B.c# }}}
 
 class UnitaryObject# {{{
+  equals: (B) ->
+    return @.name() == B.name()
   name: () -> 'UnitaryObject'# }}}
 class Point extends UnitaryObject# {{{
   constructor: (x, y) ->
@@ -45,6 +40,10 @@ class Point extends UnitaryObject# {{{
     return '(' + @.x + ', ' + @.y + ')'
   inspect: () ->
     return '(' + @.x + ', ' + @.y + ')'
+  equals: (B) ->
+    if (!super(B))
+      return false
+    return @.x == B.x && @.y == B.y
   name: () -> 'Point'
 # }}}
 class Vector extends UnitaryObject# {{{
@@ -68,12 +67,17 @@ class Vector extends UnitaryObject# {{{
     return new Vector(@.x * k, @.y * k)
   abs: () ->
     return Math.sqrt(@.x ** 2 + @.y ** 2)
+  equals: (B) ->
+    if (!super(B))
+      return false
+    return @.x == B.x && @.y == B.y
+  name: () -> 'Vector'
 # }}}
 class Line extends UnitaryObject# {{{
   constructor: (A, B) ->
     if (not (@ instanceof Line))
       throw new Error('Constructor cannot be called as a function.')
-    if (equals(A, B))
+    if (A.equals(B))
       throw new Error('A equals B. So AB couldn\'t construct line.')
     gcd = (m, n) ->
       if m < n
@@ -149,6 +153,10 @@ class Line extends UnitaryObject# {{{
     y = (CD.a * @.c - @.a * CD.c) / (@.a * CD.b - CD.a * @.b)
     x = -1 * (@.b * y + @.c) / (@.a)
     return new Point(x, y)
+  equals: (CD) ->
+    if (!super(CD))
+      return false
+    return @.a == CD.a && @.b == CD.b && @.c == CD.c
   name: () -> 'Line'
 # }}}
 class Segment extends UnitaryObject# {{{
@@ -183,6 +191,10 @@ class Segment extends UnitaryObject# {{{
     return false
   toLine: () ->
     return new Line(@.points[0], @.points[1])
+  equals: (CD) ->
+    if (!super(CD))
+      return false
+    return @.points[0].equals(CD.points[0]) && @.points[1].equals(CD.points[1])
   name: () -> 'Segment'
 # }}}
 class Circle extends UnitaryObject# {{{
@@ -199,6 +211,10 @@ class Circle extends UnitaryObject# {{{
     return new Circle(@.Origin.moveX(dx), @.r)
   moveY: (dy) ->
     return new Circle(@.Origin.moveY(dy), @.r)
+  equals: (C) ->
+    if (!super(C))
+      return false
+    return @.Origin.equals(C.Origin) && @.r == C.r
   name: () -> 'Circle'
 # }}}
 class Polygon extends UnitaryObject# {{{
@@ -206,6 +222,7 @@ class Polygon extends UnitaryObject# {{{
     if (not (@ instanceof Polygon))
       throw new Error('Constructor cannot be called as a function.')
     @.points = points
+  equals: () -> false
   name: () -> 'Polygon'
 # }}}
 class Quadrilateral extends Polygon# {{{
@@ -214,7 +231,7 @@ class Quadrilateral extends Polygon# {{{
       throw new Error('Constructor cannot be called as a function.')
     if (Segment(A, B).intersects(Segment(C, D)))
       throw new Error('ABCD is not a quadrilateral.')
-    if (equals(A, B) || equals(A, C) || equals(A, D) || equals(B, C) || equals(B, D) || equals(C, D))
+    if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D))
       throw new Error('ABCD is not a quadrilateral.')
     super(A, B, C, D)
   getArea: () ->
@@ -230,7 +247,7 @@ class Triangle extends Polygon# {{{
       throw new Error('Constructor cannot be called as a function.')
     if (not A? || not B? || not C?)
       throw new Error('Triangle must have three vertices.')
-    if (equals(A, B) || equals(B, C) || equals(A, C))
+    if (A.equals(B) || B.equals(C) || A.equals(C))
       throw new Error('Triangle must have three vertices.')
     super(A, B, C)
   getCircumcircle: () ->
@@ -297,8 +314,6 @@ class Text_ extends UnitaryObject# {{{
   constructor: (str, P, align = 'left', maxWidth = null) ->
     if (not (@ instanceof Text_))
       throw new Error('Constructor cannot be called as a function.')
-    @.x = P.x
-    @.y = P.y
     @.P = P
     @.string = str
     @.text = str
@@ -350,6 +365,10 @@ class Image_ extends UnitaryObject# {{{
   resize: (dw, dh) ->
     @.dw = dw
     @.dh = dh
+  equals: (B) ->
+    if (!super(B))
+      return false
+    return @.src == B.src && @.dx == B.dx && @.dy == B.dy && @.dw == B.dw && @.dh == B.dh && @.sw == B.sw && @.sh == B.sh && @.sx == B.sx && @.sy == B.sy
   name: () -> 'Image'# }}}
 
 
@@ -370,7 +389,6 @@ Module = {
   Text: Text_
   Image: Image_
   distance: distance
-  equals: equals
   WORLD: WORLD
 }
 if ('process' of _global)
