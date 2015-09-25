@@ -28,11 +28,21 @@ Canvas.fn.Y = function(y) {
 };
 Canvas.fn.draw = function() {
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
+        var obj = this.objects[i];
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
-        var obj = this.objects[i];
+        if (obj.fillColor !== null) {
+            var beforeFillColor = this.canvas.fillStyle;
+            this.canvas.fillStyle = obj.fillColor;
+        }
+        if (obj.strokeColor !== null) {
+            var beforeStrokeColor = this.canvas.strokeStyle;
+            this.canvas.strokeStyle = obj.strokeColor;
+        }
         var name = obj.name();
         Canvas.drawFunction[name].call(this, obj);
+        if (obj.fillColor !== null) {this.canvas.fillStyle = beforeFillColor;}
+        if (obj.strokeColor !== null) {this.canvas.strokeStyle = beforeStrokeColor;}
     }
 };
 Canvas.drawFunction = {
@@ -45,10 +55,6 @@ Canvas.drawFunction = {
     },
     Line: function(obj) {
         this.canvas.beginPath();
-        if (obj.fillColor !== null) {
-            var beforeFillColor = this.canvas.strokeStyle;
-            this.canvas.strokeStyle = obj.fillColor;
-        }
         if (obj.b === 0) {
             this.canvas.moveTo(this.X(-obj.c), 0);
             this.canvas.lineTo(this.X(-obj.c), this.canvasHeight);
@@ -58,9 +64,6 @@ Canvas.drawFunction = {
         }
         this.canvas.closePath();
         this.canvas.stroke();
-        if (obj.fillColor !== null) {
-            this.canvas.strokeStyle = beforeFillColor;
-        }
     },
     Circle: function(obj) {
         var O = obj.Origin,
@@ -69,6 +72,7 @@ Canvas.drawFunction = {
         this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
         this.canvas.closePath();
         this.canvas.stroke();
+        if (obj.fillColor !== null) this.canvas.fill();
     },
     Polygon: PolygonDrawFunction,
     Quadrilateral: PolygonDrawFunction,
@@ -79,10 +83,9 @@ Canvas.drawFunction = {
         var w = obj.points[1].x - obj.points[0].x;
         var h = - (obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
         this.canvas.strokeRect(x, y, w, h); // 上でX()、Y()している
+        if (obj.fillColor !== null) this.canvas.fill();
     },
     Text: function(obj) {
-        this.canvas.strokeStyle = obj.outlineColor;
-        this.canvas.fillStyle = obj.fillColor;
         this.canvas.textAlign = obj.align;
         this.canvas.textBaseline = obj.baseline;
         var x = obj.P.x;
@@ -160,6 +163,7 @@ function PolygonDrawFunction(obj) {
     this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     this.canvas.closePath();
     this.canvas.stroke();
+    if (obj.fillColor !== null) this.canvas.fill();
 };
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {

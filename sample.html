@@ -52,9 +52,9 @@
 
       polygonCanvas.add(ABCD);
 
-      triangleCanvas.add(ABC);
-      triangleCanvas.add(circumcircleABC);
-      triangleCanvas.add(incircleABC);
+      triangleCanvas.add(circumcircleABC.setFillColor('#BB7C00'));
+      triangleCanvas.add(ABC.setFillColor('#E89B00'));
+      triangleCanvas.add(incircleABC.setFillColor('#FFA900'));
 
       rectCanvas.add(rectAB);
 
@@ -65,14 +65,14 @@
           new Point(Math.cos(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30),
           new Point(Math.cos(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30),
           new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
-      )
+      ).setFillColor('#ccc')
       );
 
       logoCanvas.mode = 'normal';
       logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
 
-      graphCanvas.add(new Line(new Point(20, 0), new Point(20,20)).setFillColor('#ddd'));
-      graphCanvas.add(new Line(new Point(0, 20), new Point(20,20)).setFillColor('#ddd'));
+      graphCanvas.add(new Line(new Point(20, 0), new Point(20,20)).setStrokeColor('#ddd'));
+      graphCanvas.add(new Line(new Point(0, 20), new Point(20,20)).setStrokeColor('#ddd'));
       graphCanvas.add(new Graph(function(x) {return x * x}, 0.05));
       graphCanvas.add(new Text_('1', new Point(20,4)).setAlign('center'));
       graphCanvas.add(new Text_('5', new Point(100,4)));
