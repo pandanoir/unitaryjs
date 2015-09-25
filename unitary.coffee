@@ -17,7 +17,9 @@ equals = (A, B) -># {{{
   if (A.name() == 'Line')
     return A.a == B.a && A.b == B.b && A.c == B.c# }}}
 
-class Point# {{{
+class UnitaryObject# {{{
+  name: () -> 'UnitaryObject'# }}}
+class Point extends UnitaryObject# {{{
   constructor: (x, y) ->
     if (not (@ instanceof Point))
       throw new Error('Constructor cannot be called as a function.')
@@ -45,7 +47,7 @@ class Point# {{{
     return '(' + @.x + ', ' + @.y + ')'
   name: () -> 'Point'
 # }}}
-class Vector# {{{
+class Vector extends UnitaryObject# {{{
   constructor: (x, y) ->
     @.x = x
     @.y = y
@@ -67,7 +69,7 @@ class Vector# {{{
   abs: () ->
     return Math.sqrt(@.x ** 2 + @.y ** 2)
 # }}}
-class Line# {{{
+class Line extends UnitaryObject# {{{
   constructor: (A, B) ->
     if (not (@ instanceof Line))
       throw new Error('Constructor cannot be called as a function.')
@@ -149,7 +151,7 @@ class Line# {{{
     return new Point(x, y)
   name: () -> 'Line'
 # }}}
-class Segment# {{{
+class Segment extends UnitaryObject# {{{
   constructor: (A, B) ->
     if (not (@ instanceof Segment))
       throw new Error('Constructor cannot be called as a function.')
@@ -183,7 +185,7 @@ class Segment# {{{
     return new Line(@.points[0], @.points[1])
   name: () -> 'Segment'
 # }}}
-class Circle# {{{
+class Circle extends UnitaryObject# {{{
   constructor: (O, radius) ->
     if (not (@ instanceof Circle))
       throw new Error('Constructor cannot be called as a function.')
@@ -199,7 +201,7 @@ class Circle# {{{
     return new Circle(@.Origin.moveY(dy), @.r)
   name: () -> 'Circle'
 # }}}
-class Polygon# {{{
+class Polygon extends UnitaryObject# {{{
   constructor: (points...) ->
     if (not (@ instanceof Polygon))
       throw new Error('Constructor cannot be called as a function.')
@@ -290,7 +292,7 @@ class Rect extends Polygon# {{{
     super(A, B)
   name: () -> 'Rect'
 # }}}
-class Text_# {{{
+class Text_ extends UnitaryObject# {{{
   # Text コンストラクタが既にブラウザに存在しているためText_とした
   constructor: (str, P, align = 'left', maxWidth = null) ->
     if (not (@ instanceof Text_))
@@ -319,7 +321,7 @@ class Text_# {{{
     @.font = font
   name: () -> 'Text'
 # }}}
-class Image_# {{{
+class Image_ extends UnitaryObject# {{{
   # Imageコンストラクタが既にブラウザに存在しているためImage_とした
   constructor: (src, startPoint) ->
     if (not (@ instanceof Image_))
