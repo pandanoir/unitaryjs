@@ -369,7 +369,20 @@ class Image_ extends UnitaryObject# {{{
     if (!super(B))
       return false
     return @.src == B.src && @.dx == B.dx && @.dy == B.dy && @.dw == B.dw && @.dh == B.dh && @.sw == B.sw && @.sh == B.sh && @.sx == B.sx && @.sy == B.sy
-  name: () -> 'Image'# }}}
+  name: () -> 'Image'
+# }}}
+class Graph extends UnitaryObject# {{{
+  constructor: (f, scale) ->
+    @.f = f
+    @.scale = scale
+    @.start = null
+    @.end = null
+  setRange: (start, end) ->
+    @.start = start
+    @.end = end
+    return @
+  equals: () -> false
+  name: () -> 'Graph'# }}}
 
 
 WORLD = {
@@ -378,17 +391,18 @@ WORLD = {
 _global = (@ || 0).self || global
 Module = {
   UnitaryObject: UnitaryObject
-  Point: Point
-  Vector: Vector
-  Line: Line
-  Segment: Segment
   Circle: Circle
+  Graph: Graph
+  Image: Image_
+  Line: Line
+  Point: Point
   Polygon: Polygon
   Quadrilateral: Quadrilateral
-  Triangle: Triangle
   Rect: Rect
+  Segment: Segment
   Text: Text_
-  Image: Image_
+  Triangle: Triangle
+  Vector: Vector
   distance: distance
   WORLD: WORLD
 }

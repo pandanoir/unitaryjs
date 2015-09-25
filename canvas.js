@@ -7,7 +7,7 @@ function Canvas(id) {
     this.id = id;
     this.objects = [];
     this.mode = 'graph';
-}
+};
 Canvas.fn = Canvas.prototype;
 Canvas.fn.add = function(obj) {
     this.objects.push(obj);
@@ -123,6 +123,24 @@ Canvas.drawFunction = {
         } else if (obj.dx === null) {
             this.canvas.drawImage(obj.src);
         }
+    },
+    Graph: function(obj) {
+        var start = obj.start , end = obj.end;
+        if (start === null) {
+            start = -WORLD.ORIGIN.x;
+        }
+        if (end === null) {
+            end = this.canvasWidth - WORLD.ORIGIN.x;
+        }
+        var points = [];
+        for (var i = start; i <= end; i = 0|i+1) {
+            points[points.length] = new Unitary.Point(i, obj.f(i * obj.scale) / obj.scale);
+        }
+        this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+        for (var i = 0, _i = points.length; i < _i; i = 0|i+1) {
+            this.canvas.lineTo(this.X(points[i].x), this.Y(points[i].y));
+        }
+        this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
     }
 }
 Canvas.fn.toDataURL = function() {

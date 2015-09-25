@@ -8,6 +8,7 @@
     <script>
     window.addEventListener('load', function(){
       var Circle = Unitary.Circle,
+          Graph = Unitary.Graph,
           Image_ = Unitary.Image,
           Line = Unitary.Line,
           Point = Unitary.Point,
@@ -36,7 +37,8 @@
           triangleCanvas = new Canvas('triangle'),
           rectCanvas = new Canvas('rect'),
           pentagonCanvas = new Canvas('pentagon'),
-          logoCanvas = new Canvas('logo');
+          logoCanvas = new Canvas('logo'),
+          graphCanvas = new Canvas('graph');
 
       circleCanvas.add(circleC);
       circleCanvas.add(circleC.Origin);
@@ -60,6 +62,13 @@
       logoCanvas.mode = 'normal';
       logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
 
+      graphCanvas.add(new Line(new Point(20, 0), new Point(20,20)).setFillColor('#ddd'));
+      graphCanvas.add(new Line(new Point(0, 20), new Point(20,20)).setFillColor('#ddd'));
+      graphCanvas.add(new Graph(function(x) {return x * x}, 0.05));
+      graphCanvas.add(new Text_('1', new Point(20,4)).setAlign('center'));
+      graphCanvas.add(new Text_('5', new Point(100,4)));
+      graphCanvas.add(new Text_('1', new Point(0,20)));
+
       circleCanvas.draw();
       lineCanvas.draw();
       segmentCanvas.draw();
@@ -68,6 +77,7 @@
       rectCanvas.draw();
       pentagonCanvas.draw();
       logoCanvas.draw();
+      graphCanvas.draw();
     });
     </script>
     <style>
@@ -85,6 +95,7 @@
     <canvas id="rect" width="200" height="200"></canvas>
     <canvas id="pentagon" width="200" height="200"></canvas>
     <canvas id="logo" width="200" height="200"></canvas>
+    <canvas id="graph" width="200" height="200"></canvas>
   </body>
 </html>
 
