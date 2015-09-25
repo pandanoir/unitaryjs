@@ -13,16 +13,18 @@ Canvas.fn.add = function(obj) {
     this.objects.push(obj);
 };
 Canvas.fn.X = function(x) {
-    if (this.mode === 'normal') {
-        return x + WORLD.ORIGIN.x;
-    }
-    return x + WORLD.ORIGIN.x;
+    var res = x + WORLD.ORIGIN.x;
+    // if (this.mode === 'normal') {
+    //     return res;
+    // }
+    return Math.round(res);
 };
 Canvas.fn.Y = function(y) {
+    var res = this.canvasHeight - y + WORLD.ORIGIN.y;
     if (this.mode === 'normal') {
-        return y + WORLD.ORIGIN.y;
+        res = y + WORLD.ORIGIN.y;
     }
-    return this.canvasHeight - y + WORLD.ORIGIN.y;
+    return Math.round(res);
 };
 Canvas.fn.draw = function() {
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
