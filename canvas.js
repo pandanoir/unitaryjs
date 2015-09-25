@@ -26,29 +26,47 @@ Canvas.fn.Y = function(y) {
 };
 Canvas.fn.draw = function() {
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
-        this.canvas.beginPath();
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
         var obj = this.objects[i];
         var name = obj.name();
         Canvas.drawFunction[name].call(this, obj);
-        this.canvas.closePath();
-        this.canvas.stroke();
     }
 };
 Canvas.drawFunction = {
     Segment: function(obj) {
+        this.canvas.beginPath();
         this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
         this.canvas.lineTo(this.X(obj.points[1].x), this.Y(obj.points[1].y));
+        this.canvas.closePath();
+        this.canvas.stroke();
     },
     Line: function(obj) {
-        this.canvas.moveTo(0, this.Y(-(obj.c / obj.b)));
-        this.canvas.lineTo(this.canvasWidth, this.Y(-(this.canvasWidth + obj.c) / obj.b));
+        this.canvas.beginPath();
+        if (obj.fillColor !== null) {
+            var beforeFillColor = this.canvas.strokeStyle;
+            this.canvas.strokeStyle = obj.fillColor;
+        }
+        if (obj.b === 0) {
+            this.canvas.moveTo(this.X(-obj.c), 0);
+            this.canvas.lineTo(this.X(-obj.c), this.canvasHeight);
+        } else {
+            this.canvas.moveTo(0, this.Y(-(obj.c / obj.b)));
+            this.canvas.lineTo(this.canvasWidth, this.Y(-(obj.a * this.canvasWidth + obj.c) / obj.b));
+        }
+        this.canvas.closePath();
+        this.canvas.stroke();
+        if (obj.fillColor !== null) {
+            this.canvas.strokeStyle = beforeFillColor;
+        }
     },
     Circle: function(obj) {
         var O = obj.Origin,
         r = obj.r;
+        this.canvas.beginPath();
         this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
+        this.canvas.closePath();
+        this.canvas.stroke();
     },
     Polygon: PolygonDrawFunction,
     Quadrilateral: PolygonDrawFunction,
@@ -107,6 +125,7 @@ Canvas.drawFunction = {
         }
     },
     Graph: function(obj) {
+        this.canvas.beginPath();
         var start = obj.start , end = obj.end;
         if (start === null) {
             start = -WORLD.ORIGIN.x;
@@ -123,17 +142,22 @@ Canvas.drawFunction = {
             this.canvas.lineTo(this.X(points[i].x), this.Y(points[i].y));
         }
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+        this.canvas.closePath();
+        this.canvas.stroke();
     }
 }
 Canvas.fn.toDataURL = function() {
     return document.getElementById(this.id).toDataURL();
 };
 function PolygonDrawFunction(obj) {
+    this.canvas.beginPath();
     this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     for (var i = 0, _i = obj.points.length; i < _i; i = 0|i+1) {
         this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
     }
     this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    this.canvas.closePath();
+    this.canvas.stroke();
 };
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {

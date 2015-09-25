@@ -105,6 +105,7 @@ class Line extends UnitaryObject# {{{
       # @.a != 0
       @.c /= @.a
       @.a = 1
+    @.fillColor = null
   move: (dx, dy) ->
     return new Line(@.points[0].move(x + dx, y + dy), @.points[1].move(x + dx, y + dy))
   moveX: (dx) ->
@@ -157,6 +158,9 @@ class Line extends UnitaryObject# {{{
     if (!super(CD))
       return false
     return @.a == CD.a && @.b == CD.b && @.c == CD.c
+  setFillColor: (color) ->
+    @.fillColor = color
+    return @
   name: () -> 'Line'
 # }}}
 class Segment extends UnitaryObject# {{{
@@ -326,14 +330,22 @@ class Text_ extends UnitaryObject# {{{
     @.font = null
   strokeOutline: () ->
     @.strokesOutline = true
+    return @
+  setAlign: (align) ->
+    @.align = align
+    return @
   setOutlineColor: (color) ->
     @.outlineColor = color
+    return @
   setFillColor: (color) ->
     @.fillColor = color
+    return @
   setBaseline: (base) ->
     @.baseline = base
+    return @
   setFont: (font) ->
     @.font = font
+    return @
   name: () -> 'Text'
 # }}}
 class Image_ extends UnitaryObject# {{{
