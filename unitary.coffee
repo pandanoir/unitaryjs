@@ -1,4 +1,14 @@
 "use strict"
+gcd = (m, n) -># {{{
+  if m < n
+    return gcd(n, m)
+  if m < 0
+    return gcd(-m, n)
+  if n < 0
+    return gcd(m, -n)
+  if n is 0
+    return m
+  return gcd(n, m % n)# }}}
 distance = (A, B) -># {{{
   if (A instanceof Point and B instanceof Point)
     return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y))
@@ -11,8 +21,17 @@ distance = (A, B) -># {{{
     return distance(B, A)# }}}
 
 class UnitaryObject# {{{
+  constructor: () ->
+    @.fillColor = null
+    @.strokeColor = null
   equals: (B) ->
     return @.name() == B.name()
+  setFillColor: (color) ->
+    @.fillColor = color
+    return @
+  setStrokeColor: (color) ->
+    @.strokeColor = color
+    return @
   name: () -> 'UnitaryObject'# }}}
 class Point extends UnitaryObject# {{{
   constructor: (x, y) ->
@@ -48,6 +67,7 @@ class Point extends UnitaryObject# {{{
 # }}}
 class Vector extends UnitaryObject# {{{
   constructor: (x, y) ->
+    super()
     @.x = x
     @.y = y
   @from: ((c) ->
@@ -79,16 +99,7 @@ class Line extends UnitaryObject# {{{
       throw new Error('Constructor cannot be called as a function.')
     if (A.equals(B))
       throw new Error('A equals B. So AB couldn\'t construct line.')
-    gcd = (m, n) ->
-      if m < n
-        return gcd(n, m)
-      if m < 0
-        return gcd(-m, n)
-      if n < 0
-        return gcd(m, -n)
-      if n is 0
-        return m
-      return gcd(n, m % n)
+    super()
     @.points = [A, B]
     @.a = B.y - A.y
     @.b = A.x - B.x
@@ -105,7 +116,6 @@ class Line extends UnitaryObject# {{{
       # @.a != 0
       @.c /= @.a
       @.a = 1
-    @.fillColor = null
   move: (dx, dy) ->
     return new Line(@.points[0].move(x + dx, y + dy), @.points[1].move(x + dx, y + dy))
   moveX: (dx) ->
@@ -158,9 +168,6 @@ class Line extends UnitaryObject# {{{
     if (!super(CD))
       return false
     return @.a == CD.a && @.b == CD.b && @.c == CD.c
-  setFillColor: (color) ->
-    @.fillColor = color
-    return @
   name: () -> 'Line'
 # }}}
 class Segment extends UnitaryObject# {{{
@@ -171,6 +178,7 @@ class Segment extends UnitaryObject# {{{
       @.points = [B, A]
     else
       @.points = [A, B]
+    super()
     @.length = Math.sqrt((A.x - B.x) ** 2 + (A.y - B.y) ** 2)
   move: (dx, dy) ->
     return new Segment(@.points[0].move(x + dx, y + dy), @.points[1].move(x + dx, y + dy))
@@ -205,6 +213,7 @@ class Circle extends UnitaryObject# {{{
   constructor: (O, radius) ->
     if (not (@ instanceof Circle))
       throw new Error('Constructor cannot be called as a function.')
+    super()
     @.Origin = O
     @.r = radius
   moveTo: (x, y) ->
@@ -225,6 +234,7 @@ class Polygon extends UnitaryObject# {{{
   constructor: (points...) ->
     if (not (@ instanceof Polygon))
       throw new Error('Constructor cannot be called as a function.')
+    super()
     @.points = points
   equals: () -> false
   name: () -> 'Polygon'
@@ -337,9 +347,6 @@ class Text_ extends UnitaryObject# {{{
   setOutlineColor: (color) ->
     @.outlineColor = color
     return @
-  setFillColor: (color) ->
-    @.fillColor = color
-    return @
   setBaseline: (base) ->
     @.baseline = base
     return @
@@ -385,6 +392,7 @@ class Image_ extends UnitaryObject# {{{
 # }}}
 class Graph extends UnitaryObject# {{{
   constructor: (f, scale) ->
+    super()
     @.f = f
     @.scale = scale
     @.start = null
