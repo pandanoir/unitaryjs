@@ -50,27 +50,9 @@ Canvas.drawFunction = {
         r = obj.r;
         this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
     },
-    Polygon: function(obj) {
-        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-        for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
-            this.canvas.lineTo(this.X(obj.points[j].x), this.Y(obj.points[j].y));
-        }
-        this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    },
-    Quadrilateral: function(obj) {
-        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-        for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
-            this.canvas.lineTo(this.X(obj.points[j].x), this.Y(obj.points[j].y));
-        }
-        this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    },
-    Triangle: function(obj) {
-        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-        for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
-            this.canvas.lineTo(this.X(obj.points[j].x), this.Y(obj.points[j].y));
-        }
-        this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    },
+    Polygon: PolygonDrawFunction,
+    Quadrilateral: PolygonDrawFunction,
+    Triangle: PolygonDrawFunction,
     Rect: function(obj) {
         var x = this.X(obj.points[0].x);
         var y = this.Y(obj.points[0].y);
@@ -146,13 +128,20 @@ Canvas.drawFunction = {
 Canvas.fn.toDataURL = function() {
     return document.getElementById(this.id).toDataURL();
 };
-if (!Function.prototype.bind) {
-  Function.prototype.bind = function (oThis) {
-    if (typeof this !== "function") {
-      // closest thing possible to the ECMAScript 5
-      // internal IsCallable function
-      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+function PolygonDrawFunction(obj) {
+    this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    for (var i = 0, _i = obj.points.length; i < _i; i = 0|i+1) {
+        this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
     }
+    this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+};
+if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
+        if (typeof this !== "function") {
+            // closest thing possible to the ECMAScript 5
+            // internal IsCallable function
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+        }
 
     var aArgs = Array.prototype.slice.call(arguments, 1), 
         fToBind = this, 
