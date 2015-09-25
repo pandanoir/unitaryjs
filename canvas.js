@@ -119,7 +119,7 @@ Canvas.drawFunction = {
             image.src = obj.src;
             image.onload = function() {
                 this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
-            };
+            }.bind(this);
         } else if (obj.dx === null) {
             this.canvas.drawImage(obj.src);
         }
