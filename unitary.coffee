@@ -377,6 +377,7 @@ WORLD = {
 }
 _global = (@ || 0).self || global
 Module = {
+  UnitaryObject: UnitaryObject
   Point: Point
   Vector: Vector
   Line: Line
