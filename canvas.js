@@ -12,99 +12,119 @@ Canvas.fn = Canvas.prototype;
 Canvas.fn.add = function(obj) {
     this.objects.push(obj);
 };
-Canvas.fn.draw = function() {
-    var X = function(x) {
-        if (this.mode === 'normal') {
-            return x + WORLD.ORIGIN.x;
-        }
+Canvas.fn.X = function(x) {
+    if (this.mode === 'normal') {
         return x + WORLD.ORIGIN.x;
-    }.bind(this);
-    var Y = function(y) {
-        if (this.mode === 'normal') {
-            return y + WORLD.ORIGIN.y;
-        }
-        return this.canvasHeight - y + WORLD.ORIGIN.y;
-    }.bind(this);
-
+    }
+    return x + WORLD.ORIGIN.x;
+};
+Canvas.fn.Y = function(y) {
+    if (this.mode === 'normal') {
+        return y + WORLD.ORIGIN.y;
+    }
+    return this.canvasHeight - y + WORLD.ORIGIN.y;
+};
+Canvas.fn.draw = function() {
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
         this.canvas.beginPath();
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
         var obj = this.objects[i];
         var name = obj.name();
-        if (name === 'Segment') {
-            this.canvas.moveTo(X(obj.points[0].x), Y(obj.points[0].y));
-            this.canvas.lineTo(X(obj.points[1].x), Y(obj.points[1].y));
-        }
-        if (name === 'Line') {
-            this.canvas.moveTo(0, Y(-(obj.c / obj.b)));
-            this.canvas.lineTo(this.canvasWidth, Y(-(this.canvasWidth + obj.c) / obj.b));
-        }
-        if (name === 'Circle') {
-            var O = obj.Origin,
-                r = obj.r;
-            this.canvas.arc(X(O.x), Y(O.y), r, 0, 2 * Math.PI, false);
-        }
-        if (name === 'Polygon' || name === 'Quadrilateral' || name === 'Triangle') {
-            this.canvas.moveTo(X(obj.points[0].x), Y(obj.points[0].y));
-            for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
-                this.canvas.lineTo(X(obj.points[j].x), Y(obj.points[j].y));
-            }
-            this.canvas.lineTo(X(obj.points[0].x), Y(obj.points[0].y));
-        }
-        if (name === 'Rect') {
-            var x = X(obj.points[0].x);
-            var y = Y(obj.points[0].y);
-            var w = obj.points[1].x - obj.points[0].x;
-            var h = - (obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
-            this.canvas.strokeRect(x, y, w, h); // 上でX()、Y()している
-        }
-        if (name === 'Text') {
-            this.canvas.strokeStyle = obj.outlineColor;
-            this.canvas.fillStyle = obj.fillColor;
-            this.canvas.textAlign = obj.align;
-            this.canvas.textBaseline = obj.baseline;
-            if (obj.font !== null) {
-                var defaultFont = this.canvas.font;
-                this.canvas.font = obj.font;
-            }
-            if (obj.maxWidth === null) {
-                if (obj.strokesOutline) {
-                    this.canvas.strokeText(obj.text, X(obj.x), Y(obj.y));
-                }
-                this.canvas.fillText(obj.text, X(obj.x), Y(obj.y));
-            } else {
-                if (obj.strokesOutline) {
-                    this.canvas.strokeText(obj.text, X(obj.x), Y(obj.y), obj.maxWidth);
-                }
-                this.canvas.fillText(obj.text, X(obj.x), Y(obj.y), obj.maxWidth);
-            }
-            if(obj.font !== null) {
-                this.canvas.font = defaultFont;
-            }
-        }
-        if (name === 'Point') {
-            this.canvas.fillRect(X(obj.x), Y(obj.y), 1, 1);
-        }
-        if (name === 'Image') {
-            if (obj.dx !== null && obj.sx !== null) {
-                this.canvas.drawImage(obj.src, obj.sx, obj.sy, obj.sw, obj.sh, X(obj.dx), Y(obj.dy), obj.dw, obj.dh);
-            } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
-                this.canvas.drawImage(obj.src, X(obj.dx), Y(obj.dy), obj.dw, obj.dh);
-            } else if (obj.dx !== null && obj.dw === null) {
-                // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
-                // 対偶をとり obj.dw === nullならばobj.sx === null
-                var image = new Image();
-                image.src = obj.src;
-                this.canvas.drawImage(image, X(obj.dx), Y(obj.dy));
-            } else if (obj.dx === null) {
-                this.canvas.drawImage(obj.src);
-            }
-        }
+        Canvas.drawFunction[name].call(this, obj);
         this.canvas.closePath();
         this.canvas.stroke();
     }
 };
+Canvas.drawFunction = {
+    Segment: function(obj) {
+        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+        this.canvas.lineTo(this.X(obj.points[1].x), this.Y(obj.points[1].y));
+    },
+    Line: function(obj) {
+        this.canvas.moveTo(0, this.Y(-(obj.c / obj.b)));
+        this.canvas.lineTo(this.canvasWidth, this.Y(-(this.canvasWidth + obj.c) / obj.b));
+    },
+    Circle: function(obj) {
+        var O = obj.Origin,
+        r = obj.r;
+        this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
+    },
+    Polygon: function(obj) {
+        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+        for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
+            this.canvas.lineTo(this.X(obj.points[j].x), this.Y(obj.points[j].y));
+        }
+        this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    },
+    Quadrilateral: function(obj) {
+        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+        for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
+            this.canvas.lineTo(this.X(obj.points[j].x), this.Y(obj.points[j].y));
+        }
+        this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    },
+    Triangle: function(obj) {
+        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+        for (var j = 0, _j = obj.points.length; j < _j; j = 0|j+1) {
+            this.canvas.lineTo(this.X(obj.points[j].x), this.Y(obj.points[j].y));
+        }
+        this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    },
+    Rect: function(obj) {
+        var x = this.X(obj.points[0].x);
+        var y = this.Y(obj.points[0].y);
+        var w = obj.points[1].x - obj.points[0].x;
+        var h = - (obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
+        this.canvas.strokeRect(x, y, w, h); // 上でX()、Y()している
+    },
+    Text: function(obj) {
+        this.canvas.strokeStyle = obj.outlineColor;
+        this.canvas.fillStyle = obj.fillColor;
+        this.canvas.textAlign = obj.align;
+        this.canvas.textBaseline = obj.baseline;
+        var x = obj.P.x;
+        var y = obj.P.y;
+        if (obj.font !== null) {
+            var defaultFont = this.canvas.font;
+            this.canvas.font = obj.font;
+        }
+        if (obj.maxWidth === null) {
+            if (obj.strokesOutline) {
+                this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
+            }
+            this.canvas.fillText(obj.text, this.X(x), this.Y(y));
+        } else {
+            if (obj.strokesOutline) {
+                this.canvas.strokeText(obj.text, this.X(x), this.Y(y), obj.maxWidth);
+            }
+            this.canvas.fillText(obj.text, this.X(x), this.Y(y), obj.maxWidth);
+        }
+        if(obj.font !== null) {
+            this.canvas.font = defaultFont;
+        }
+    },
+    Point: function(obj) {
+        this.canvas.fillRect(this.X(obj.x), this.Y(obj.y), 1, 1);
+    },
+    Image: function(obj) {
+        if (obj.dx !== null && obj.sx !== null) {
+            this.canvas.drawImage(obj.src, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+        } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
+            this.canvas.drawImage(obj.src, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+        } else if (obj.dx !== null && obj.dw === null) {
+            // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
+            // 対偶をとり obj.dw === nullならばobj.sx === null
+            var image = new Image();
+            image.src = obj.src;
+            image.onload = function() {
+                this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
+            };
+        } else if (obj.dx === null) {
+            this.canvas.drawImage(obj.src);
+        }
+    }
+}
 Canvas.fn.toDataURL = function() {
     return document.getElementById(this.id).toDataURL();
 };
