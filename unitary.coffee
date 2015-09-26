@@ -221,7 +221,7 @@ class Polygon extends UnitaryObject# {{{
     for val in @.points
       points[length] = val.move(dx, dy)
       length = 0|length+1
-    return new Polygon.fromArray(points).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Polygon(points).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   name: () -> 'Polygon'
 # }}}
 class Quadrilateral extends Polygon# {{{
@@ -268,7 +268,7 @@ class Triangle extends Polygon# {{{
       .add(vB.multiple(b * (c + a - b)))
       .add(vC.multiple(c * (a + b - c)))
       .multiple(1 / (16 * (S ** 2)))
-    O = new Point.fromVector(vO)
+    O = new Point(vO.x, vO.y)
     cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length)
     sinA = Math.sqrt(1 - cosA ** 2)
     R = BC.length / sinA / 2
@@ -284,7 +284,7 @@ class Triangle extends Polygon# {{{
       .add(vA.multiple(a / (a + b + c)))
       .add(vB.multiple(b / (a + b + c)))
       .add(vC.multiple(c / (a + b + c)))
-    O = new Point.fromVector(vO)
+    O = new Point(vO.x, vO.y)
     r = 2 * @.getArea() / (a + b + c)
     return new Circle(O, r)
   getArea: () ->
@@ -293,8 +293,8 @@ class Triangle extends Polygon# {{{
     C = @.points[2]
     AB = new Segment(A, B)
     AC = new Segment(A, C)
-    vAB = new Vector.from(A, B)
-    vAC = new Vector.from(A, C)
+    vAB = new Vector(B.x - A.x, B.y - A.y)
+    vAC = new Vector(C.x - A.x, C.y - A.y)
     cosA = vAB.product(vAC) / (AB.length * AC.length)
     sinA = Math.sqrt(1 - cosA ** 2)
     S = AB.length * AC.length * sinA / 2
