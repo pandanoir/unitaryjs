@@ -44,13 +44,6 @@ class Point extends UnitaryObject# {{{
     @.x = x
     @.y = y
 
-  @fromVector: ((c) ->
-    c.prototype = Point.prototype
-    return c
-  )((A) ->
-    @.x = A.x
-    @.y = A.y
-  )
   moveTo: (x, y) ->
     return new Point(x, y).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   move: (dx, dy) ->
@@ -70,13 +63,6 @@ class Vector extends UnitaryObject# {{{
     super()
     @.x = x
     @.y = y
-  @from: ((c) ->
-    c.prototype = Vector.prototype
-    return c
-  )((A, B) ->
-    @.x = B.x - A.x
-    @.y = B.y - A.y
-  )
   add: (CD) ->
     return new Vector(@.x + CD.x, @.y + CD.y)
   minus: (CD) ->
