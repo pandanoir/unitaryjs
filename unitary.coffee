@@ -32,6 +32,10 @@ class UnitaryObject# {{{
   setStrokeColor: (color) ->
     @.strokeColor = color
     return @
+  moveX: (dx) ->
+    return @.move(dx, 0)
+  moveY: (dy) ->
+    return @.move(0, dy)
   name: () -> 'UnitaryObject'# }}}
 class Point extends UnitaryObject# {{{
   constructor: (x, y) ->
