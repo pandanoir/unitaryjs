@@ -213,7 +213,10 @@ class Polygon extends UnitaryObject# {{{
     if (not (@ instanceof Polygon))
       throw new Error('Constructor cannot be called as a function.')
     super()
-    @.points = points
+    if (Object.prototype.toString.call(points[0]) == '[object Array]')
+      @.points = points[0]
+    else
+      @.points = points
   equals: () -> false
   move: (dx, dy) ->
     points = []
