@@ -180,7 +180,7 @@ class Segment extends UnitaryObject# {{{
     intersection = @.toLine().getIntersection(CD.toLine())
     if (intersection == false)
       return false
-    if (@.points[0].x < intersection.x < @.points[1].x && @.points[0].y < intersection.y < @.points[1].y)
+    if (@.points[0].x <= intersection.x <= @.points[1].x)
       return true
     return false
   toLine: () ->
@@ -228,7 +228,7 @@ class Quadrilateral extends Polygon# {{{
   constructor: (A, B, C, D) ->
     if (not (@ instanceof Quadrilateral))
       throw new Error('Constructor cannot be called as a function.')
-    if (Segment(A, B).intersects(Segment(C, D)))
+    if (new Segment(A, D).intersects(new Segment(B, C)))
       throw new Error('ABCD is not a quadrilateral.')
     if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D))
       throw new Error('ABCD is not a quadrilateral.')
