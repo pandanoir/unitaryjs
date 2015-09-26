@@ -77,8 +77,6 @@ class Vector extends UnitaryObject# {{{
     if (!super(B))
       return false
     return @.x == B.x && @.y == B.y
-  moveTo: (x, y) ->
-    return new Vector(x, y)
   move: (dx, dy) ->
     return new Vector(@.x + dx, @.y + dy)
   name: () -> 'Vector'

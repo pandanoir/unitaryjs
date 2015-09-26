@@ -60,6 +60,14 @@
       return this;
     };
 
+    UnitaryObject.prototype.moveX = function(dx) {
+      return this.move(dx, 0);
+    };
+
+    UnitaryObject.prototype.moveY = function(dy) {
+      return this.move(0, dy);
+    };
+
     UnitaryObject.prototype.name = function() {
       return 'UnitaryObject';
     };
@@ -79,28 +87,12 @@
       this.y = y;
     }
 
-    Point.fromVector = (function(c) {
-      c.prototype = Point.prototype;
-      return c;
-    })(function(A) {
-      this.x = A.x;
-      return this.y = A.y;
-    });
-
     Point.prototype.moveTo = function(x, y) {
-      return new Point(x, y);
+      return new Point(x, y).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Point.prototype.move = function(dx, dy) {
-      return new Point(this.x + dx, this.y + dy);
-    };
-
-    Point.prototype.moveX = function(dx) {
-      return new Point(this.x + dx, this.y);
-    };
-
-    Point.prototype.moveY = function(dy) {
-      return new Point(this.x, this.y + dy);
+      return new Point(this.x + dx, this.y + dy).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Point.prototype.toString = function() {
@@ -135,14 +127,6 @@
       this.y = y;
     }
 
-    Vector.from = (function(c) {
-      c.prototype = Vector.prototype;
-      return c;
-    })(function(A, B) {
-      this.x = B.x - A.x;
-      return this.y = B.y - A.y;
-    });
-
     Vector.prototype.add = function(CD) {
       return new Vector(this.x + CD.x, this.y + CD.y);
     };
@@ -168,6 +152,10 @@
         return false;
       }
       return this.x === B.x && this.y === B.y;
+    };
+
+    Vector.prototype.move = function(dx, dy) {
+      return new Vector(this.x + dx, this.y + dy);
     };
 
     Vector.prototype.name = function() {
@@ -209,15 +197,7 @@
     }
 
     Line.prototype.move = function(dx, dy) {
-      return new Line(this.points[0].move(x + dx, y + dy), this.points[1].move(x + dx, y + dy));
-    };
-
-    Line.prototype.moveX = function(dx) {
-      return new Line(this.points[0].move(x + dx, y), this.points[1].move(x + dx, y));
-    };
-
-    Line.prototype.moveY = function(dy) {
-      return new Line(this.points[0].move(x, y + dy), this.points[1].move(x, y + dy));
+      return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Line.prototype.toString = function() {
@@ -340,15 +320,7 @@
     }
 
     Segment.prototype.move = function(dx, dy) {
-      return new Segment(this.points[0].move(x + dx, y + dy), this.points[1].move(x + dx, y + dy));
-    };
-
-    Segment.prototype.moveX = function(dx) {
-      return new Segment(this.points[0].move(x + dx, y), this.points[1].move(x + dx, y));
-    };
-
-    Segment.prototype.moveY = function(dy) {
-      return new Segment(this.points[0].move(x, y + dy), this.points[1].move(x, y + dy));
+      return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Segment.prototype.has = function(P) {
@@ -366,12 +338,12 @@
     };
 
     Segment.prototype.intersects = function(CD) {
-      var intersection, ref, ref1;
+      var intersection, ref;
       intersection = this.toLine().getIntersection(CD.toLine());
       if (intersection === false) {
         return false;
       }
-      if ((this.points[0].x < (ref = intersection.x) && ref < this.points[1].x) && (this.points[0].y < (ref1 = intersection.y) && ref1 < this.points[1].y)) {
+      if ((this.points[0].x <= (ref = intersection.x) && ref <= this.points[1].x)) {
         return true;
       }
       return false;
@@ -409,19 +381,11 @@
     }
 
     Circle.prototype.moveTo = function(x, y) {
-      return new Circle(this.Origin.moveTo(x, y), this.r);
+      return new Circle(this.Origin.moveTo(x, y), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Circle.prototype.move = function(dx, dy) {
-      return new Circle(this.Origin.move(dx, dy), this.r);
-    };
-
-    Circle.prototype.moveX = function(dx) {
-      return new Circle(this.Origin.moveX(dx), this.r);
-    };
-
-    Circle.prototype.moveY = function(dy) {
-      return new Circle(this.Origin.moveY(dy), this.r);
+      return new Circle(this.Origin.move(dx, dy), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Circle.prototype.equals = function(C) {
@@ -449,11 +413,28 @@
         throw new Error('Constructor cannot be called as a function.');
       }
       Polygon.__super__.constructor.call(this);
-      this.points = points;
+      if (Object.prototype.toString.call(points[0]) === '[object Array]') {
+        this.points = points[0];
+      } else {
+        this.points = points;
+      }
     }
 
     Polygon.prototype.equals = function() {
       return false;
+    };
+
+    Polygon.prototype.move = function(dx, dy) {
+      var i, len, length, points, ref, val;
+      points = [];
+      length = 0;
+      ref = this.points;
+      for (i = 0, len = ref.length; i < len; i++) {
+        val = ref[i];
+        points[length] = val.move(dx, dy);
+        length = 0 | length + 1;
+      }
+      return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
     Polygon.prototype.name = function() {
@@ -471,7 +452,7 @@
       if (!(this instanceof Quadrilateral)) {
         throw new Error('Constructor cannot be called as a function.');
       }
-      if (Segment(A, B).intersects(Segment(C, D))) {
+      if (new Segment(A, D).intersects(new Segment(B, C))) {
         throw new Error('ABCD is not a quadrilateral.');
       }
       if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D)) {
@@ -528,7 +509,7 @@
       b = Math.pow(CA.length, 2);
       c = Math.pow(AB.length, 2);
       vO = new Vector(0, 0).add(vA.multiple(a * (b + c - a))).add(vB.multiple(b * (c + a - b))).add(vC.multiple(c * (a + b - c))).multiple(1 / (16 * (Math.pow(S, 2))));
-      O = new Point.fromVector(vO);
+      O = new Point(vO.x, vO.y);
       cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length);
       sinA = Math.sqrt(1 - Math.pow(cosA, 2));
       R = BC.length / sinA / 2;
@@ -544,7 +525,7 @@
       b = vC.minus(vA).abs();
       c = vB.minus(vA).abs();
       vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c))).add(vB.multiple(b / (a + b + c))).add(vC.multiple(c / (a + b + c)));
-      O = new Point.fromVector(vO);
+      O = new Point(vO.x, vO.y);
       r = 2 * this.getArea() / (a + b + c);
       return new Circle(O, r);
     };
@@ -556,8 +537,8 @@
       C = this.points[2];
       AB = new Segment(A, B);
       AC = new Segment(A, C);
-      vAB = new Vector.from(A, B);
-      vAC = new Vector.from(A, C);
+      vAB = new Vector(B.x - A.x, B.y - A.y);
+      vAC = new Vector(C.x - A.x, C.y - A.y);
       cosA = vAB.product(vAC) / (AB.length * AC.length);
       sinA = Math.sqrt(1 - Math.pow(cosA, 2));
       S = AB.length * AC.length * sinA / 2;
@@ -640,6 +621,10 @@
       return this;
     };
 
+    Text_.prototype.move = function(dx, dy) {
+      return new Text_(this.str, this.P.move(dx, dy), this.align, this.maxWidth).setStrokeColor(this.strokeColor).setFillColor(this.fillColor).setOutlineColor(this.outlineColor).setBaseline(this.baseline).setFont(this.font);
+    };
+
     Text_.prototype.name = function() {
       return 'Text';
     };
@@ -656,6 +641,7 @@
         throw new Error('Constructor cannot be called as a function.');
       }
       this.src = src;
+      this.startPoint = startPoint;
       this.dx = startPoint.x;
       this.dy = startPoint.y;
       this.dw = null;
@@ -693,6 +679,15 @@
       return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
     };
 
+    Image_.prototype.move = function(dx, dy) {
+      var newImage;
+      newImage = new Image_(this.src, this.startPoint.move(dx, dy));
+      if (this.sx !== null) {
+        newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
+      }
+      return newImage;
+    };
+
     Image_.prototype.name = function() {
       return 'Image';
     };
@@ -721,6 +716,10 @@
     Graph.prototype.equals = function() {
       return false;
     };
+
+    Graph.prototype.moveX = void 0;
+
+    Graph.prototype.moveY = void 0;
 
     Graph.prototype.name = function() {
       return 'Graph';
