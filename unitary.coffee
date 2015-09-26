@@ -48,13 +48,9 @@ class Point extends UnitaryObject# {{{
     @.y = A.y
   )
   moveTo: (x, y) ->
-    return new Point(x, y)
+    return new Point(x, y).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   move: (dx, dy) ->
-    return new Point(@.x + dx, @.y + dy)
-  moveX: (dx) ->
-    return new Point(@.x + dx, @.y)
-  moveY: (dy) ->
-    return new Point(@.x, @.y + dy)
+    return new Point(@.x + dx, @.y + dy).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   toString: () ->
     return '(' + @.x + ', ' + @.y + ')'
   inspect: () ->
@@ -91,6 +87,10 @@ class Vector extends UnitaryObject# {{{
     if (!super(B))
       return false
     return @.x == B.x && @.y == B.y
+  moveTo: (x, y) ->
+    return new Vector(x, y)
+  move: (dx, dy) ->
+    return new Vector(@.x + dx, @.y + dy)
   name: () -> 'Vector'
 # }}}
 class Line extends UnitaryObject# {{{
@@ -117,11 +117,7 @@ class Line extends UnitaryObject# {{{
       @.c /= @.a
       @.a = 1
   move: (dx, dy) ->
-    return new Line(@.points[0].move(x + dx, y + dy), @.points[1].move(x + dx, y + dy))
-  moveX: (dx) ->
-    return new Line(@.points[0].move(x + dx, y), @.points[1].move(x + dx, y))
-  moveY: (dy) ->
-    return new Line(@.points[0].move(x, y + dy), @.points[1].move(x, y + dy))
+    return new Line(@.points[0].move(dx, dy), @.points[1].move(dx, dy)).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   toString: () ->
     res = ''
     if (@.a > 0 and @.a isnt 1) then res += '+' + @.a + 'x'
@@ -181,11 +177,7 @@ class Segment extends UnitaryObject# {{{
     super()
     @.length = Math.sqrt((A.x - B.x) ** 2 + (A.y - B.y) ** 2)
   move: (dx, dy) ->
-    return new Segment(@.points[0].move(x + dx, y + dy), @.points[1].move(x + dx, y + dy))
-  moveX: (dx) ->
-    return new Segment(@.points[0].move(x + dx, y), @.points[1].move(x + dx, y))
-  moveY: (dy) ->
-    return new Segment(@.points[0].move(x, y + dy), @.points[1].move(x, y + dy))
+    return new Segment(@.points[0].move(dx, dy), @.points[1].move(dx, dy)).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   has: (P) ->
     A = @.points[0]
     B = @.points[1]
@@ -217,13 +209,9 @@ class Circle extends UnitaryObject# {{{
     @.Origin = O
     @.r = radius
   moveTo: (x, y) ->
-    return new Circle(@.Origin.moveTo(x, y), @.r)
+    return new Circle(@.Origin.moveTo(x, y), @.r).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   move: (dx, dy) ->
-    return new Circle(@.Origin.move(dx, dy), @.r)
-  moveX: (dx) ->
-    return new Circle(@.Origin.moveX(dx), @.r)
-  moveY: (dy) ->
-    return new Circle(@.Origin.moveY(dy), @.r)
+    return new Circle(@.Origin.move(dx, dy), @.r).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   equals: (C) ->
     if (!super(C))
       return false
@@ -237,6 +225,13 @@ class Polygon extends UnitaryObject# {{{
     super()
     @.points = points
   equals: () -> false
+  move: (dx, dy) ->
+    points = []
+    length = 0
+    for val in @.points
+      points[length] = val.move(dx, dy)
+      length = 0|length+1
+    return new Polygon.fromArray(points).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
   name: () -> 'Polygon'
 # }}}
 class Quadrilateral extends Polygon# {{{
@@ -353,6 +348,8 @@ class Text_ extends UnitaryObject# {{{
   setFont: (font) ->
     @.font = font
     return @
+  move: (dx, dy) ->
+    return new Text_(@.str, @.P.move(dx, dy), @.align, @.maxWidth).setStrokeColor(@.strokeColor).setFillColor(@.fillColor).setOutlineColor(@.outlineColor).setBaseline(@.baseline).setFont(@.font)
   name: () -> 'Text'
 # }}}
 class Image_ extends UnitaryObject# {{{
@@ -361,6 +358,7 @@ class Image_ extends UnitaryObject# {{{
     if (not (@ instanceof Image_))
       throw new Error('Constructor cannot be called as a function.')
     @.src = src
+    @.startPoint = startPoint
     @.dx = startPoint.x
     @.dy = startPoint.y
     @.dw = null
@@ -388,6 +386,11 @@ class Image_ extends UnitaryObject# {{{
     if (!super(B))
       return false
     return @.src == B.src && @.dx == B.dx && @.dy == B.dy && @.dw == B.dw && @.dh == B.dh && @.sw == B.sw && @.sh == B.sh && @.sx == B.sx && @.sy == B.sy
+  move: (dx, dy) ->
+    newImage = new Image_(@.src, @.startPoint.move(dx, dy))
+    if (@.sx != null)
+      newImage.trim(new Point(@.sx, @.sy), @.sw, @.sh, @.dw, @.dh)
+    return newImage
   name: () -> 'Image'
 # }}}
 class Graph extends UnitaryObject# {{{
@@ -402,8 +405,9 @@ class Graph extends UnitaryObject# {{{
     @.end = end
     return @
   equals: () -> false
+  moveX: undefined
+  moveY: undefined
   name: () -> 'Graph'# }}}
-
 
 WORLD = {
   ORIGIN: new Point(0, 0)
