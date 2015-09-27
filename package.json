@@ -15,6 +15,9 @@
     "library",
     "unitaryjs"
   ],
+  "devDependencies": {
+      "mocha": "*"
+  },
   "author": "PandaNoir",
   "license": "MIT",
   "bugs": {
