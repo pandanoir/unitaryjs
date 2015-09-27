@@ -1,0 +1,24 @@
+{
+  "name": "unitaryjs",
+  "version": "0.0.2",
+  "description": "Canvas Library",
+  "main": "./index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PandaNoir/UnitaryJS.git"
+  },
+  "keywords": [
+    "canvas",
+    "library",
+    "unitaryjs"
+  ],
+  "author": "PandaNoir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PandaNoir/UnitaryJS/issues"
+  },
+  "homepage": "https://github.com/PandaNoir/UnitaryJS"
+}

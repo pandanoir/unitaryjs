@@ -1,4 +1,4 @@
-#UnitaryJS
+#UnitaryJS [![Build Status](https://travis-ci.org/cognitom/gulp-phantom.svg?branch=master)](https://travis-ci.org/cognitom/gulp-phantom)
 
 ![logo.png](logo.png)
 
