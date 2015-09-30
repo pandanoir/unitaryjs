@@ -6,7 +6,7 @@ function Canvas(id) {
     this.id = id;
     this.objects = [];
     this.mode = 'graph';
-    this.origin = new Point(0, 0);
+    this.origin = new Unitary.Point(0, 0);
 };
 Canvas.fn = Canvas.prototype;
 Canvas.fn.add = function(obj) {
