@@ -22,6 +22,8 @@ distance = (A, B) -># {{{
 
 class UnitaryObject# {{{
   constructor: () ->
+    if (not (@ instanceof UnitaryObject))
+      throw new Error('Constructor cannot be called as a function.')
     @.fillColor = null
     @.strokeColor = null
   equals: (B) ->
@@ -59,10 +61,16 @@ class Point extends UnitaryObject# {{{
   name: () -> 'Point'
 # }}}
 class Vector extends UnitaryObject# {{{
-  constructor: (x, y) ->
+  constructor: () ->
+    if (not (@ instanceof Vector))
+      throw new Error('Constructor cannot be called as a function.')
     super()
-    @.x = x
-    @.y = y
+    if (arguments.length == 2)
+      @.x = arguments[0]
+      @.y = arguments[1]
+    else if (arguments.length == 1)
+      @.x = arguments[0].x
+      @.y = arguments[0].y
   add: (CD) ->
     return new Vector(@.x + CD.x, @.y + CD.y)
   minus: (CD) ->
