@@ -231,6 +231,16 @@ class Polygon extends UnitaryObject# {{{
       points[length] = val.move(dx, dy)
       length = 0|length+1
     return new Polygon(points).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+  has: (P) ->
+    before_v = @.points[@.points.length - 1]
+    rad = 0
+    for v in @.points
+      a = new Vector(v).minus(new Vector(P))
+      b = new Vector(before_v).minus(new Vector(P))
+      cos = a.product(b) / (a.abs() * b.abs())
+      rad += Math.acos(cos)
+      before_v = v
+    return Math.round(rad / (2 * Math.PI) * 360) == 360
   name: () -> 'Polygon'
 # }}}
 class Quadrilateral extends Polygon# {{{
@@ -315,6 +325,10 @@ class Rect extends Polygon# {{{
     if (not (@ instanceof Rect))
       throw new Error('Constructor cannot be called as a function.')
     super(A, B)
+  has: (P) ->
+    A = @.points[0]
+    B = @.points[1]
+    return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0
   name: () -> 'Rect'
 # }}}
 class Text_ extends UnitaryObject# {{{

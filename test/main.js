@@ -105,6 +105,18 @@ describe('Unitary', function() {
         });
     });
     describe('Rect', function() {
+        it('has', function() {
+            var rect = new Rect(new Point(48,84), new Point(64,48));
+            assert.ok(!rect.has(new Point(30, 30)));
+            assert.ok(!rect.has(new Point(30, 50)));
+            assert.ok(!rect.has(new Point(30, 90)));
+            assert.ok(!rect.has(new Point(50, 30)));
+            assert.ok(rect.has(new Point(50, 50)));
+            assert.ok(!rect.has(new Point(50, 90)));
+            assert.ok(!rect.has(new Point(70, 30)));
+            assert.ok(!rect.has(new Point(70, 50)));
+            assert.ok(!rect.has(new Point(70, 90)));
+        });
         it('name', function() {
             assert.equal(new Rect(new Point(48,84), new Point(64,48)).name(), 'Rect');
         });

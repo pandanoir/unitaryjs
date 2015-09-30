@@ -448,6 +448,22 @@
       return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
     };
 
+    Polygon.prototype.has = function(P) {
+      var a, b, before_v, cos, i, len, rad, ref, v;
+      before_v = this.points[this.points.length - 1];
+      rad = 0;
+      ref = this.points;
+      for (i = 0, len = ref.length; i < len; i++) {
+        v = ref[i];
+        a = new Vector(v).minus(new Vector(P));
+        b = new Vector(before_v).minus(new Vector(P));
+        cos = a.product(b) / (a.abs() * b.abs());
+        rad += Math.acos(cos);
+        before_v = v;
+      }
+      return Math.round(rad / (2 * Math.PI) * 360) === 360;
+    };
+
     Polygon.prototype.name = function() {
       return 'Polygon';
     };
@@ -573,6 +589,13 @@
       }
       Rect.__super__.constructor.call(this, A, B);
     }
+
+    Rect.prototype.has = function(P) {
+      var A, B;
+      A = this.points[0];
+      B = this.points[1];
+      return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0;
+    };
 
     Rect.prototype.name = function() {
       return 'Rect';
