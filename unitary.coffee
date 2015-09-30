@@ -399,6 +399,8 @@ class Graph extends UnitaryObject# {{{
   moveX: undefined
   moveY: undefined
   name: () -> 'Graph'# }}}
+XAxis = new Line(new Point(0, 0), new Point(1, 0))
+YAxis = new Line(new Point(0, 0), new Point(0, 1))
 
 _global = (@ || 0).self || global
 Module = {
@@ -415,6 +417,8 @@ Module = {
   Text: Text_
   Triangle: Triangle
   Vector: Vector
+  XAxis:XAxis
+  YAxis:YAxis
   distance: distance
 }
 if ('process' of _global)
