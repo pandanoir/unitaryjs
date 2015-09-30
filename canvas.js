@@ -1,4 +1,3 @@
-var WORLD = Unitary.WORLD;
 function Canvas(id) {
     var canvas = document.getElementById(id);
     this.canvas = canvas.getContext('2d');
@@ -7,22 +6,23 @@ function Canvas(id) {
     this.id = id;
     this.objects = [];
     this.mode = 'graph';
+    this.origin = new Point(0, 0);
 };
 Canvas.fn = Canvas.prototype;
 Canvas.fn.add = function(obj) {
     this.objects.push(obj);
 };
 Canvas.fn.X = function(x) {
-    var res = x + WORLD.ORIGIN.x;
+    var res = x + this.origin.x;
     // if (this.mode === 'normal') {
     //     return res;
     // }
     return Math.round(res);
 };
 Canvas.fn.Y = function(y) {
-    var res = this.canvasHeight - y + WORLD.ORIGIN.y;
+    var res = this.canvasHeight - y + this.origin.y;
     if (this.mode === 'normal') {
-        res = y + WORLD.ORIGIN.y;
+        res = y + this.origin.y;
     }
     return Math.round(res);
 };
@@ -133,10 +133,10 @@ Canvas.drawFunction = {
         this.canvas.beginPath();
         var start = obj.start , end = obj.end;
         if (start === null) {
-            start = -WORLD.ORIGIN.x;
+            start = -this.origin.x;
         }
         if (end === null) {
-            end = this.canvasWidth - WORLD.ORIGIN.x;
+            end = this.canvasWidth - this.origin.x;
         }
         var points = [];
         for (var i = start; i <= end; i = 0|i+1) {

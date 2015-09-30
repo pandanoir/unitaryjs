@@ -400,9 +400,6 @@ class Graph extends UnitaryObject# {{{
   moveY: undefined
   name: () -> 'Graph'# }}}
 
-WORLD = {
-  ORIGIN: new Point(0, 0)
-}
 _global = (@ || 0).self || global
 Module = {
   UnitaryObject: UnitaryObject
@@ -419,7 +416,6 @@ Module = {
   Triangle: Triangle
   Vector: Vector
   distance: distance
-  WORLD: WORLD
 }
 if ('process' of _global)
   module.exports = Module
