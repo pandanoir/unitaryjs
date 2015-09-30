@@ -71,6 +71,9 @@
       logoCanvas.mode = 'normal';
       logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
 
+      graphCanvas.origin = new Point(100, 10);
+      graphCanvas.add(Unitary.XAxis);
+      graphCanvas.add(Unitary.YAxis);
       graphCanvas.add(new Line(new Point(20, 0), new Point(20,20)).setStrokeColor('#ddd'));
       graphCanvas.add(new Line(new Point(0, 20), new Point(20,20)).setStrokeColor('#ddd'));
       graphCanvas.add(new Graph(function(x) {return x * x}, 0.05));

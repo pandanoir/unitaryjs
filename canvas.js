@@ -20,7 +20,7 @@ Canvas.fn.X = function(x) {
     return Math.round(res);
 };
 Canvas.fn.Y = function(y) {
-    var res = this.canvasHeight - y + this.origin.y;
+    var res = this.canvasHeight - (y + this.origin.y);
     if (this.mode === 'normal') {
         res = y + this.origin.y;
     }
