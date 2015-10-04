@@ -1,10 +1,5 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-function gcd(m, n) {
+export function gcd(m: number, n: number): number {
     if (m < n) {
         return gcd(n, m);
     }
@@ -19,8 +14,7 @@ function gcd(m, n) {
     }
     return gcd(n, m % n);
 }
-exports.gcd = gcd;
-function distance(A, B) {
+export function distance(A: Point | Line, B: Point | Line): number {
     var res;
     if (A instanceof Point && B instanceof Point) {
         return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
@@ -37,124 +31,126 @@ function distance(A, B) {
         return distance(B, A);
     }
 }
-exports.distance = distance;
-var UnitaryObject = (function () {
-    function UnitaryObject() {
+export class UnitaryObject {
+    fillColor: string;
+    strokeColor: string;
+    constructor() {
         if (!(this instanceof UnitaryObject)) {
             throw new Error('Constructor cannot be called as a function.');
         }
         this.fillColor = null;
         this.strokeColor = null;
     }
-    UnitaryObject.prototype.equals = function (B) {
+    equals(B: UnitaryObject): boolean {
         return this.name() === B.name();
-    };
-    UnitaryObject.prototype.setFillColor = function (color) {
+    }
+    setFillColor(color: string): any {
         this.fillColor = color;
         return this;
-    };
-    UnitaryObject.prototype.setStrokeColor = function (color) {
+    }
+    setStrokeColor(color: string): any {
         this.strokeColor = color;
         return this;
-    };
-    UnitaryObject.prototype.move = function (dx, dy) {
+    }
+    move(dx: number, dy: number): any {
         return this;
-    };
-    UnitaryObject.prototype.moveX = function (dx) {
+    }
+    moveX(dx: number): any {
         return this.move(dx, 0);
-    };
-    UnitaryObject.prototype.moveY = function (dy) {
+    }
+    moveY(dy: number): any {
         return this.move(0, dy);
-    };
-    UnitaryObject.prototype.name = function () {
+    }
+    name(): string {
         return 'UnitaryObject';
-    };
-    return UnitaryObject;
-})();
-exports.UnitaryObject = UnitaryObject;
-var Point = (function (_super) {
-    __extends(Point, _super);
-    function Point(x, y) {
+    }
+}
+export class Point extends UnitaryObject {
+    x: number;
+    y: number;
+    constructor(x: number, y: number) {
         if (!(this instanceof Point)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
+        super();
         this.x = x;
         this.y = y;
     }
-    Point.prototype.moveTo = function (x, y) {
+    moveTo(x: number, y: number): Point {
         return new Point(x, y).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
-    };
-    Point.prototype.move = function (dx, dy) {
+    }
+    move(dx: number, dy: number): Point {
         return new Point(this.x + dx, this.y + dy).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
-    };
-    Point.prototype.toString = function () {
+    }
+    toString(): string {
         return '(' + this.x + ', ' + this.y + ')';
-    };
-    Point.prototype.inspect = function () {
+    }
+    inspect(): string {
         return '(' + this.x + ', ' + this.y + ')';
-    };
-    Point.prototype.equals = function (B) {
-        if (!_super.prototype.equals.call(this, B)) {
+    }
+    equals(B: Point): boolean {
+        if (!super.equals(B)) {
             return false;
         }
         return this.x === B.x && this.y === B.y;
-    };
-    Point.prototype.name = function () {
+    }
+    name(): string {
         return 'Point';
-    };
-    return Point;
-})(UnitaryObject);
-exports.Point = Point;
-var Vector = (function (_super) {
-    __extends(Vector, _super);
-    function Vector(x, y) {
+    }
+}
+export class Vector extends UnitaryObject{
+    x: number;
+    y: number;
+    constructor(v: Point);
+    constructor(x: number, y: number);
+    constructor(x: any, y?: number) {
         if (!(this instanceof Vector)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
+        super();
         if (arguments.length === 2) {
             this.x = arguments[0];
             this.y = arguments[1];
-        }
-        else if (arguments.length === 1) {
+        } else if (arguments.length === 1) {
             this.x = arguments[0].x;
             this.y = arguments[0].y;
         }
     }
-    Vector.prototype.add = function (CD) {
+    add(CD: Vector): Vector {
         return new Vector(this.x + CD.x, this.y + CD.y);
-    };
-    Vector.prototype.minus = function (CD) {
+    }
+    minus(CD: Vector): Vector {
         return new Vector(this.x - CD.x, this.y - CD.y);
-    };
-    Vector.prototype.product = function (CD) {
+    }
+    product(CD: Vector): number {
         return this.x * CD.x + this.y * CD.y;
-    };
-    Vector.prototype.multiple = function (k) {
+    }
+    multiple(k: number): Vector {
         return new Vector(this.x * k, this.y * k);
-    };
-    Vector.prototype.abs = function () {
+    }
+    abs(): number {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-    };
-    Vector.prototype.equals = function (B) {
-        if (!_super.prototype.equals.call(this, B)) {
+    }
+    equals(B: Vector): boolean {
+        if (!super.equals(B)) {
             return false;
         }
         return this.x === B.x && this.y === B.y;
-    };
-    Vector.prototype.move = function (dx, dy) {
+    }
+    move(dx: number, dy: number): Vector {
         return new Vector(this.x + dx, this.y + dy);
-    };
-    Vector.prototype.name = function () {
+    }
+    name(): string {
         return 'Vector';
-    };
-    return Vector;
-})(UnitaryObject);
-exports.Vector = Vector;
-var Line = (function (_super) {
-    __extends(Line, _super);
-    function Line(A, B) {
+    }
+}
+
+export class Line extends UnitaryObject{
+    points: Point[];
+    a: number;
+    b: number;
+    c: number;
+    constructor(A: Point, B: Point) {
         var g;
         if (!(this instanceof Line)) {
             throw new Error('Constructor cannot be called as a function.');
@@ -162,7 +158,7 @@ var Line = (function (_super) {
         if (A.equals(B)) {
             throw new Error('A equals B. So AB couldn\'t construct line.');
         }
-        _super.call(this);
+        super();
         this.points = [A, B];
         this.a = B.y - A.y;
         this.b = A.x - B.x;
@@ -180,88 +176,44 @@ var Line = (function (_super) {
             this.a = 1;
         }
     }
-    Line.prototype.move = function (dx, dy) {
+    move(dx: number, dy: number): UnitaryObject {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy))
             .setStrokeColor(this.strokeColor)
             .setFillColor(this.fillColor);
-    };
-    Line.prototype.toString = function () {
+    }
+    toString(): string {
         var res;
         res = '';
-        if (this.a > 0 && this.a !== 1) {
-            res += '+' + this.a + 'x';
-        }
-        if (this.a === 1) {
-            res += '+x';
-        }
-        if (this.a < 0 && this.a !== -1) {
-            res += '-' + -this.a + 'x';
-        }
-        if (this.a === -1) {
-            res += '-x';
-        }
-        if (this.b > 0 && this.b !== 1) {
-            res += '+' + this.b + 'y';
-        }
-        if (this.b === 1) {
-            res += '+y';
-        }
-        if (this.b < 0 && this.b !== -1) {
-            res += '-' + -this.b + 'y';
-        }
-        if (this.b === -1) {
-            res += '-y';
-        }
-        if (this.c > 0) {
-            res += '+' + this.c;
-        }
-        if (this.c < 0) {
-            res += '-' + -this.c;
-        }
-        if (res.charAt(0) === '+') {
-            res = res.slice(1);
-        }
+        if (this.a > 0 && this.a !== 1) { res += '+' + this.a + 'x'; }
+        if (this.a === 1) { res += '+x'; }
+        if (this.a < 0 && this.a !== -1) { res += '-' + -this.a + 'x'; }
+        if (this.a === -1) { res += '-x'; }
+        if (this.b > 0 && this.b !== 1) { res += '+' + this.b + 'y'; }
+        if (this.b === 1) { res += '+y'; }
+        if (this.b < 0 && this.b !== -1) { res += '-' + -this.b + 'y'; }
+        if (this.b === -1) { res += '-y'; }
+        if (this.c > 0) { res += '+' + this.c; }
+        if (this.c < 0) { res += '-' + -this.c; }
+        if (res.charAt(0) === '+') { res = res.slice(1); }
         return res + '=0';
-    };
-    Line.prototype.inspect = function () {
+    }
+    inspect(): string {
         var res;
         res = '';
-        if (this.a > 0 && this.a !== 1) {
-            res += '+' + this.a + 'x';
-        }
-        if (this.a === 1) {
-            res += '+x';
-        }
-        if (this.a < 0 && this.a !== -1) {
-            res += '-' + -this.a + 'x';
-        }
-        if (this.a === -1) {
-            res += '-x';
-        }
-        if (this.b > 0 && this.b !== 1) {
-            res += '+' + this.b + 'y';
-        }
-        if (this.b === 1) {
-            res += '+y';
-        }
-        if (this.b < 0 && this.b !== -1) {
-            res += '-' + -this.b + 'y';
-        }
-        if (this.b === -1) {
-            res += '-y';
-        }
-        if (this.c > 0) {
-            res += '+' + this.c;
-        }
-        if (this.c < 0) {
-            res += '-' + -this.c;
-        }
-        if (res.charAt(0) === '+') {
-            res = res.slice(1);
-        }
+        if (this.a > 0 && this.a !== 1) { res += '+' + this.a + 'x'; }
+        if (this.a === 1) { res += '+x'; }
+        if (this.a < 0 && this.a !== -1) { res += '-' + -this.a + 'x'; }
+        if (this.a === -1) { res += '-x'; }
+        if (this.b > 0 && this.b !== 1) { res += '+' + this.b + 'y'; }
+        if (this.b === 1) { res += '+y'; }
+        if (this.b < 0 && this.b !== -1) { res += '-' + -this.b + 'y'; }
+        if (this.b === -1) { res += '-y'; }
+        if (this.c > 0) { res += '+' + this.c; }
+        if (this.c < 0) { res += '-' + -this.c; }
+        if (res.charAt(0) === '+') { res = res.slice(1); }
         return res + '=0';
-    };
-    Line.prototype.getIntersection = function (CD) {
+    }
+    getIntersection(CD: Line): Point | boolean {
         var x, y;
         if (this.a === CD.a && this.b === CD.b) {
             return false;
@@ -269,38 +221,36 @@ var Line = (function (_super) {
         y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b);
         x = -1 * (this.b * y + this.c) / this.a;
         return new Point(x, y);
-    };
-    Line.prototype.equals = function (CD) {
-        if (!_super.prototype.equals.call(this, CD)) {
+    }
+    equals(CD: Line): boolean {
+        if (!super.equals(CD)) {
             return false;
         }
         return this.a === CD.a && this.b === CD.b && this.c === CD.c;
-    };
-    Line.prototype.name = function () {
+    }
+    name(): string {
         return 'Line';
-    };
-    return Line;
-})(UnitaryObject);
-exports.Line = Line;
-var Segment = (function (_super) {
-    __extends(Segment, _super);
-    function Segment(A, B) {
+    }
+}
+export class Segment extends UnitaryObject{
+    points: Point[];
+    length: number;
+    constructor(A: Point, B: Point) {
         if (!(this instanceof Segment)) {
             throw new Error('Constructor cannot be called as a function.');
         }
         if (A.x > B.x) {
             this.points = [B, A];
-        }
-        else {
+        } else {
             this.points = [A, B];
         }
-        _super.call(this);
+        super();
         this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
     }
-    Segment.prototype.move = function (dx, dy) {
+    move(dx: number, dy: number): UnitaryObject {
         return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
-    };
-    Segment.prototype.has = function (P) {
+    }
+    has(P: Point): boolean {
         var A, B, ref, ref1, ref2;
         A = this.points[0];
         B = this.points[1];
@@ -312,13 +262,14 @@ var Segment = (function (_super) {
             }
         }
         return false;
-    };
-    Segment.prototype.intersects = function (CD) {
+    }
+    intersects(CD: Line): boolean;
+    intersects(CD: Segment): boolean;
+    intersects(CD: any): boolean {
         var intersection, ref;
         if (CD instanceof Line) {
             intersection = this.toLine().getIntersection(CD);
-        }
-        else {
+        } else {
             intersection = this.toLine().getIntersection(CD.toLine());
         }
         if (intersection === false) {
@@ -329,71 +280,71 @@ var Segment = (function (_super) {
         }
         return false;
     };
-    ;
-    Segment.prototype.toLine = function () {
+
+    toLine(): Line {
         return new Line(this.points[0], this.points[1]);
     };
-    ;
-    Segment.prototype.equals = function (CD) {
-        if (!_super.prototype.equals.call(this, CD)) {
+
+    equals(CD: Segment): boolean {
+        if (!super.equals(CD)) {
             return false;
         }
         return this.points[0].equals(CD.points[0]) && this.points[1].equals(CD.points[1]);
-    };
-    Segment.prototype.name = function () {
+    }
+    name(): string {
         return 'Segment';
-    };
-    return Segment;
-})(UnitaryObject);
-exports.Segment = Segment;
-var Circle = (function (_super) {
-    __extends(Circle, _super);
-    function Circle(O, radius) {
+    }
+}
+
+export class Circle extends UnitaryObject{
+    Origin: Point;
+    r: number;
+    constructor(O: Point, radius: number) {
         if (!(this instanceof Circle)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
+        super();
         this.Origin = O;
         this.r = radius;
     }
-    Circle.prototype.moveTo = function (x, y) {
+    moveTo(x: number, y: number): UnitaryObject {
         return new Circle(this.Origin.moveTo(x, y), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
-    };
-    Circle.prototype.move = function (dx, dy) {
+    }
+    move(dx: number, dy: number): UnitaryObject {
         return new Circle(this.Origin.move(dx, dy), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
-    };
-    Circle.prototype.equals = function (C) {
-        if (!_super.prototype.equals.call(this, C)) {
+    }
+    equals(C: Circle): boolean {
+        if (!super.equals(C)) {
             return false;
         }
         return this.Origin.equals(C.Origin) && this.r === C.r;
-    };
-    Circle.prototype.name = function () {
+    }
+    name(): string {
         return 'Circle';
-    };
-    return Circle;
-})(UnitaryObject);
-exports.Circle = Circle;
-var Polygon = (function (_super) {
-    __extends(Polygon, _super);
-    function Polygon() {
+    }
+}
+
+export class Polygon extends UnitaryObject{
+    points: Point[];
+    constructor(...points: Point[]);
+    constructor(points: Point[]);
+    constructor() {
         var points;
         points = 1 <= arguments.length ? Array.prototype.slice.call(arguments, 0) : [];
         if (!(this instanceof Polygon)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
+        super();
         if (Object.prototype.toString.call(points[0]) === '[object Array]') {
             this.points = points[0];
-        }
-        else {
+        } else {
             this.points = points;
         }
     }
-    Polygon.prototype.equals = function () {
+    equals(): boolean {
         return false;
-    };
-    Polygon.prototype.move = function (dx, dy) {
+    }
+    move(dx: number, dy: number): Polygon {
         var i, len, length, points, ref, val;
         points = [];
         length = 0;
@@ -404,8 +355,8 @@ var Polygon = (function (_super) {
             length = 0 | length + 1;
         }
         return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
-    };
-    Polygon.prototype.has = function (P) {
+    }
+    has(P: Point): boolean {
         var a, b, before_v, cos, i, len, rad, ref, v;
         before_v = this.points[this.points.length - 1];
         rad = 0;
@@ -419,16 +370,13 @@ var Polygon = (function (_super) {
             before_v = v;
         }
         return Math.round(rad / (2 * Math.PI) * 360) === 360;
-    };
-    Polygon.prototype.name = function () {
+    }
+    name(): string {
         return 'Polygon';
-    };
-    return Polygon;
-})(UnitaryObject);
-exports.Polygon = Polygon;
-var Quadrilateral = (function (_super) {
-    __extends(Quadrilateral, _super);
-    function Quadrilateral(A, B, C, D) {
+    }
+}
+export class Quadrilateral extends Polygon{
+    constructor(A: Point, B: Point, C: Point, D: Point) {
         if (!(this instanceof Quadrilateral)) {
             throw new Error('Constructor cannot be called as a function.');
         }
@@ -438,24 +386,21 @@ var Quadrilateral = (function (_super) {
         if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D)) {
             throw new Error('ABCD is not a quadrilateral.');
         }
-        _super.call(this, A, B, C, D);
+        super(A, B, C, D);
     }
-    Quadrilateral.prototype.getArea = function () {
+    getArea(): number {
         var A, B, C, D, S1, S2, ref;
         ref = this.points, A = ref[0], B = ref[1], C = ref[2], D = ref[3];
         S1 = new Triangle(A, B, C).getArea();
         S2 = new Triangle(A, C, D).getArea();
         return S1 + S2;
-    };
-    Quadrilateral.prototype.name = function () {
+    }
+    name(): string {
         return 'Quadrilateral';
-    };
-    return Quadrilateral;
-})(Polygon);
-exports.Quadrilateral = Quadrilateral;
-var Triangle = (function (_super) {
-    __extends(Triangle, _super);
-    function Triangle(A, B, C) {
+    }
+}
+export class Triangle extends Polygon{
+    constructor(A: Point, B: Point, C: Point) {
         if (!(this instanceof Triangle)) {
             throw new Error('Constructor cannot be called as a function.');
         }
@@ -465,9 +410,9 @@ var Triangle = (function (_super) {
         if (A.equals(B) || B.equals(C) || A.equals(C)) {
             throw new Error('Triangle must have three vertices.');
         }
-        _super.call(this, A, B, C);
+        super(A, B, C);
     }
-    Triangle.prototype.getCircumcircle = function () {
+    getCircumcircle(): Circle {
         var A, AB, B, BC, C, CA, O, R, S, a, b, c, cosA, sinA, vA, vB, vC, vO;
         A = this.points[0];
         B = this.points[1];
@@ -492,8 +437,8 @@ var Triangle = (function (_super) {
         sinA = Math.sqrt(1 - Math.pow(cosA, 2));
         R = BC.length / sinA / 2;
         return new Circle(O, R);
-    };
-    Triangle.prototype.getIncircle = function () {
+    }
+    getIncircle(): Circle {
         var O, a, b, c, r, vA, vB, vC, vO;
         vA = new Vector(this.points[0].x, this.points[0].y);
         vB = new Vector(this.points[1].x, this.points[1].y);
@@ -507,8 +452,8 @@ var Triangle = (function (_super) {
         O = new Point(vO.x, vO.y);
         r = 2 * this.getArea() / (a + b + c);
         return new Circle(O, r);
-    };
-    Triangle.prototype.getArea = function () {
+    }
+    getArea(): number {
         var A, AB, AC, B, C, S, cosA, sinA, vAB, vAC;
         A = this.points[0];
         B = this.points[1];
@@ -521,94 +466,103 @@ var Triangle = (function (_super) {
         sinA = Math.sqrt(1 - Math.pow(cosA, 2));
         S = AB.length * AC.length * sinA / 2;
         return S;
-    };
-    Triangle.prototype.name = function () {
+    }
+    name(): string {
         return 'Triangle';
-    };
-    return Triangle;
-})(Polygon);
-exports.Triangle = Triangle;
-var Rect = (function (_super) {
-    __extends(Rect, _super);
-    function Rect(A, B) {
+    }
+}
+export class Rect extends Polygon{
+    constructor(A: Point, B: Point) {
         if (!(this instanceof Rect)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this, A, B);
+        super(A, B);
     }
-    Rect.prototype.has = function (P) {
+    has(P: Point): boolean {
         var A, B;
         A = this.points[0];
         B = this.points[1];
         return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0;
-    };
-    Rect.prototype.name = function () {
-        return 'Rect';
-    };
-    return Rect;
-})(Polygon);
-exports.Rect = Rect;
-var Text = (function (_super) {
-    __extends(Text, _super);
-    function Text(str, P, align, maxWidth) {
-        if (align === void 0) { align = 'left'; }
-        if (maxWidth === void 0) { maxWidth = null; }
-        if (!(this instanceof Text)) {
-            throw new Error('Constructor cannot be called as a function.');
-        }
-        _super.call(this);
-        this.P = P;
-        this.string = str;
-        this.text = str;
-        this.align = align;
-        this.maxWidth = maxWidth;
-        this.strokesOutline = false;
-        this.fillColor = '#000';
-        this.outlineColor = '#000';
-        this.baseline = 'alphabetic';
-        this.font = null;
     }
-    Text.prototype.strokeOutline = function () {
-        this.strokesOutline = true;
-        return this;
-    };
-    Text.prototype.setAlign = function (align) {
-        this.align = align;
-        return this;
-    };
-    Text.prototype.setOutlineColor = function (color) {
-        this.outlineColor = color;
-        return this;
-    };
-    Text.prototype.setBaseline = function (base) {
-        this.baseline = base;
-        return this;
-    };
-    Text.prototype.setFont = function (font) {
-        this.font = font;
-        return this;
-    };
-    Text.prototype.move = function (dx, dy) {
-        return new Text(this.string, this.P.move(dx, dy), this.align, this.maxWidth)
-            .setStrokeColor(this.strokeColor)
-            .setFillColor(this.fillColor)
-            .setOutlineColor(this.outlineColor)
-            .setBaseline(this.baseline)
-            .setFont(this.font);
-    };
-    Text.prototype.name = function () {
-        return 'Text';
-    };
-    return Text;
-})(UnitaryObject);
-exports.Text = Text;
-var Image = (function (_super) {
-    __extends(Image, _super);
-    function Image(src, startPoint) {
+    name(): string {
+        return 'Rect';
+    }
+}
+export class Text extends UnitaryObject{
+    P: Point;
+    string: string;
+    text: string;
+    align: string;
+    maxWidth: number;
+    strokesOutline: boolean
+        fillColor: string;
+        outlineColor: string;
+        baseline: string;
+        font: string;
+        constructor(str: string, P: Point, align: string = 'left', maxWidth: number = null) {
+            if (!(this instanceof Text)) {
+                throw new Error('Constructor cannot be called as a function.');
+            }
+            super();
+            this.P = P;
+            this.string = str;
+            this.text = str;
+            this.align = align;
+            this.maxWidth = maxWidth;
+            this.strokesOutline = false;
+            this.fillColor = '#000';
+            this.outlineColor = '#000';
+            this.baseline = 'alphabetic';
+            this.font = null;
+        }
+        strokeOutline(): Text {
+            this.strokesOutline = true;
+            return this;
+        }
+        setAlign(align: string): Text {
+            this.align = align;
+            return this;
+        }
+        setOutlineColor(color: string): Text {
+            this.outlineColor = color;
+            return this;
+        }
+        setBaseline(base: string): Text {
+            this.baseline = base;
+            return this;
+        }
+        setFont(font: string): Text {
+            this.font = font;
+            return this;
+        }
+        move(dx: number, dy: number): UnitaryObject {
+            return new Text(this.string, this.P.move(dx, dy), this.align, this.maxWidth)
+                .setStrokeColor(this.strokeColor)
+                .setFillColor(this.fillColor)
+                .setOutlineColor(this.outlineColor)
+                .setBaseline(this.baseline)
+                .setFont(this.font);
+        }
+        name(): string {
+            return 'Text';
+        }
+}
+export class Image extends UnitaryObject{
+    src: string;
+    startPoint: Point;
+    dx: number;
+    dy: number;
+    dw: number;
+    dh: number;
+    sw: number;
+    sh: number;
+    sx: number;
+    sy: number;
+    constructor(src: string, startPoint: Point) {
         if (!(this instanceof Image)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
+        super();
         this.src = src;
         this.startPoint = startPoint;
         this.dx = startPoint.x;
@@ -620,9 +574,7 @@ var Image = (function (_super) {
         this.sx = null;
         this.sy = null;
     }
-    Image.prototype.trim = function (startPoint, sw, sh, dw, dh) {
-        if (dw === void 0) { dw = null; }
-        if (dh === void 0) { dh = null; }
+    trim(startPoint: Point, sw: number, sh: number, dw: number = null, dh: number = null): Image {
         if (dw == null) {
             dw = sw;
         }
@@ -637,58 +589,57 @@ var Image = (function (_super) {
         this.dh = dh;
         return this;
     };
-    ;
-    Image.prototype.resize = function (dw, dh) {
+    resize(dw: number, dh: number): Image {
         this.dw = dw;
         this.dh = dh;
         return this;
-    };
-    Image.prototype.equals = function (B) {
-        if (!_super.prototype.equals.call(this, B)) {
+    }
+    equals(B: Image): boolean {
+        if (!super.equals(B)) {
             return false;
         }
         return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
-    };
-    Image.prototype.move = function (dx, dy) {
+    }
+    move(dx: number, dy: number): Image {
         var newImage;
         newImage = new Image(this.src, this.startPoint.move(dx, dy));
         if (this.sx !== null) {
             newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
         }
         return newImage;
-    };
-    Image.prototype.name = function () {
+    }
+    name(): string {
         return 'Image';
-    };
-    return Image;
-})(UnitaryObject);
-exports.Image = Image;
-var Graph = (function (_super) {
-    __extends(Graph, _super);
-    function Graph(f, scale) {
-        _super.call(this);
+    }
+}
+
+export class Graph extends UnitaryObject{
+    f: Function;
+    scale: number;
+    start: number;
+    end: number;
+    constructor(f: Function, scale: number) {
+        super();
         this.f = f;
         this.scale = scale;
         this.start = null;
         this.end = null;
     }
-    Graph.prototype.setRange = function (start, end) {
+    setRange(start: number, end: number): Graph {
         this.start = start;
         this.end = end;
         return this;
-    };
-    Graph.prototype.equals = function () {
+    }
+    equals(): boolean {
         return false;
-    };
-    Graph.prototype.moveX = function () {
-    };
-    Graph.prototype.moveY = function () {
-    };
-    Graph.prototype.name = function () {
+    }
+    moveX() {
+    }
+    moveY() {
+    }
+    name(): string {
         return 'Graph';
-    };
-    return Graph;
-})(UnitaryObject);
-exports.Graph = Graph;
-exports.XAxis = new Line(new Point(0, 0), new Point(1, 0));
-exports.YAxis = new Line(new Point(0, 0), new Point(0, 1));
+    }
+}
+export var XAxis = new Line(new Point(0, 0), new Point(1, 0));
+export var YAxis = new Line(new Point(0, 0), new Point(0, 1));
