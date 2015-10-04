@@ -71,15 +71,16 @@
       logoCanvas.mode = 'normal';
       logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
 
+      var scale = 20;
       graphCanvas.origin = new Point(100, 10);
       graphCanvas.add(Unitary.XAxis);
       graphCanvas.add(Unitary.YAxis);
-      graphCanvas.add(new Line(new Point(20, 0), new Point(20,20)).setStrokeColor('#ddd'));
-      graphCanvas.add(new Line(new Point(0, 20), new Point(20,20)).setStrokeColor('#ddd'));
-      graphCanvas.add(new Graph(function(x) {return x * x}, 0.05));
-      graphCanvas.add(new Text_('1', new Point(20,4)).setAlign('center'));
-      graphCanvas.add(new Text_('5', new Point(100,4)));
-      graphCanvas.add(new Text_('1', new Point(0,20)));
+      graphCanvas.add(new Line(new Point(1 * scale, 0), new Point(1 * scale, 1 * scale)).setStrokeColor('#ddd'));
+      graphCanvas.add(new Line(new Point(0, 1 * scale), new Point(1 * scale, 1 * scale)).setStrokeColor('#ddd'));
+      graphCanvas.add(new Graph(function(x) {return x * x}, 20));
+      graphCanvas.add(new Text_('1', new Point(1 * scale,4)).setAlign('center'));
+      graphCanvas.add(new Text_('5', new Point(5 * scale,4)));
+      graphCanvas.add(new Text_('1', new Point(0,1 * scale)));
 
       circleCanvas.draw();
       lineCanvas.draw();
