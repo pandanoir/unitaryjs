@@ -140,7 +140,7 @@ Canvas.drawFunction = {
         }
         var points = [];
         for (var i = start; i <= end; i = 0|i+1) {
-            points[points.length] = new Unitary.Point(i, obj.f(i * obj.scale) / obj.scale);
+            points[points.length] = new Unitary.Point(i, obj.f(i / obj.scale) * obj.scale);
         }
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
         for (var i = 0, _i = points.length; i < _i; i = 0|i+1) {
