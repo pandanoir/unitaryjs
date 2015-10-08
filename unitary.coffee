@@ -60,34 +60,112 @@ class Point extends UnitaryObject# {{{
     return @.x == B.x && @.y == B.y
   name: () -> 'Point'
 # }}}
-class Vector extends UnitaryObject# {{{
+class BaseVector extends UnitaryObject# {{{
+  constructor: () ->
+    super()
+    if (arguments.length == 1 && Object.prototype.toString.call(arguments[0]) == '[object Array]')
+      @.component = new Array(arguments[0].length)
+      i = 0
+      _i = arguments[0].length
+      while i < _i
+        @.component[i] = arguments[0][i]
+        i = 0|i+1
+    else
+      @.component = new Array(arguments.length)
+      i = 0
+      _i = arguments.length
+      while i < _i
+        @.component[i] = arguments[i]
+        i = 0|i+1
+  add: (CD) ->
+    if (@.component.length != CD.component.length)
+      throw new Error('dimention of each vector are different.')
+    component = new Array(@.component.length)
+    for val, i in @.component
+      component[i] = val + CD.component[i]
+    return new BaseVector(component)
+  minus: (CD) ->
+    return @.add(CD.multiple(-1))
+  product: (CD) ->
+    if (@.component.length != CD.component.length)
+      throw new Error('dimention of each vector are different.')
+    product = 0
+    for val, i in @.component
+      product += val * CD.component[i]
+    return product
+  multiple: (k) ->
+    component = (k * n for n in @.component)
+    return new BaseVector(component)
+  abs: () ->
+    component = (n * n for n in @.component)
+    res = 0
+    res += n for n in component
+    return Math.sqrt(res)
+  equals: (B) ->
+    if (@.component.length != B.component.length)
+      return false
+    for val, i in @.component
+      if (val != B.component[i])
+        return false
+    return true
+  move: () ->
+    arr = new Array(arguments.length)
+    for val, i in arguments
+      arr[i] = val
+    return @.add.apply(@, new BaseVector(arr))
+  name: () -> 'BaseVector'
+# }}}
+class Vector extends BaseVector# {{{
   constructor: () ->
     if (not (@ instanceof Vector))
       throw new Error('Constructor cannot be called as a function.')
-    super()
     if (arguments.length == 2)
+      super(arguments[0], arguments[1])
       @.x = arguments[0]
       @.y = arguments[1]
     else if (arguments.length == 1)
+      super(arguments[0].x, arguments[0].y)
       @.x = arguments[0].x
       @.y = arguments[0].y
   add: (CD) ->
-    return new Vector(@.x + CD.x, @.y + CD.y)
+    newVector = super(CD)
+    return new Vector(newVector.component[0], newVector.component[1])
   minus: (CD) ->
-    return new Vector(@.x - CD.x, @.y - CD.y)
-  product: (CD) ->
-    return @.x * CD.x + @.y * CD.y
+    newVector = super(CD)
+    return new Vector(newVector.component[0], newVector.component[1])
   multiple: (k) ->
-    return new Vector(@.x * k, @.y * k)
-  abs: () ->
-    return Math.sqrt(@.x ** 2 + @.y ** 2)
-  equals: (B) ->
-    if (!super(B))
-      return false
-    return @.x == B.x && @.y == B.y
+    newVector = super(k)
+    return new Vector(newVector.component[0], newVector.component[1])
   move: (dx, dy) ->
     return new Vector(@.x + dx, @.y + dy)
   name: () -> 'Vector'
+# }}}
+class Vector3D extends BaseVector# {{{
+  constructor: () ->
+    if (not (@ instanceof Vector3D))
+      throw new Error('Constructor cannot be called as a function.')
+    if (arguments.length == 3)
+      super(arguments[0], arguments[1], arguments[2])
+      @.x = arguments[0]
+      @.y = arguments[1]
+      @.z = arguments[2]
+    else if (arguments.length == 1)
+      super(arguments[0].x, arguments[0].y, arguments[0].z)
+      @.x = arguments[0].x
+      @.y = arguments[0].y
+      @.z = arguments[0].z
+  add: (CD) ->
+    newVector = super(CD)
+    return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2])
+  minus: (CD) ->
+    newVector = super(CD)
+    return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2])
+  multiple: (k) ->
+    newVector = super(k)
+    return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2])
+  move: (dx, dy, dz) ->
+    return new Vector3D(@.x + dx, @.y + dy, @.z + dz)
+  name: () -> 'Vector3D'
 # }}}
 class Line extends UnitaryObject# {{{
   constructor: (A, B) ->
@@ -439,6 +517,7 @@ Module = {
   Text: Text_
   Triangle: Triangle
   Vector: Vector
+  Vector3D: Vector3D
   XAxis:XAxis
   YAxis:YAxis
   distance: distance

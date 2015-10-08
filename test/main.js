@@ -189,4 +189,31 @@ describe('Unitary', function() {
             assert.equal(new Vector(48, 84).name(), 'Vector');
         });
     });
+    describe('Vector3D', function() {
+        it('add', function() {
+            assert.ok(new Vector3D(96, 57, 81).add(new Vector3D(42, 74, 55)).equals(new Vector3D(138, 131, 136)));
+        });
+        it('minus', function() {
+            assert.ok(new Vector3D(96, 57, 81).minus(new Vector3D(42, 74, 55)).equals(new Vector3D(54, -17, 26)));
+        });
+        it('product', function() {
+            assert.equal(new Vector3D(3, 3, 3).product(new Vector3D(-3, 3, 0)), 0);
+            assert.equal(new Vector3D(34, 39, 90).product(new Vector3D(17, 59, 60)), 8279);
+        });
+        it('multiple', function() {
+            assert.ok(new Vector3D(90, 19, 20).multiple(64).equals(new Vector3D(5760, 1216, 1280)));
+        });
+        it('abs', function() {
+            assert.equal(new Vector3D(64, 33, 38).abs(), Math.sqrt(6629));
+        });
+        it('equals', function() {
+            assert.ok(new Vector3D(64, 33, 38).equals(new Vector3D(64, 33, 38)));
+        });
+        it('move', function() {
+            assert.ok(new Vector3D(96, 57, 81).move(42, 74, 55).equals(new Vector3D(138, 131, 136)));
+        });
+        it('name', function() {
+            assert.equal(new Vector3D(96, 57, 81).name(), 'Vector3D');
+        });
+    });
 });
