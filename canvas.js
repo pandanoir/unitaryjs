@@ -12,6 +12,12 @@ Canvas.fn = Canvas.prototype;
 Canvas.fn.add = function(obj) {
     this.objects.push(obj);
 };
+Canvas.fn.removeAllObjects = function() {
+    this.objects = [];
+};
+Canvas.fn.clear = function() {
+    this.canvas.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+};
 Canvas.fn.X = function(x) {
     var res = x + this.origin.x;
     // if (this.mode === 'normal') {
