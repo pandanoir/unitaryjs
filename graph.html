@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../unitary.js"></script>
+    <script src="../canvas.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+      $(function() {
+        var canvas = new Canvas('graph');
+        canvas.origin = new Unitary.Point(100, 20);
+        canvas.draw();
+        $('#draw').on('click', draw);
+        $('#scale').on('input', function() {
+          console.log();
+          draw();
+        });
+        function draw() {
+          var scale = $('#scale').val();
+          canvas.clear();
+          canvas.removeAllObjects();
+          canvas.add(Unitary.XAxis);
+          canvas.add(Unitary.YAxis);
+          canvas.add(new Unitary.Text('1', new Unitary.Point(1 * scale, 10)));
+          canvas.add(new Unitary.Graph(new Function('x', 'return ' + $('#function').val()), scale));
+          canvas.draw();
+        }
+        draw();
+      });
+    </script>
+    <style>
+      canvas {
+        border: 3px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="graph" width="200" height="200"></canvas><br>
+    Scale: <input type="range" id="scale" value="10"><br>
+    Function: <input id="function" value="Math.sin(x)"><br>
+    <button id="draw">Draw</button>
+  </body>
+</html>
