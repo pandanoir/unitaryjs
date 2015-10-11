@@ -24,15 +24,22 @@ class UnitaryObject# {{{
   constructor: () ->
     if (not (@ instanceof UnitaryObject))
       throw new Error('Constructor cannot be called as a function.')
-    @.fillColor = null
-    @.strokeColor = null
+    @.style = {
+      fillColor: null
+      strokeColor: null
+    }
   equals: (B) ->
     return @.name() == B.name()
   setFillColor: (color) ->
-    @.fillColor = color
+    @.style.fillColor = color
     return @
   setStrokeColor: (color) ->
-    @.strokeColor = color
+    @.style.strokeColor = color
+    return @
+  setStyle: (style) ->
+    @.style = {}
+    for key of style
+      @.style[key] = style[key]
     return @
   moveX: (dx) ->
     return @.move(dx, 0)
@@ -43,13 +50,14 @@ class Point extends UnitaryObject# {{{
   constructor: (x, y) ->
     if (not (@ instanceof Point))
       throw new Error('Constructor cannot be called as a function.')
+    super()
     @.x = x
     @.y = y
 
   moveTo: (x, y) ->
-    return new Point(x, y).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Point(x, y).setStyle(@.style)
   move: (dx, dy) ->
-    return new Point(@.x + dx, @.y + dy).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Point(@.x + dx, @.y + dy).setStyle(@.style)
   toString: () ->
     return '(' + @.x + ', ' + @.y + ')'
   inspect: () ->
@@ -191,7 +199,7 @@ class Line extends UnitaryObject# {{{
       @.c /= @.a
       @.a = 1
   move: (dx, dy) ->
-    return new Line(@.points[0].move(dx, dy), @.points[1].move(dx, dy)).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Line(@.points[0].move(dx, dy), @.points[1].move(dx, dy)).setStyle(@.style)
   toString: () ->
     res = ''
     if (@.a > 0 and @.a isnt 1) then res += '+' + @.a + 'x'
@@ -251,7 +259,7 @@ class Segment extends UnitaryObject# {{{
     super()
     @.length = Math.sqrt((A.x - B.x) ** 2 + (A.y - B.y) ** 2)
   move: (dx, dy) ->
-    return new Segment(@.points[0].move(dx, dy), @.points[1].move(dx, dy)).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Segment(@.points[0].move(dx, dy), @.points[1].move(dx, dy)).setStyle(@.style)
   has: (P) ->
     A = @.points[0]
     B = @.points[1]
@@ -283,9 +291,9 @@ class Circle extends UnitaryObject# {{{
     @.Origin = O
     @.r = radius
   moveTo: (x, y) ->
-    return new Circle(@.Origin.moveTo(x, y), @.r).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Circle(@.Origin.moveTo(x, y), @.r).setStyle(@.style)
   move: (dx, dy) ->
-    return new Circle(@.Origin.move(dx, dy), @.r).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Circle(@.Origin.move(dx, dy), @.r).setStyle(@.style)
   equals: (C) ->
     if (!super(C))
       return false
@@ -308,7 +316,7 @@ class Polygon extends UnitaryObject# {{{
     for val in @.points
       points[length] = val.move(dx, dy)
       length = 0|length+1
-    return new Polygon(points).setStrokeColor(@.strokeColor).setFillColor(@.fillColor)
+    return new Polygon(points).setStyle(@.style)
   has: (P) ->
     before_v = @.points[@.points.length - 1]
     rad = 0
@@ -414,33 +422,37 @@ class Text_ extends UnitaryObject# {{{
   constructor: (str, P, align = 'left', maxWidth = null) ->
     if (not (@ instanceof Text_))
       throw new Error('Constructor cannot be called as a function.')
+    super()
     @.P = P
     @.string = str
     @.text = str
-    @.align = align
-    @.maxWidth = maxWidth
     @.strokesOutline = false
-    @.fillColor = '#000'
-    @.outlineColor = '#000'
-    @.baseline = 'alphabetic'
-    @.font = null
+    @.style.align = align
+    @.style.maxWidth = maxWidth
+    @.style.fillColor = '#000'
+    @.style.outlineColor = '#000'
+    @.style.baseline = 'alphabetic'
+    @.style.font = null
   strokeOutline: () ->
     @.strokesOutline = true
     return @
   setAlign: (align) ->
-    @.align = align
+    @.style.align = align
     return @
   setOutlineColor: (color) ->
-    @.outlineColor = color
+    @.style.outlineColor = color
     return @
   setBaseline: (base) ->
-    @.baseline = base
+    @.style.baseline = base
     return @
   setFont: (font) ->
-    @.font = font
+    @.style.font = font
     return @
   move: (dx, dy) ->
-    return new Text_(@.str, @.P.move(dx, dy), @.align, @.maxWidth).setStrokeColor(@.strokeColor).setFillColor(@.fillColor).setOutlineColor(@.outlineColor).setBaseline(@.baseline).setFont(@.font)
+    newText = new Text_(@.str, @.P.move(dx, dy), @.align, @.maxWidth).setStyle(@.style)
+    if (@.strokesOutline)
+      newText.strokeOutline()
+    return newText
   name: () -> 'Text'
 # }}}
 class Image_ extends UnitaryObject# {{{

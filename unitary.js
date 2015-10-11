@@ -45,8 +45,10 @@
       if (!(this instanceof UnitaryObject)) {
         throw new Error('Constructor cannot be called as a function.');
       }
-      this.fillColor = null;
-      this.strokeColor = null;
+      this.style = {
+        fillColor: null,
+        strokeColor: null
+      };
     }
 
     UnitaryObject.prototype.equals = function(B) {
@@ -54,12 +56,21 @@
     };
 
     UnitaryObject.prototype.setFillColor = function(color) {
-      this.fillColor = color;
+      this.style.fillColor = color;
       return this;
     };
 
     UnitaryObject.prototype.setStrokeColor = function(color) {
-      this.strokeColor = color;
+      this.style.strokeColor = color;
+      return this;
+    };
+
+    UnitaryObject.prototype.setStyle = function(style) {
+      var key;
+      this.style = {};
+      for (key in style) {
+        this.style[key] = style[key];
+      }
       return this;
     };
 
@@ -86,16 +97,17 @@
       if (!(this instanceof Point)) {
         throw new Error('Constructor cannot be called as a function.');
       }
+      Point.__super__.constructor.call(this);
       this.x = x;
       this.y = y;
     }
 
     Point.prototype.moveTo = function(x, y) {
-      return new Point(x, y).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Point(x, y).setStyle(this.style);
     };
 
     Point.prototype.move = function(dx, dy) {
-      return new Point(this.x + dx, this.y + dy).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Point(this.x + dx, this.y + dy).setStyle(this.style);
     };
 
     Point.prototype.toString = function() {
@@ -375,7 +387,7 @@
     }
 
     Line.prototype.move = function(dx, dy) {
-      return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
 
     Line.prototype.toString = function() {
@@ -498,7 +510,7 @@
     }
 
     Segment.prototype.move = function(dx, dy) {
-      return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
 
     Segment.prototype.has = function(P) {
@@ -559,11 +571,11 @@
     }
 
     Circle.prototype.moveTo = function(x, y) {
-      return new Circle(this.Origin.moveTo(x, y), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Circle(this.Origin.moveTo(x, y), this.r).setStyle(this.style);
     };
 
     Circle.prototype.move = function(dx, dy) {
-      return new Circle(this.Origin.move(dx, dy), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
     };
 
     Circle.prototype.equals = function(C) {
@@ -612,7 +624,7 @@
         points[length] = val.move(dx, dy);
         length = 0 | length + 1;
       }
-      return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+      return new Polygon(points).setStyle(this.style);
     };
 
     Polygon.prototype.has = function(P) {
@@ -785,16 +797,17 @@
       if (!(this instanceof Text_)) {
         throw new Error('Constructor cannot be called as a function.');
       }
+      Text_.__super__.constructor.call(this);
       this.P = P;
       this.string = str;
       this.text = str;
-      this.align = align;
-      this.maxWidth = maxWidth;
       this.strokesOutline = false;
-      this.fillColor = '#000';
-      this.outlineColor = '#000';
-      this.baseline = 'alphabetic';
-      this.font = null;
+      this.style.align = align;
+      this.style.maxWidth = maxWidth;
+      this.style.fillColor = '#000';
+      this.style.outlineColor = '#000';
+      this.style.baseline = 'alphabetic';
+      this.style.font = null;
     }
 
     Text_.prototype.strokeOutline = function() {
@@ -803,27 +816,32 @@
     };
 
     Text_.prototype.setAlign = function(align) {
-      this.align = align;
+      this.style.align = align;
       return this;
     };
 
     Text_.prototype.setOutlineColor = function(color) {
-      this.outlineColor = color;
+      this.style.outlineColor = color;
       return this;
     };
 
     Text_.prototype.setBaseline = function(base) {
-      this.baseline = base;
+      this.style.baseline = base;
       return this;
     };
 
     Text_.prototype.setFont = function(font) {
-      this.font = font;
+      this.style.font = font;
       return this;
     };
 
     Text_.prototype.move = function(dx, dy) {
-      return new Text_(this.str, this.P.move(dx, dy), this.align, this.maxWidth).setStrokeColor(this.strokeColor).setFillColor(this.fillColor).setOutlineColor(this.outlineColor).setBaseline(this.baseline).setFont(this.font);
+      var newText;
+      newText = new Text_(this.str, this.P.move(dx, dy), this.align, this.maxWidth).setStyle(this.style);
+      if (this.strokesOutline) {
+        newText.strokeOutline();
+      }
+      return newText;
     };
 
     Text_.prototype.name = function() {
