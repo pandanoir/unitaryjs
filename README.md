@@ -59,11 +59,11 @@ Unitary.Vector(1, 1);
 
 #Browser
 
-download [./unitaryjs](./unitary.js) and load it.
+download [./dist/unitary.browser.js](./dist/unitary.browser.js) and load it.
 
 
 ```html
-<script src="unitary.js"></script>
+<script src="unitary.browser.js"></script>
 ```
 
 #Classes

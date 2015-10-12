@@ -2,7 +2,7 @@
     "name": "unitaryjs",
     "version": "0.0.3",
     "description": "Canvas Library",
-    "main": "./index.js",
+    "main": "./dist/unitary.js",
     "scripts": {
         "test": "mocha -R spec"
     },

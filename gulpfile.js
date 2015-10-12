@@ -4,6 +4,6 @@ var source = require('vinyl-source-stream');
 
 gulp.task('default', function() {
     return browserify({
-        entries: ['./browser.js']
-    }).bundle().pipe(source('unitary.browser.js')).pipe(gulp.dest('./'));
+        entries: ['./src/browser.js']
+    }).bundle().pipe(source('unitary.browser.js')).pipe(gulp.dest('./dist'));
 });
