@@ -4,6 +4,9 @@
 
 UnitaryJS is a library for handling canvas with objects.
 
+Demo: [Demo](http://pandanoir.web.fc2.com/UnitaryJS/sample.html)
+
+
 #Quick Example
 
 ```html
@@ -39,10 +42,6 @@ UnitaryJS is a library for handling canvas with objects.
   </body>
 </html>
 ```
-
-#More samples
-
-[Sample](http://pandanoir.web.fc2.com/UnitaryJS/sample.html)
 
 #Getting started
 
