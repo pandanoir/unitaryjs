@@ -1,27 +1,30 @@
 {
-  "name": "unitaryjs",
-  "version": "0.0.3",
-  "description": "Canvas Library",
-  "main": "./index.js",
-  "scripts": {
-    "test": "mocha -R spec"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PandaNoir/UnitaryJS.git"
-  },
-  "keywords": [
-    "canvas",
-    "library",
-    "unitaryjs"
-  ],
-  "devDependencies": {
-      "mocha": "*"
-  },
-  "author": "PandaNoir",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/PandaNoir/UnitaryJS/issues"
-  },
-  "homepage": "https://github.com/PandaNoir/UnitaryJS"
+    "name": "unitaryjs",
+    "version": "0.0.3",
+    "description": "Canvas Library",
+    "main": "./index.js",
+    "scripts": {
+        "test": "mocha -R spec"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PandaNoir/UnitaryJS.git"
+    },
+    "keywords": [
+        "canvas",
+        "library",
+        "unitaryjs"
+    ],
+    "devDependencies": {
+        "mocha": "*",
+        "browserify": "^11.2.0",
+        "gulp": "^3.9.0",
+        "vinyl-source-stream": "^1.1.0"
+    },
+    "author": "PandaNoir",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/PandaNoir/UnitaryJS/issues"
+    },
+    "homepage": "https://github.com/PandaNoir/UnitaryJS"
 }
