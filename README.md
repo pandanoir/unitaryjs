@@ -65,6 +65,28 @@ download [./unitaryjs](./unitary.js) and load it.
 <script src="unitary.js"></script>
 ```
 
+#Getting started
+
+```
+npm install unitaryjs
+```
+
+and require unitaryjs.
+
+```js
+var Unitary = require('unitaryjs');
+Unitary.Vector(1, 1);
+```
+
+#Browser
+
+download [./dist/unitary.browser.js](./dist/unitary.browser.js) and load it.
+
+
+```html
+<script src="unitary.browser.js"></script>
+```
+
 #Classes
 
 ##Point

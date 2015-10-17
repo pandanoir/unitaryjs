@@ -2,9 +2,15 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Demo</title>
+    <script src="./unitary.js"></script> <!-- ライブラリ本体 -->
+    <script src="./canvas.js"></script>
+=======
+    <title></title>
     <script src="./dist/unitary.browser.js"></script> <!-- ライブラリ本体 -->
     <script src="./dist/canvas.js"></script>
+>>>>>>> TypeScript
     <script>
     window.addEventListener('load', function(){
       var Circle = Unitary.Circle,
