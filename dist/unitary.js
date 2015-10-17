@@ -106,36 +106,121 @@ var Point = (function (_super) {
     return Point;
 })(UnitaryObject);
 exports.Point = Point;
+var BaseVector = (function (_super) {
+    __extends(BaseVector, _super);
+    function BaseVector(x) {
+        var y = [];
+        for (var _a = 1; _a < arguments.length; _a++) {
+            y[_a - 1] = arguments[_a];
+        }
+        _super.call(this);
+        if (arguments.length === 1 && Object.prototype.toString.call(arguments[0]) === '[object Array]') {
+            this.component = new Array(arguments[0].length);
+            for (var i = 0, _i = arguments[0].length; i < _i; i = 0 | i + 1) {
+                this.component[i] = arguments[0][i];
+            }
+        }
+        else {
+            this.component = new Array(arguments.length);
+            for (var i = 0, _i = arguments.length; i < _i; i = 0 | i + 1) {
+                this.component[i] = arguments[i];
+            }
+        }
+    }
+    BaseVector.prototype.add = function (CD) {
+        if (this.component.length !== CD.component.length) {
+            throw new Error('dimention of each vector are different.');
+        }
+        var component = new Array(this.component.length);
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            component[i] = this.component[i] + CD.component[i];
+        }
+        return new BaseVector(component);
+    };
+    BaseVector.prototype.minus = function (CD) {
+        return this.add(CD.multiple(-1));
+    };
+    BaseVector.prototype.product = function (CD) {
+        if (this.component.length !== CD.component.length) {
+            throw new Error('dimention of each vector are different.');
+        }
+        var product = 0;
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            product += this.component[i] * CD.component[i];
+        }
+        return product;
+    };
+    BaseVector.prototype.multiple = function (k) {
+        var component = new Array(this.component.length);
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            component[i] = k * this.component[i];
+        }
+        return new BaseVector(component);
+    };
+    BaseVector.prototype.abs = function () {
+        var res = 0;
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            res += this.component[i] * this.component[i];
+        }
+        return Math.sqrt(res);
+    };
+    BaseVector.prototype.equals = function (B) {
+        if (this.component.length !== B.component.length) {
+            return false;
+        }
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            if (this.component[i] !== B.component[i]) {
+                return false;
+            }
+        }
+        return true;
+    };
+    ;
+    BaseVector.prototype.move = function () {
+        var dx = [];
+        for (var _a = 0; _a < arguments.length; _a++) {
+            dx[_a - 0] = arguments[_a];
+        }
+        var component = new Array(arguments.length);
+        for (var i = 0, _i = arguments.length; i < _i; i = 0 | i + 1) {
+            component[i] = arguments[i];
+        }
+        return this.add(new BaseVector(component));
+    };
+    BaseVector.prototype.name = function () {
+        return 'BaseVector';
+    };
+    return BaseVector;
+})(UnitaryObject);
+exports.BaseVector = BaseVector;
 var Vector = (function (_super) {
     __extends(Vector, _super);
     function Vector(x, y) {
         if (!(this instanceof Vector)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
         if (arguments.length === 2) {
+            _super.call(this, arguments[0], arguments[1]);
             this.x = arguments[0];
             this.y = arguments[1];
         }
         else if (arguments.length === 1) {
+            _super.call(this, arguments[0].x, arguments[0].y);
             this.x = arguments[0].x;
             this.y = arguments[0].y;
         }
     }
     Vector.prototype.add = function (CD) {
-        return new Vector(this.x + CD.x, this.y + CD.y);
+        var newVector = _super.prototype.add.call(this, CD);
+        return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.minus = function (CD) {
-        return new Vector(this.x - CD.x, this.y - CD.y);
-    };
-    Vector.prototype.product = function (CD) {
-        return this.x * CD.x + this.y * CD.y;
+        var newVector = _super.prototype.minus.call(this, CD);
+        return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.multiple = function (k) {
-        return new Vector(this.x * k, this.y * k);
-    };
-    Vector.prototype.abs = function () {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        var newVector = _super.prototype.multiple.call(this, k);
+        return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.equals = function (B) {
         if (!_super.prototype.equals.call(this, B)) {
@@ -150,8 +235,48 @@ var Vector = (function (_super) {
         return 'Vector';
     };
     return Vector;
-})(UnitaryObject);
+})(BaseVector);
 exports.Vector = Vector;
+var Vector3D = (function (_super) {
+    __extends(Vector3D, _super);
+    function Vector3D(x, y, z) {
+        if (!(this instanceof Vector3D)) {
+            throw new Error('Constructor cannot be called as a function.');
+        }
+        if (arguments.length === 3) {
+            _super.call(this, arguments[0], arguments[1], arguments[2]);
+            this.x = arguments[0];
+            this.y = arguments[1];
+            this.z = arguments[2];
+        }
+        else if (arguments.length === 1) {
+            _super.call(this, arguments[0].x, arguments[0].y, arguments[0].z);
+            this.x = arguments[0].x;
+            this.y = arguments[0].y;
+            this.z = arguments[0].z;
+        }
+    }
+    Vector3D.prototype.add = function (CD) {
+        var newVector = _super.prototype.add.call(this, CD);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    };
+    Vector3D.prototype.minus = function (CD) {
+        var newVector = _super.prototype.minus.call(this, CD);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    };
+    Vector3D.prototype.multiple = function (k) {
+        var newVector = _super.prototype.multiple.call(this, k);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    };
+    Vector3D.prototype.move = function (dx, dy, dz) {
+        return new Vector3D(this.x + dx, this.y + dy, this.z + dz);
+    };
+    Vector3D.prototype.name = function () {
+        return 'Vector3D';
+    };
+    return Vector3D;
+})(BaseVector);
+exports.Vector3D = Vector3D;
 var Line = (function (_super) {
     __extends(Line, _super);
     function Line(A, B) {

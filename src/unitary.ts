@@ -98,7 +98,84 @@ export class Point extends UnitaryObject {
         return 'Point';
     }
 }
-export class Vector extends UnitaryObject{
+export class BaseVector extends UnitaryObject {
+    component: number[];
+    constructor(component: number[]) ;
+    constructor(...component: number[]) ;
+    constructor(x: any, ...y: number[]) { 
+        super();
+        if (arguments.length === 1 && Object.prototype.toString.call(arguments[0]) === '[object Array]') {
+            this.component = new Array(arguments[0].length);
+            for (var i: number = 0, _i: number = arguments[0].length; i < _i; i = 0|i+1) {
+                this.component[i] = arguments[0][i];
+            }
+        } else {
+            this.component = new Array(arguments.length);
+            for (var i: number = 0, _i: number = arguments.length; i < _i; i = 0|i+1) {
+                this.component[i] = arguments[i];
+            }
+        }
+    }
+    add(CD: BaseVector):BaseVector {
+        if (this.component.length !== CD.component.length) {
+            throw new Error('dimention of each vector are different.');
+        }
+        var component: number[] = new Array(this.component.length);
+        for (var i = 0, _i = this.component.length; i < _i; i = 0|i+1) {
+            component[i] = this.component[i] + CD.component[i];
+        }
+        return new BaseVector(component);
+    }
+    minus(CD: BaseVector) {
+        return this.add(CD.multiple(-1));
+    }
+    product(CD: BaseVector): number {
+        if (this.component.length !== CD.component.length) {
+            throw new Error('dimention of each vector are different.');
+        }
+        var product = 0;
+        for (var i = 0, _i = this.component.length; i < _i; i = 0|i+1) {
+            product += this.component[i] * CD.component[i];
+        }
+        return product;
+    }
+    multiple(k: number): BaseVector {
+        var component: number[] = new Array(this.component.length);
+        for (var i = 0, _i = this.component.length; i < _i; i = 0|i+1 ) {
+            component[i] = k * this.component[i];
+        }
+        return new BaseVector(component);
+    }
+    abs(): number {
+        var res = 0;
+        for (var i = 0, _i = this.component.length; i < _i; i = 0|i+1) {
+            res += this.component[i] * this.component[i];
+        }
+        return Math.sqrt(res);
+    }
+    equals(B: BaseVector): boolean {
+        if (this.component.length !== B.component.length) {
+            return false;
+        }
+        for (var i: number = 0, _i: number = this.component.length; i < _i; i = 0|i+1) {
+            if (this.component[i] !== B.component[i]) {
+                return false;
+            }
+        }
+        return true;
+    };
+    move(...dx: number[]): BaseVector {
+        var component: number[] = new Array(arguments.length);
+        for (var i = 0, _i = arguments.length; i < _i; i = 0|i+1) {
+            component[i] = arguments[i];
+        }
+        return this.add(new BaseVector(component));
+    }
+    name(): string {
+        return 'BaseVector';
+    }
+}
+export class Vector extends BaseVector{
     x: number;
     y: number;
     constructor(v: Point);
@@ -107,29 +184,27 @@ export class Vector extends UnitaryObject{
         if (!(this instanceof Vector)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        super();
         if (arguments.length === 2) {
+            super(arguments[0], arguments[1]);
             this.x = arguments[0];
             this.y = arguments[1];
         } else if (arguments.length === 1) {
+            super(arguments[0].x, arguments[0].y);
             this.x = arguments[0].x;
             this.y = arguments[0].y;
         }
     }
     add(CD: Vector): Vector {
-        return new Vector(this.x + CD.x, this.y + CD.y);
+        var newVector = super.add(CD);
+        return new Vector(newVector.component[0], newVector.component[1]);
     }
     minus(CD: Vector): Vector {
-        return new Vector(this.x - CD.x, this.y - CD.y);
-    }
-    product(CD: Vector): number {
-        return this.x * CD.x + this.y * CD.y;
+        var newVector = super.minus(CD);
+        return new Vector(newVector.component[0], newVector.component[1]);
     }
     multiple(k: number): Vector {
-        return new Vector(this.x * k, this.y * k);
-    }
-    abs(): number {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        var newVector = super.multiple(k);
+        return new Vector(newVector.component[0], newVector.component[1]);
     }
     equals(B: Vector): boolean {
         if (!super.equals(B)) {
@@ -142,6 +217,47 @@ export class Vector extends UnitaryObject{
     }
     name(): string {
         return 'Vector';
+    }
+}
+export class Vector3D extends BaseVector{
+    x: number;
+    y: number;
+    z: number;
+    constructor(component: number[]) ;
+    constructor(x: number, y: number, z: number) ;
+    constructor(x: any, y?: number, z?: number) {
+        if (!(this instanceof Vector3D)) {
+            throw new Error('Constructor cannot be called as a function.');
+        }
+        if (arguments.length === 3) {
+            super(arguments[0], arguments[1], arguments[2]);
+            this.x = arguments[0];
+            this.y = arguments[1];
+            this.z = arguments[2];
+        } else if (arguments.length === 1) {
+            super(arguments[0].x, arguments[0].y, arguments[0].z);
+            this.x = arguments[0].x;
+            this.y = arguments[0].y;
+            this.z = arguments[0].z;
+        }
+    }
+    add(CD: Vector3D): Vector3D {
+        var newVector = super.add(CD);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    }
+    minus(CD: Vector3D): Vector3D {
+        var newVector = super.minus(CD);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    }
+    multiple(k: number): Vector3D {
+        var newVector = super.multiple(k);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    }
+    move(dx: number, dy: number, dz: number): Vector3D {
+        return new Vector3D(this.x + dx, this.y + dy, this.z + dz);
+    }
+    name(): string {
+        return 'Vector3D';
     }
 }
 
