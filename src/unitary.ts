@@ -1,3 +1,16 @@
+type Style = {
+    fillColor: string;
+    strokeColor: string;
+    align?: string;
+    baseline?: string;
+    font?: string;
+    maxWidth?: number;
+    outlineColor?: string;
+    str?: string;
+    string?: string;
+    strokesOutline?: string;
+    text?: string;
+}
 "use strict";
 export function gcd(m: number, n: number): number {
     if (m < n) {
@@ -32,24 +45,32 @@ export function distance(A: Point | Line, B: Point | Line): number {
     }
 }
 export class UnitaryObject {
-    fillColor: string;
-    strokeColor: string;
+    style: Style = {
+        fillColor: null,
+        strokeColor: null
+    };
     constructor() {
         if (!(this instanceof UnitaryObject)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        this.fillColor = null;
-        this.strokeColor = null;
+        this.style.fillColor = null;
+        this.style.strokeColor = null;
     }
     equals(B: UnitaryObject): boolean {
         return this.name() === B.name();
     }
     setFillColor(color: string): any {
-        this.fillColor = color;
+        this.style.fillColor = color;
         return this;
     }
     setStrokeColor(color: string): any {
-        this.strokeColor = color;
+        this.style.strokeColor = color;
+        return this;
+    }
+    setStyle(style: any): any {
+        for (var key in style) {
+            this.style[key] = style[key];
+        }
         return this;
     }
     move(dx: number, dy: number): any {
@@ -77,10 +98,10 @@ export class Point extends UnitaryObject {
         this.y = y;
     }
     moveTo(x: number, y: number): Point {
-        return new Point(x, y).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Point(x, y).setStyle(this.style);
     }
     move(dx: number, dy: number): Point {
-        return new Point(this.x + dx, this.y + dy).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Point(this.x + dx, this.y + dy).setStyle(this.style);
     }
     toString(): string {
         return '(' + this.x + ', ' + this.y + ')';
@@ -293,9 +314,7 @@ export class Line extends UnitaryObject{
         }
     }
     move(dx: number, dy: number): UnitaryObject {
-        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy))
-            .setStrokeColor(this.strokeColor)
-            .setFillColor(this.fillColor);
+        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
     toString(): string {
         var res;
@@ -364,7 +383,7 @@ export class Segment extends UnitaryObject{
         this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
     }
     move(dx: number, dy: number): UnitaryObject {
-        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
     has(P: Point): boolean {
         var A, B, ref, ref1, ref2;
@@ -424,10 +443,10 @@ export class Circle extends UnitaryObject{
         this.r = radius;
     }
     moveTo(x: number, y: number): UnitaryObject {
-        return new Circle(this.Origin.moveTo(x, y), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Circle(this.Origin.moveTo(x, y), this.r).setStyle(this.style);
     }
     move(dx: number, dy: number): UnitaryObject {
-        return new Circle(this.Origin.move(dx, dy), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
     }
     equals(C: Circle): boolean {
         if (!super.equals(C)) {
@@ -470,7 +489,7 @@ export class Polygon extends UnitaryObject{
             points[length] = val.move(dx, dy);
             length = 0 | length + 1;
         }
-        return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Polygon(points).setStyle(this.style);
     }
     has(P: Point): boolean {
         var a, b, before_v, cos, i, len, rad, ref, v;
@@ -608,60 +627,53 @@ export class Text extends UnitaryObject{
     P: Point;
     string: string;
     text: string;
-    align: string;
-    maxWidth: number;
-    strokesOutline: boolean
-        fillColor: string;
-        outlineColor: string;
-        baseline: string;
-        font: string;
-        constructor(str: string, P: Point, align: string = 'left', maxWidth: number = null) {
-            if (!(this instanceof Text)) {
-                throw new Error('Constructor cannot be called as a function.');
-            }
-            super();
-            this.P = P;
-            this.string = str;
-            this.text = str;
-            this.align = align;
-            this.maxWidth = maxWidth;
-            this.strokesOutline = false;
-            this.fillColor = '#000';
-            this.outlineColor = '#000';
-            this.baseline = 'alphabetic';
-            this.font = null;
+    strokesOutline: boolean;
+    constructor(str: string, P: Point, align: string = 'left', maxWidth: number = null) {
+        if (!(this instanceof Text)) {
+            throw new Error('Constructor cannot be called as a function.');
         }
-        strokeOutline(): Text {
-            this.strokesOutline = true;
-            return this;
+        super();
+        this.P = P;
+        this.string = str;
+        this.text = str;
+        this.strokesOutline = false;
+        this.style.align = align;
+        this.style.maxWidth = maxWidth;
+        this.style.fillColor = '#000';
+        this.style.outlineColor = '#000';
+        this.style.baseline = 'alphabetic';
+        this.style.font = null;
+    }
+    strokeOutline(): Text {
+        this.strokesOutline = true;
+        return this;
+    }
+    setAlign(align: string): Text {
+        this.style.align = align;
+        return this;
+    }
+    setOutlineColor(color: string): Text {
+        this.style.outlineColor = color;
+        return this;
+    }
+    setBaseline(base: string): Text {
+        this.style.baseline = base;
+        return this;
+    }
+    setFont(font: string): Text {
+        this.style.font = font;
+        return this;
+    }
+    move(dx: number, dy: number): UnitaryObject {
+        var newText = new Text(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
+        if (this.strokesOutline) {
+            newText.strokeOutline();
         }
-        setAlign(align: string): Text {
-            this.align = align;
-            return this;
-        }
-        setOutlineColor(color: string): Text {
-            this.outlineColor = color;
-            return this;
-        }
-        setBaseline(base: string): Text {
-            this.baseline = base;
-            return this;
-        }
-        setFont(font: string): Text {
-            this.font = font;
-            return this;
-        }
-        move(dx: number, dy: number): UnitaryObject {
-            return new Text(this.string, this.P.move(dx, dy), this.align, this.maxWidth)
-                .setStrokeColor(this.strokeColor)
-                .setFillColor(this.fillColor)
-                .setOutlineColor(this.outlineColor)
-                .setBaseline(this.baseline)
-                .setFont(this.font);
-        }
-        name(): string {
-            return 'Text';
-        }
+        return newText;
+    }
+    name(): string {
+        return 'Text';
+    }
 }
 export class Image extends UnitaryObject{
     src: string;

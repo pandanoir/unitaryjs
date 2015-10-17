@@ -1,9 +1,9 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+"use strict";
 function gcd(m, n) {
     if (m < n) {
         return gcd(n, m);
@@ -40,21 +40,31 @@ function distance(A, B) {
 exports.distance = distance;
 var UnitaryObject = (function () {
     function UnitaryObject() {
+        this.style = {
+            fillColor: null,
+            strokeColor: null
+        };
         if (!(this instanceof UnitaryObject)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        this.fillColor = null;
-        this.strokeColor = null;
+        this.style.fillColor = null;
+        this.style.strokeColor = null;
     }
     UnitaryObject.prototype.equals = function (B) {
         return this.name() === B.name();
     };
     UnitaryObject.prototype.setFillColor = function (color) {
-        this.fillColor = color;
+        this.style.fillColor = color;
         return this;
     };
     UnitaryObject.prototype.setStrokeColor = function (color) {
-        this.strokeColor = color;
+        this.style.strokeColor = color;
+        return this;
+    };
+    UnitaryObject.prototype.setStyle = function (style) {
+        for (var key in style) {
+            this.style[key] = style[key];
+        }
         return this;
     };
     UnitaryObject.prototype.move = function (dx, dy) {
@@ -83,10 +93,10 @@ var Point = (function (_super) {
         this.y = y;
     }
     Point.prototype.moveTo = function (x, y) {
-        return new Point(x, y).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Point(x, y).setStyle(this.style);
     };
     Point.prototype.move = function (dx, dy) {
-        return new Point(this.x + dx, this.y + dy).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Point(this.x + dx, this.y + dy).setStyle(this.style);
     };
     Point.prototype.toString = function () {
         return '(' + this.x + ', ' + this.y + ')';
@@ -306,9 +316,7 @@ var Line = (function (_super) {
         }
     }
     Line.prototype.move = function (dx, dy) {
-        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy))
-            .setStrokeColor(this.strokeColor)
-            .setFillColor(this.fillColor);
+        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
     Line.prototype.toString = function () {
         var res;
@@ -423,7 +431,7 @@ var Segment = (function (_super) {
         this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
     }
     Segment.prototype.move = function (dx, dy) {
-        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
     Segment.prototype.has = function (P) {
         var A, B, ref, ref1, ref2;
@@ -482,10 +490,10 @@ var Circle = (function (_super) {
         this.r = radius;
     }
     Circle.prototype.moveTo = function (x, y) {
-        return new Circle(this.Origin.moveTo(x, y), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Circle(this.Origin.moveTo(x, y), this.r).setStyle(this.style);
     };
     Circle.prototype.move = function (dx, dy) {
-        return new Circle(this.Origin.move(dx, dy), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
     };
     Circle.prototype.equals = function (C) {
         if (!_super.prototype.equals.call(this, C)) {
@@ -528,7 +536,7 @@ var Polygon = (function (_super) {
             points[length] = val.move(dx, dy);
             length = 0 | length + 1;
         }
-        return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Polygon(points).setStyle(this.style);
     };
     Polygon.prototype.has = function (P) {
         var a, b, before_v, cos, i, len, rad, ref, v;
@@ -685,41 +693,40 @@ var Text = (function (_super) {
         this.P = P;
         this.string = str;
         this.text = str;
-        this.align = align;
-        this.maxWidth = maxWidth;
         this.strokesOutline = false;
-        this.fillColor = '#000';
-        this.outlineColor = '#000';
-        this.baseline = 'alphabetic';
-        this.font = null;
+        this.style.align = align;
+        this.style.maxWidth = maxWidth;
+        this.style.fillColor = '#000';
+        this.style.outlineColor = '#000';
+        this.style.baseline = 'alphabetic';
+        this.style.font = null;
     }
     Text.prototype.strokeOutline = function () {
         this.strokesOutline = true;
         return this;
     };
     Text.prototype.setAlign = function (align) {
-        this.align = align;
+        this.style.align = align;
         return this;
     };
     Text.prototype.setOutlineColor = function (color) {
-        this.outlineColor = color;
+        this.style.outlineColor = color;
         return this;
     };
     Text.prototype.setBaseline = function (base) {
-        this.baseline = base;
+        this.style.baseline = base;
         return this;
     };
     Text.prototype.setFont = function (font) {
-        this.font = font;
+        this.style.font = font;
         return this;
     };
     Text.prototype.move = function (dx, dy) {
-        return new Text(this.string, this.P.move(dx, dy), this.align, this.maxWidth)
-            .setStrokeColor(this.strokeColor)
-            .setFillColor(this.fillColor)
-            .setOutlineColor(this.outlineColor)
-            .setBaseline(this.baseline)
-            .setFont(this.font);
+        var newText = new Text(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
+        if (this.strokesOutline) {
+            newText.strokeOutline();
+        }
+        return newText;
     };
     Text.prototype.name = function () {
         return 'Text';

@@ -37,18 +37,18 @@ Canvas.fn.draw = function() {
         var obj = this.objects[i];
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
-        if (obj.fillColor !== null) {
+        if (obj.style && obj.style.fillColor !== null) {
             var beforeFillColor = this.canvas.fillStyle;
-            this.canvas.fillStyle = obj.fillColor;
+            this.canvas.fillStyle = obj.style.fillColor;
         }
-        if (obj.strokeColor !== null) {
+        if (obj.style && obj.style.strokeColor !== null) {
             var beforeStrokeColor = this.canvas.strokeStyle;
-            this.canvas.strokeStyle = obj.strokeColor;
+            this.canvas.strokeStyle = obj.style.strokeColor;
         }
         var name = obj.name();
         Canvas.drawFunction[name].call(this, obj);
-        if (obj.fillColor !== null) {this.canvas.fillStyle = beforeFillColor;}
-        if (obj.strokeColor !== null) {this.canvas.strokeStyle = beforeStrokeColor;}
+        if (obj.style && obj.style.fillColor !== null) {this.canvas.fillStyle = beforeFillColor;}
+        if (obj.style && obj.style.strokeColor !== null) {this.canvas.strokeStyle = beforeStrokeColor;}
     }
 };
 Canvas.drawFunction = {
@@ -78,7 +78,7 @@ Canvas.drawFunction = {
         this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
         this.canvas.closePath();
         this.canvas.stroke();
-        if (obj.fillColor !== null) this.canvas.fill();
+        if (obj.style.fillColor !== null) this.canvas.fill();
     },
     Polygon: PolygonDrawFunction,
     Quadrilateral: PolygonDrawFunction,
@@ -89,29 +89,29 @@ Canvas.drawFunction = {
         var w = obj.points[1].x - obj.points[0].x;
         var h = - (obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
         this.canvas.strokeRect(x, y, w, h); // 上でX()、Y()している
-        if (obj.fillColor !== null) this.canvas.fill();
+        if (obj.style.fillColor !== null) this.canvas.fill();
     },
     Text: function(obj) {
-        this.canvas.textAlign = obj.align;
-        this.canvas.textBaseline = obj.baseline;
+        this.canvas.textAlign = obj.style.align;
+        this.canvas.textBaseline = obj.style.baseline;
         var x = obj.P.x;
         var y = obj.P.y;
-        if (obj.font !== null) {
+        if (obj.style.font !== null) {
             var defaultFont = this.canvas.font;
-            this.canvas.font = obj.font;
+            this.canvas.font = obj.style.font;
         }
         if (obj.maxWidth === null) {
-            if (obj.strokesOutline) {
+            if (obj.style.strokesOutline) {
                 this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
             }
             this.canvas.fillText(obj.text, this.X(x), this.Y(y));
         } else {
-            if (obj.strokesOutline) {
+            if (obj.style.strokesOutline) {
                 this.canvas.strokeText(obj.text, this.X(x), this.Y(y), obj.maxWidth);
             }
             this.canvas.fillText(obj.text, this.X(x), this.Y(y), obj.maxWidth);
         }
-        if(obj.font !== null) {
+        if(obj.style.font !== null) {
             this.canvas.font = defaultFont;
         }
     },
@@ -151,6 +151,7 @@ Canvas.drawFunction = {
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
         for (var i = 0, _i = points.length; i < _i; i = 0|i+1) {
             this.canvas.lineTo(this.X(points[i].x), this.Y(points[i].y));
+            this.canvas.moveTo(this.X(points[i].x), this.Y(points[i].y));
         }
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
         this.canvas.closePath();
@@ -169,7 +170,7 @@ function PolygonDrawFunction(obj) {
     this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     this.canvas.closePath();
     this.canvas.stroke();
-    if (obj.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillColor !== null) this.canvas.fill();
 };
 if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
