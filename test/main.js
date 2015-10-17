@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Unitary = require('../unitary.js');
+var Unitary = require('../dist/unitary.js');
 for (var key in Unitary) {
     global[key] = Unitary[key];
 }
