@@ -316,8 +316,8 @@ export class Line extends UnitaryObject{
     move(dx: number, dy: number): UnitaryObject {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
-    toString(): string {
-        var res;
+    getEquation(): string {
+        var res:string;
         res = '';
         if (this.a > 0 && this.a !== 1) { res += '+' + this.a + 'x'; }
         if (this.a === 1) { res += '+x'; }
@@ -332,21 +332,11 @@ export class Line extends UnitaryObject{
         if (res.charAt(0) === '+') { res = res.slice(1); }
         return res + '=0';
     }
+    toString(): string {
+        return this.getEquation();
+    }
     inspect(): string {
-        var res;
-        res = '';
-        if (this.a > 0 && this.a !== 1) { res += '+' + this.a + 'x'; }
-        if (this.a === 1) { res += '+x'; }
-        if (this.a < 0 && this.a !== -1) { res += '-' + -this.a + 'x'; }
-        if (this.a === -1) { res += '-x'; }
-        if (this.b > 0 && this.b !== 1) { res += '+' + this.b + 'y'; }
-        if (this.b === 1) { res += '+y'; }
-        if (this.b < 0 && this.b !== -1) { res += '-' + -this.b + 'y'; }
-        if (this.b === -1) { res += '-y'; }
-        if (this.c > 0) { res += '+' + this.c; }
-        if (this.c < 0) { res += '-' + -this.c; }
-        if (res.charAt(0) === '+') { res = res.slice(1); }
-        return res + '=0';
+        return this.getEquation();
     }
     getIntersection(CD: Line): Point | boolean {
         var x, y;
