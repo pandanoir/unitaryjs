@@ -1,10 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+"use strict";
 function gcd(m, n) {
     if (m < n) {
         return gcd(n, m);
@@ -20,7 +20,6 @@ function gcd(m, n) {
     }
     return gcd(n, m % n);
 }
-exports.gcd = gcd;
 function distance(A, B) {
     var res;
     if (A instanceof Point && B instanceof Point) {
@@ -41,21 +40,31 @@ function distance(A, B) {
 exports.distance = distance;
 var UnitaryObject = (function () {
     function UnitaryObject() {
+        this.style = {
+            fillColor: null,
+            strokeColor: null
+        };
         if (!(this instanceof UnitaryObject)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        this.fillColor = null;
-        this.strokeColor = null;
+        this.style.fillColor = null;
+        this.style.strokeColor = null;
     }
     UnitaryObject.prototype.equals = function (B) {
         return this.name() === B.name();
     };
     UnitaryObject.prototype.setFillColor = function (color) {
-        this.fillColor = color;
+        this.style.fillColor = color;
         return this;
     };
     UnitaryObject.prototype.setStrokeColor = function (color) {
-        this.strokeColor = color;
+        this.style.strokeColor = color;
+        return this;
+    };
+    UnitaryObject.prototype.setStyle = function (style) {
+        for (var key in style) {
+            this.style[key] = style[key];
+        }
         return this;
     };
     UnitaryObject.prototype.move = function (dx, dy) {
@@ -84,10 +93,10 @@ var Point = (function (_super) {
         this.y = y;
     }
     Point.prototype.moveTo = function (x, y) {
-        return new Point(x, y).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Point(x, y).setStyle(this.style);
     };
     Point.prototype.move = function (dx, dy) {
-        return new Point(this.x + dx, this.y + dy).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Point(this.x + dx, this.y + dy).setStyle(this.style);
     };
     Point.prototype.toString = function () {
         return '(' + this.x + ', ' + this.y + ')';
@@ -107,36 +116,121 @@ var Point = (function (_super) {
     return Point;
 })(UnitaryObject);
 exports.Point = Point;
+var BaseVector = (function (_super) {
+    __extends(BaseVector, _super);
+    function BaseVector(x) {
+        var y = [];
+        for (var _a = 1; _a < arguments.length; _a++) {
+            y[_a - 1] = arguments[_a];
+        }
+        _super.call(this);
+        if (arguments.length === 1 && Object.prototype.toString.call(arguments[0]) === '[object Array]') {
+            this.component = new Array(arguments[0].length);
+            for (var i = 0, _i = arguments[0].length; i < _i; i = 0 | i + 1) {
+                this.component[i] = arguments[0][i];
+            }
+        }
+        else {
+            this.component = new Array(arguments.length);
+            for (var i = 0, _i = arguments.length; i < _i; i = 0 | i + 1) {
+                this.component[i] = arguments[i];
+            }
+        }
+    }
+    BaseVector.prototype.add = function (CD) {
+        if (this.component.length !== CD.component.length) {
+            throw new Error('dimention of each vector are different.');
+        }
+        var component = new Array(this.component.length);
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            component[i] = this.component[i] + CD.component[i];
+        }
+        return new BaseVector(component);
+    };
+    BaseVector.prototype.minus = function (CD) {
+        return this.add(CD.multiple(-1));
+    };
+    BaseVector.prototype.product = function (CD) {
+        if (this.component.length !== CD.component.length) {
+            throw new Error('dimention of each vector are different.');
+        }
+        var product = 0;
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            product += this.component[i] * CD.component[i];
+        }
+        return product;
+    };
+    BaseVector.prototype.multiple = function (k) {
+        var component = new Array(this.component.length);
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            component[i] = k * this.component[i];
+        }
+        return new BaseVector(component);
+    };
+    BaseVector.prototype.abs = function () {
+        var res = 0;
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            res += this.component[i] * this.component[i];
+        }
+        return Math.sqrt(res);
+    };
+    BaseVector.prototype.equals = function (B) {
+        if (this.component.length !== B.component.length) {
+            return false;
+        }
+        for (var i = 0, _i = this.component.length; i < _i; i = 0 | i + 1) {
+            if (this.component[i] !== B.component[i]) {
+                return false;
+            }
+        }
+        return true;
+    };
+    ;
+    BaseVector.prototype.move = function () {
+        var dx = [];
+        for (var _a = 0; _a < arguments.length; _a++) {
+            dx[_a - 0] = arguments[_a];
+        }
+        var component = new Array(arguments.length);
+        for (var i = 0, _i = arguments.length; i < _i; i = 0 | i + 1) {
+            component[i] = arguments[i];
+        }
+        return this.add(new BaseVector(component));
+    };
+    BaseVector.prototype.name = function () {
+        return 'BaseVector';
+    };
+    return BaseVector;
+})(UnitaryObject);
+exports.BaseVector = BaseVector;
 var Vector = (function (_super) {
     __extends(Vector, _super);
     function Vector(x, y) {
         if (!(this instanceof Vector)) {
             throw new Error('Constructor cannot be called as a function.');
         }
-        _super.call(this);
         if (arguments.length === 2) {
+            _super.call(this, arguments[0], arguments[1]);
             this.x = arguments[0];
             this.y = arguments[1];
         }
         else if (arguments.length === 1) {
+            _super.call(this, arguments[0].x, arguments[0].y);
             this.x = arguments[0].x;
             this.y = arguments[0].y;
         }
     }
     Vector.prototype.add = function (CD) {
-        return new Vector(this.x + CD.x, this.y + CD.y);
+        var newVector = _super.prototype.add.call(this, CD);
+        return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.minus = function (CD) {
-        return new Vector(this.x - CD.x, this.y - CD.y);
-    };
-    Vector.prototype.product = function (CD) {
-        return this.x * CD.x + this.y * CD.y;
+        var newVector = _super.prototype.minus.call(this, CD);
+        return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.multiple = function (k) {
-        return new Vector(this.x * k, this.y * k);
-    };
-    Vector.prototype.abs = function () {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        var newVector = _super.prototype.multiple.call(this, k);
+        return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.equals = function (B) {
         if (!_super.prototype.equals.call(this, B)) {
@@ -151,8 +245,48 @@ var Vector = (function (_super) {
         return 'Vector';
     };
     return Vector;
-})(UnitaryObject);
+})(BaseVector);
 exports.Vector = Vector;
+var Vector3D = (function (_super) {
+    __extends(Vector3D, _super);
+    function Vector3D(x, y, z) {
+        if (!(this instanceof Vector3D)) {
+            throw new Error('Constructor cannot be called as a function.');
+        }
+        if (arguments.length === 3) {
+            _super.call(this, arguments[0], arguments[1], arguments[2]);
+            this.x = arguments[0];
+            this.y = arguments[1];
+            this.z = arguments[2];
+        }
+        else if (arguments.length === 1) {
+            _super.call(this, arguments[0].x, arguments[0].y, arguments[0].z);
+            this.x = arguments[0].x;
+            this.y = arguments[0].y;
+            this.z = arguments[0].z;
+        }
+    }
+    Vector3D.prototype.add = function (CD) {
+        var newVector = _super.prototype.add.call(this, CD);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    };
+    Vector3D.prototype.minus = function (CD) {
+        var newVector = _super.prototype.minus.call(this, CD);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    };
+    Vector3D.prototype.multiple = function (k) {
+        var newVector = _super.prototype.multiple.call(this, k);
+        return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
+    };
+    Vector3D.prototype.move = function (dx, dy, dz) {
+        return new Vector3D(this.x + dx, this.y + dy, this.z + dz);
+    };
+    Vector3D.prototype.name = function () {
+        return 'Vector3D';
+    };
+    return Vector3D;
+})(BaseVector);
+exports.Vector3D = Vector3D;
 var Line = (function (_super) {
     __extends(Line, _super);
     function Line(A, B) {
@@ -182,85 +316,51 @@ var Line = (function (_super) {
         }
     }
     Line.prototype.move = function (dx, dy) {
-        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy))
-            .setStrokeColor(this.strokeColor)
-            .setFillColor(this.fillColor);
+        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
+    };
+    Line.prototype.getEquation = function () {
+        var res;
+        res = '';
+        if (this.a > 0 && this.a !== 1) {
+            res += '+' + this.a + 'x';
+        }
+        if (this.a === 1) {
+            res += '+x';
+        }
+        if (this.a < 0 && this.a !== -1) {
+            res += '-' + -this.a + 'x';
+        }
+        if (this.a === -1) {
+            res += '-x';
+        }
+        if (this.b > 0 && this.b !== 1) {
+            res += '+' + this.b + 'y';
+        }
+        if (this.b === 1) {
+            res += '+y';
+        }
+        if (this.b < 0 && this.b !== -1) {
+            res += '-' + -this.b + 'y';
+        }
+        if (this.b === -1) {
+            res += '-y';
+        }
+        if (this.c > 0) {
+            res += '+' + this.c;
+        }
+        if (this.c < 0) {
+            res += '-' + -this.c;
+        }
+        if (res.charAt(0) === '+') {
+            res = res.slice(1);
+        }
+        return res + '=0';
     };
     Line.prototype.toString = function () {
-        var res;
-        res = '';
-        if (this.a > 0 && this.a !== 1) {
-            res += '+' + this.a + 'x';
-        }
-        if (this.a === 1) {
-            res += '+x';
-        }
-        if (this.a < 0 && this.a !== -1) {
-            res += '-' + -this.a + 'x';
-        }
-        if (this.a === -1) {
-            res += '-x';
-        }
-        if (this.b > 0 && this.b !== 1) {
-            res += '+' + this.b + 'y';
-        }
-        if (this.b === 1) {
-            res += '+y';
-        }
-        if (this.b < 0 && this.b !== -1) {
-            res += '-' + -this.b + 'y';
-        }
-        if (this.b === -1) {
-            res += '-y';
-        }
-        if (this.c > 0) {
-            res += '+' + this.c;
-        }
-        if (this.c < 0) {
-            res += '-' + -this.c;
-        }
-        if (res.charAt(0) === '+') {
-            res = res.slice(1);
-        }
-        return res + '=0';
+        return this.getEquation();
     };
     Line.prototype.inspect = function () {
-        var res;
-        res = '';
-        if (this.a > 0 && this.a !== 1) {
-            res += '+' + this.a + 'x';
-        }
-        if (this.a === 1) {
-            res += '+x';
-        }
-        if (this.a < 0 && this.a !== -1) {
-            res += '-' + -this.a + 'x';
-        }
-        if (this.a === -1) {
-            res += '-x';
-        }
-        if (this.b > 0 && this.b !== 1) {
-            res += '+' + this.b + 'y';
-        }
-        if (this.b === 1) {
-            res += '+y';
-        }
-        if (this.b < 0 && this.b !== -1) {
-            res += '-' + -this.b + 'y';
-        }
-        if (this.b === -1) {
-            res += '-y';
-        }
-        if (this.c > 0) {
-            res += '+' + this.c;
-        }
-        if (this.c < 0) {
-            res += '-' + -this.c;
-        }
-        if (res.charAt(0) === '+') {
-            res = res.slice(1);
-        }
-        return res + '=0';
+        return this.getEquation();
     };
     Line.prototype.getIntersection = function (CD) {
         var x, y;
@@ -299,14 +399,14 @@ var Segment = (function (_super) {
         this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
     }
     Segment.prototype.move = function (dx, dy) {
-        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
     Segment.prototype.has = function (P) {
-        var A, B, ref, ref1, ref2;
+        var A, B;
         A = this.points[0];
         B = this.points[1];
-        if ((A.x <= (ref = P.x) && ref <= B.x)) {
-            if (A.y <= B.y && (A.y <= (ref1 = P.y) && ref1 <= B.y) || A.y >= B.y && (A.y >= (ref2 = P.y) && ref2 >= B.y)) {
+        if (A.x <= P.x && P.x <= B.x) {
+            if (A.y <= B.y && (A.y <= P.y && P.y <= B.y) || A.y >= B.y && (A.y >= P.y && P.y >= B.y)) {
                 if ((A.y - B.y) / (A.x - B.x) * P.x === P.y) {
                     return true;
                 }
@@ -315,7 +415,7 @@ var Segment = (function (_super) {
         return false;
     };
     Segment.prototype.intersects = function (CD) {
-        var intersection, ref;
+        var intersection;
         if (CD instanceof Line) {
             intersection = this.toLine().getIntersection(CD);
         }
@@ -325,7 +425,7 @@ var Segment = (function (_super) {
         if (intersection === false) {
             return false;
         }
-        if ((this.points[0].x <= (ref = intersection.x) && ref <= this.points[1].x)) {
+        if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x) {
             return true;
         }
         return false;
@@ -358,10 +458,10 @@ var Circle = (function (_super) {
         this.r = radius;
     }
     Circle.prototype.moveTo = function (x, y) {
-        return new Circle(this.Origin.moveTo(x, y), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Circle(this.Origin.moveTo(x, y), this.r).setStyle(this.style);
     };
     Circle.prototype.move = function (dx, dy) {
-        return new Circle(this.Origin.move(dx, dy), this.r).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
     };
     Circle.prototype.equals = function (C) {
         if (!_super.prototype.equals.call(this, C)) {
@@ -395,24 +495,18 @@ var Polygon = (function (_super) {
         return false;
     };
     Polygon.prototype.move = function (dx, dy) {
-        var i, len, length, points, ref, val;
-        points = [];
-        length = 0;
-        ref = this.points;
-        for (i = 0, len = ref.length; i < len; i++) {
-            val = ref[i];
-            points[length] = val.move(dx, dy);
-            length = 0 | length + 1;
+        var points;
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            points[i] = this.points[i].move(dx, dy);
         }
-        return new Polygon(points).setStrokeColor(this.strokeColor).setFillColor(this.fillColor);
+        return new Polygon(points).setStyle(this.style);
     };
     Polygon.prototype.has = function (P) {
-        var a, b, before_v, cos, i, len, rad, ref, v;
-        before_v = this.points[this.points.length - 1];
-        rad = 0;
-        ref = this.points;
-        for (i = 0, len = ref.length; i < len; i++) {
-            v = ref[i];
+        var a, b, cos, v;
+        var before_v = this.points[this.points.length - 1];
+        var rad = 0;
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            v = this.points[i];
             a = new Vector(v).minus(new Vector(P));
             b = new Vector(before_v).minus(new Vector(P));
             cos = a.product(b) / (a.abs() * b.abs());
@@ -442,10 +536,9 @@ var Quadrilateral = (function (_super) {
         _super.call(this, A, B, C, D);
     }
     Quadrilateral.prototype.getArea = function () {
-        var A, B, C, D, S1, S2, ref;
-        ref = this.points, A = ref[0], B = ref[1], C = ref[2], D = ref[3];
-        S1 = new Triangle(A, B, C).getArea();
-        S2 = new Triangle(A, C, D).getArea();
+        var A = this.points[0], B = this.points[1], C = this.points[2], D = this.points[3];
+        var S1 = new Triangle(A, B, C).getArea();
+        var S2 = new Triangle(A, C, D).getArea();
         return S1 + S2;
     };
     Quadrilateral.prototype.name = function () {
@@ -469,58 +562,37 @@ var Triangle = (function (_super) {
         _super.call(this, A, B, C);
     }
     Triangle.prototype.getCircumcircle = function () {
-        var A, AB, B, BC, C, CA, O, R, S, a, b, c, cosA, sinA, vA, vB, vC, vO;
-        A = this.points[0];
-        B = this.points[1];
-        C = this.points[2];
-        AB = new Segment(A, B);
-        BC = new Segment(B, C);
-        CA = new Segment(C, A);
-        S = this.getArea();
-        vA = new Vector(A.x, A.y);
-        vB = new Vector(B.x, B.y);
-        vC = new Vector(C.x, C.y);
-        a = Math.pow(BC.length, 2);
-        b = Math.pow(CA.length, 2);
-        c = Math.pow(AB.length, 2);
-        vO = new Vector(0, 0)
+        var A = this.points[0], B = this.points[1], C = this.points[2];
+        var AB = new Segment(A, B), BC = new Segment(B, C), CA = new Segment(C, A);
+        var S = this.getArea();
+        var vA = new Vector(A.x, A.y), vB = new Vector(B.x, B.y), vC = new Vector(C.x, C.y);
+        var a = Math.pow(BC.length, 2), b = Math.pow(CA.length, 2), c = Math.pow(AB.length, 2);
+        var vO = new Vector(0, 0)
             .add(vA.multiple(a * (b + c - a)))
             .add(vB.multiple(b * (c + a - b)))
             .add(vC.multiple(c * (a + b - c)))
             .multiple(1 / (16 * (Math.pow(S, 2))));
-        O = new Point(vO.x, vO.y);
-        cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length);
-        sinA = Math.sqrt(1 - Math.pow(cosA, 2));
-        R = BC.length / sinA / 2;
+        var O = new Point(vO.x, vO.y);
+        var cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
+        var R = BC.length / sinA / 2;
         return new Circle(O, R);
     };
     Triangle.prototype.getIncircle = function () {
-        var O, a, b, c, r, vA, vB, vC, vO;
-        vA = new Vector(this.points[0].x, this.points[0].y);
-        vB = new Vector(this.points[1].x, this.points[1].y);
-        vC = new Vector(this.points[2].x, this.points[2].y);
-        a = vC.minus(vB).abs();
-        b = vC.minus(vA).abs();
-        c = vB.minus(vA).abs();
-        vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c)))
+        var vA = new Vector(this.points[0].x, this.points[0].y), vB = new Vector(this.points[1].x, this.points[1].y), vC = new Vector(this.points[2].x, this.points[2].y);
+        var a = vC.minus(vB).abs(), b = vC.minus(vA).abs(), c = vB.minus(vA).abs();
+        var vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c)))
             .add(vB.multiple(b / (a + b + c)))
             .add(vC.multiple(c / (a + b + c)));
-        O = new Point(vO.x, vO.y);
-        r = 2 * this.getArea() / (a + b + c);
+        var O = new Point(vO.x, vO.y);
+        var r = 2 * this.getArea() / (a + b + c);
         return new Circle(O, r);
     };
     Triangle.prototype.getArea = function () {
-        var A, AB, AC, B, C, S, cosA, sinA, vAB, vAC;
-        A = this.points[0];
-        B = this.points[1];
-        C = this.points[2];
-        AB = new Segment(A, B);
-        AC = new Segment(A, C);
-        vAB = new Vector(B.x - A.x, B.y - A.y);
-        vAC = new Vector(C.x - A.x, C.y - A.y);
-        cosA = vAB.product(vAC) / (AB.length * AC.length);
-        sinA = Math.sqrt(1 - Math.pow(cosA, 2));
-        S = AB.length * AC.length * sinA / 2;
+        var A = this.points[0], B = this.points[1], C = this.points[2];
+        var AB = new Segment(A, B), AC = new Segment(A, C);
+        var vAB = new Vector(B.x - A.x, B.y - A.y), vAC = new Vector(C.x - A.x, C.y - A.y);
+        var cosA = vAB.product(vAC) / (AB.length * AC.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
+        var S = AB.length * AC.length * sinA / 2;
         return S;
     };
     Triangle.prototype.name = function () {
@@ -538,9 +610,8 @@ var Rect = (function (_super) {
         _super.call(this, A, B);
     }
     Rect.prototype.has = function (P) {
-        var A, B;
-        A = this.points[0];
-        B = this.points[1];
+        var A = this.points[0];
+        var B = this.points[1];
         return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0;
     };
     Rect.prototype.name = function () {
@@ -561,41 +632,40 @@ var Text = (function (_super) {
         this.P = P;
         this.string = str;
         this.text = str;
-        this.align = align;
-        this.maxWidth = maxWidth;
         this.strokesOutline = false;
-        this.fillColor = '#000';
-        this.outlineColor = '#000';
-        this.baseline = 'alphabetic';
-        this.font = null;
+        this.style.align = align;
+        this.style.maxWidth = maxWidth;
+        this.style.fillColor = '#000';
+        this.style.outlineColor = '#000';
+        this.style.baseline = 'alphabetic';
+        this.style.font = null;
     }
     Text.prototype.strokeOutline = function () {
         this.strokesOutline = true;
         return this;
     };
     Text.prototype.setAlign = function (align) {
-        this.align = align;
+        this.style.align = align;
         return this;
     };
     Text.prototype.setOutlineColor = function (color) {
-        this.outlineColor = color;
+        this.style.outlineColor = color;
         return this;
     };
     Text.prototype.setBaseline = function (base) {
-        this.baseline = base;
+        this.style.baseline = base;
         return this;
     };
     Text.prototype.setFont = function (font) {
-        this.font = font;
+        this.style.font = font;
         return this;
     };
     Text.prototype.move = function (dx, dy) {
-        return new Text(this.string, this.P.move(dx, dy), this.align, this.maxWidth)
-            .setStrokeColor(this.strokeColor)
-            .setFillColor(this.fillColor)
-            .setOutlineColor(this.outlineColor)
-            .setBaseline(this.baseline)
-            .setFont(this.font);
+        var newText = new Text(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
+        if (this.strokesOutline) {
+            newText.strokeOutline();
+        }
+        return newText;
     };
     Text.prototype.name = function () {
         return 'Text';
@@ -651,8 +721,7 @@ var Image = (function (_super) {
         return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
     };
     Image.prototype.move = function (dx, dy) {
-        var newImage;
-        newImage = new Image(this.src, this.startPoint.move(dx, dy));
+        var newImage = new Image(this.src, this.startPoint.move(dx, dy));
         if (this.sx !== null) {
             newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
         }

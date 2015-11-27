@@ -19,7 +19,6 @@ function gcd(m, n) {
     }
     return gcd(n, m % n);
 }
-exports.gcd = gcd;
 function distance(A, B) {
     var res;
     if (A instanceof Point && B instanceof Point) {
@@ -318,7 +317,7 @@ var Line = (function (_super) {
     Line.prototype.move = function (dx, dy) {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
-    Line.prototype.toString = function () {
+    Line.prototype.getEquation = function () {
         var res;
         res = '';
         if (this.a > 0 && this.a !== 1) {
@@ -356,43 +355,11 @@ var Line = (function (_super) {
         }
         return res + '=0';
     };
+    Line.prototype.toString = function () {
+        return this.getEquation();
+    };
     Line.prototype.inspect = function () {
-        var res;
-        res = '';
-        if (this.a > 0 && this.a !== 1) {
-            res += '+' + this.a + 'x';
-        }
-        if (this.a === 1) {
-            res += '+x';
-        }
-        if (this.a < 0 && this.a !== -1) {
-            res += '-' + -this.a + 'x';
-        }
-        if (this.a === -1) {
-            res += '-x';
-        }
-        if (this.b > 0 && this.b !== 1) {
-            res += '+' + this.b + 'y';
-        }
-        if (this.b === 1) {
-            res += '+y';
-        }
-        if (this.b < 0 && this.b !== -1) {
-            res += '-' + -this.b + 'y';
-        }
-        if (this.b === -1) {
-            res += '-y';
-        }
-        if (this.c > 0) {
-            res += '+' + this.c;
-        }
-        if (this.c < 0) {
-            res += '-' + -this.c;
-        }
-        if (res.charAt(0) === '+') {
-            res = res.slice(1);
-        }
-        return res + '=0';
+        return this.getEquation();
     };
     Line.prototype.getIntersection = function (CD) {
         var x, y;
@@ -434,11 +401,11 @@ var Segment = (function (_super) {
         return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     };
     Segment.prototype.has = function (P) {
-        var A, B, ref, ref1, ref2;
+        var A, B;
         A = this.points[0];
         B = this.points[1];
-        if ((A.x <= (ref = P.x) && ref <= B.x)) {
-            if (A.y <= B.y && (A.y <= (ref1 = P.y) && ref1 <= B.y) || A.y >= B.y && (A.y >= (ref2 = P.y) && ref2 >= B.y)) {
+        if (A.x <= P.x && P.x <= B.x) {
+            if (A.y <= B.y && (A.y <= P.y && P.y <= B.y) || A.y >= B.y && (A.y >= P.y && P.y >= B.y)) {
                 if ((A.y - B.y) / (A.x - B.x) * P.x === P.y) {
                     return true;
                 }
@@ -447,7 +414,7 @@ var Segment = (function (_super) {
         return false;
     };
     Segment.prototype.intersects = function (CD) {
-        var intersection, ref;
+        var intersection;
         if (CD instanceof Line) {
             intersection = this.toLine().getIntersection(CD);
         }
@@ -457,7 +424,7 @@ var Segment = (function (_super) {
         if (intersection === false) {
             return false;
         }
-        if ((this.points[0].x <= (ref = intersection.x) && ref <= this.points[1].x)) {
+        if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x) {
             return true;
         }
         return false;
@@ -527,24 +494,18 @@ var Polygon = (function (_super) {
         return false;
     };
     Polygon.prototype.move = function (dx, dy) {
-        var i, len, length, points, ref, val;
-        points = [];
-        length = 0;
-        ref = this.points;
-        for (i = 0, len = ref.length; i < len; i++) {
-            val = ref[i];
-            points[length] = val.move(dx, dy);
-            length = 0 | length + 1;
+        var points;
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            points[i] = this.points[i].move(dx, dy);
         }
         return new Polygon(points).setStyle(this.style);
     };
     Polygon.prototype.has = function (P) {
-        var a, b, before_v, cos, i, len, rad, ref, v;
-        before_v = this.points[this.points.length - 1];
-        rad = 0;
-        ref = this.points;
-        for (i = 0, len = ref.length; i < len; i++) {
-            v = ref[i];
+        var a, b, cos, v;
+        var before_v = this.points[this.points.length - 1];
+        var rad = 0;
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            v = this.points[i];
             a = new Vector(v).minus(new Vector(P));
             b = new Vector(before_v).minus(new Vector(P));
             cos = a.product(b) / (a.abs() * b.abs());
@@ -574,10 +535,9 @@ var Quadrilateral = (function (_super) {
         _super.call(this, A, B, C, D);
     }
     Quadrilateral.prototype.getArea = function () {
-        var A, B, C, D, S1, S2, ref;
-        ref = this.points, A = ref[0], B = ref[1], C = ref[2], D = ref[3];
-        S1 = new Triangle(A, B, C).getArea();
-        S2 = new Triangle(A, C, D).getArea();
+        var A = this.points[0], B = this.points[1], C = this.points[2], D = this.points[3];
+        var S1 = new Triangle(A, B, C).getArea();
+        var S2 = new Triangle(A, C, D).getArea();
         return S1 + S2;
     };
     Quadrilateral.prototype.name = function () {
@@ -601,58 +561,37 @@ var Triangle = (function (_super) {
         _super.call(this, A, B, C);
     }
     Triangle.prototype.getCircumcircle = function () {
-        var A, AB, B, BC, C, CA, O, R, S, a, b, c, cosA, sinA, vA, vB, vC, vO;
-        A = this.points[0];
-        B = this.points[1];
-        C = this.points[2];
-        AB = new Segment(A, B);
-        BC = new Segment(B, C);
-        CA = new Segment(C, A);
-        S = this.getArea();
-        vA = new Vector(A.x, A.y);
-        vB = new Vector(B.x, B.y);
-        vC = new Vector(C.x, C.y);
-        a = Math.pow(BC.length, 2);
-        b = Math.pow(CA.length, 2);
-        c = Math.pow(AB.length, 2);
-        vO = new Vector(0, 0)
+        var A = this.points[0], B = this.points[1], C = this.points[2];
+        var AB = new Segment(A, B), BC = new Segment(B, C), CA = new Segment(C, A);
+        var S = this.getArea();
+        var vA = new Vector(A.x, A.y), vB = new Vector(B.x, B.y), vC = new Vector(C.x, C.y);
+        var a = Math.pow(BC.length, 2), b = Math.pow(CA.length, 2), c = Math.pow(AB.length, 2);
+        var vO = new Vector(0, 0)
             .add(vA.multiple(a * (b + c - a)))
             .add(vB.multiple(b * (c + a - b)))
             .add(vC.multiple(c * (a + b - c)))
             .multiple(1 / (16 * (Math.pow(S, 2))));
-        O = new Point(vO.x, vO.y);
-        cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length);
-        sinA = Math.sqrt(1 - Math.pow(cosA, 2));
-        R = BC.length / sinA / 2;
+        var O = new Point(vO.x, vO.y);
+        var cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
+        var R = BC.length / sinA / 2;
         return new Circle(O, R);
     };
     Triangle.prototype.getIncircle = function () {
-        var O, a, b, c, r, vA, vB, vC, vO;
-        vA = new Vector(this.points[0].x, this.points[0].y);
-        vB = new Vector(this.points[1].x, this.points[1].y);
-        vC = new Vector(this.points[2].x, this.points[2].y);
-        a = vC.minus(vB).abs();
-        b = vC.minus(vA).abs();
-        c = vB.minus(vA).abs();
-        vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c)))
+        var vA = new Vector(this.points[0].x, this.points[0].y), vB = new Vector(this.points[1].x, this.points[1].y), vC = new Vector(this.points[2].x, this.points[2].y);
+        var a = vC.minus(vB).abs(), b = vC.minus(vA).abs(), c = vB.minus(vA).abs();
+        var vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c)))
             .add(vB.multiple(b / (a + b + c)))
             .add(vC.multiple(c / (a + b + c)));
-        O = new Point(vO.x, vO.y);
-        r = 2 * this.getArea() / (a + b + c);
+        var O = new Point(vO.x, vO.y);
+        var r = 2 * this.getArea() / (a + b + c);
         return new Circle(O, r);
     };
     Triangle.prototype.getArea = function () {
-        var A, AB, AC, B, C, S, cosA, sinA, vAB, vAC;
-        A = this.points[0];
-        B = this.points[1];
-        C = this.points[2];
-        AB = new Segment(A, B);
-        AC = new Segment(A, C);
-        vAB = new Vector(B.x - A.x, B.y - A.y);
-        vAC = new Vector(C.x - A.x, C.y - A.y);
-        cosA = vAB.product(vAC) / (AB.length * AC.length);
-        sinA = Math.sqrt(1 - Math.pow(cosA, 2));
-        S = AB.length * AC.length * sinA / 2;
+        var A = this.points[0], B = this.points[1], C = this.points[2];
+        var AB = new Segment(A, B), AC = new Segment(A, C);
+        var vAB = new Vector(B.x - A.x, B.y - A.y), vAC = new Vector(C.x - A.x, C.y - A.y);
+        var cosA = vAB.product(vAC) / (AB.length * AC.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
+        var S = AB.length * AC.length * sinA / 2;
         return S;
     };
     Triangle.prototype.name = function () {
@@ -670,9 +609,8 @@ var Rect = (function (_super) {
         _super.call(this, A, B);
     }
     Rect.prototype.has = function (P) {
-        var A, B;
-        A = this.points[0];
-        B = this.points[1];
+        var A = this.points[0];
+        var B = this.points[1];
         return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0;
     };
     Rect.prototype.name = function () {
@@ -782,8 +720,7 @@ var Image = (function (_super) {
         return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
     };
     Image.prototype.move = function (dx, dy) {
-        var newImage;
-        newImage = new Image(this.src, this.startPoint.move(dx, dy));
+        var newImage = new Image(this.src, this.startPoint.move(dx, dy));
         if (this.sx !== null) {
             newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
         }
