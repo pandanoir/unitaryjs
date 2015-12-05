@@ -321,18 +321,23 @@ var Line = (function (_super) {
     Line.prototype.getEquation = function () {
         var res;
         res = '';
+        var a = this.a;
+        var b = this.b;
+        var c = this.c;
+        if (this.a < 0 || this.a === 0 && this.b < 0) {
+            // to output x+y+1=0 instead of -x-y-1=0
+            a *= -1;
+            b *= -1;
+            c *= -1;
+        }
         if (this.a > 0 && this.a !== 1) {
             res += '+' + this.a + 'x';
         }
         if (this.a === 1) {
             res += '+x';
         }
-        if (this.a < 0 && this.a !== -1) {
-            res += '-' + -this.a + 'x';
-        }
-        if (this.a === -1) {
-            res += '-x';
-        }
+        // if (this.a < 0 && this.a !== -1) { res += '-' + -this.a + 'x'; }
+        // if (this.a === -1) { res += '-x'; }
         if (this.b > 0 && this.b !== 1) {
             res += '+' + this.b + 'y';
         }
@@ -462,6 +467,20 @@ var Circle = (function (_super) {
     };
     Circle.prototype.move = function (dx, dy) {
         return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
+    };
+    Circle.prototype.getEquation = function () {
+        var res = '(x';
+        if (this.Origin.x > 0)
+            res += '-' + this.Origin.x;
+        else if (this.Origin.x < 0)
+            res += '+' + (-this.Origin.x); // + abs(this.Origin.x)
+        res += ')^2+(y';
+        if (this.Origin.y > 0)
+            res += '-' + this.Origin.y;
+        else if (this.Origin.y < 0)
+            res += '+' + (-this.Origin.y); // + abs(this.Origin.x)
+        res += ')^2=' + this.r + '^2';
+        return res;
     };
     Circle.prototype.equals = function (C) {
         if (!_super.prototype.equals.call(this, C)) {
