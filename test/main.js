@@ -33,6 +33,13 @@ describe('Unitary', function() {
         it('move', function() {
             assert.ok(new Circle(A, 3).move(109, 31).equals(new Circle(new Point(112, 34), 3)));
         });
+        it('getEquation', function() {
+            assert.equal(new Unitary.Circle(new Unitary.Point(10, 10), 10).getEquation(), '(x-10)^2+(y-10)^2=10^2');
+            assert.equal(new Unitary.Circle(new Unitary.Point(-10, 10), 10).getEquation(), '(x+10)^2+(y-10)^2=10^2');
+            assert.equal(new Unitary.Circle(new Unitary.Point(10, -10), 10).getEquation(), '(x-10)^2+(y+10)^2=10^2');
+            assert.equal(new Unitary.Circle(new Unitary.Point(-10, -10), 10).getEquation(), '(x+10)^2+(y+10)^2=10^2');
+            assert.equal(new Unitary.Circle(new Unitary.Point(0, 0), 10).getEquation(), '(x)^2+(y)^2=10^2');
+        });
         it('name', function() {
             assert.equal(new Circle(A, 3).name(), 'Circle');
         });
@@ -57,7 +64,7 @@ describe('Unitary', function() {
             assert.ok(new Line(A, B).move(31, 31).equals(new Line(A.move(31, 31), B.move(31, 31))));
         });
         it('toString', function() {
-            assert.equal(new Line(new Point(1, 44), new Point(68, 12)).toString(), '-32x-67y+2980=0');
+            assert.equal(new Line(new Point(1, 44), new Point(68, 12)).toString(), '32x+67y-2980=0');
             assert.equal(new Line(new Point(90, 31), new Point(90, 94)).toString(), 'x-90=0');
             assert.equal(new Line(new Point(31, 90), new Point(94, 90)).toString(), 'y-90=0');
             assert.equal(new Line(new Point(1, -1), new Point(-2, 2)).toString(), 'x+y=0');
@@ -71,6 +78,16 @@ describe('Unitary', function() {
         });
         it('equals', function() {
             assert.ok(new Line(new Point(-66, 76), new Point(135, -20)).equals(new Line(new Point(1, 44), new Point(68, 12))));
+        });
+        it('getEquation', function() {
+            assert.equal(new Line(new Point(1, 0), new Point(0, 1)).getEquation(), 'x+y-1=0');
+            assert.equal(new Line(new Point(1, -1), new Point(0, 1)).getEquation(), '2x+y-1=0');
+            assert.equal(new Line(new Point(-1, 0), new Point(0, -1)).getEquation(), 'x+y+1=0');
+            assert.equal(new Line(new Point(0, -1), new Point(-1, 0)).getEquation(), 'x+y+1=0');
+            assert.equal(new Line(new Point(1, 0), new Point(0, -1)).getEquation(), 'x-y-1=0');
+            assert.equal(new Line(new Point(-1, 0), new Point(0, 1)).getEquation(), 'x-y+1=0');
+            assert.equal(new Line(new Point(-1, 0), new Point(-1, 1)).getEquation(), 'x+1=0');
+            assert.equal(new Line(new Point(0, -1), new Point(1, -1)).getEquation(), 'y+1=0');
         });
         it('name', function() {
             assert.equal(new Line(new Point(-66, 76), new Point(135, -20)).name(), 'Line');
@@ -136,7 +153,7 @@ describe('Unitary', function() {
             assert.equal(new Segment(new Point(48,84), new Point(64,48)).intersects(new Segment(new Point(86,65), new Point(29,43))), true);
         });
         it('toLine', function() {
-            assert.equal(new Segment(new Point(48,84), new Point(86,65)).toLine().toString(), '-x-2y+216=0');
+            assert.equal(new Segment(new Point(48,84), new Point(86,65)).toLine().toString(), 'x+2y-216=0');
         });
         it('equals', function() {
             assert.ok(new Segment(new Point(48,84), new Point(64,48)).equals(new Segment(new Point(48,84), new Point(64,48))));

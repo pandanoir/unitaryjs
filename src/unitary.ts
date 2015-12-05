@@ -319,16 +319,25 @@ export class Line extends UnitaryObject{
     getEquation(): string {
         var res:string;
         res = '';
-        if (this.a > 0 && this.a !== 1) { res += '+' + this.a + 'x'; }
-        if (this.a === 1) { res += '+x'; }
-        if (this.a < 0 && this.a !== -1) { res += '-' + -this.a + 'x'; }
-        if (this.a === -1) { res += '-x'; }
-        if (this.b > 0 && this.b !== 1) { res += '+' + this.b + 'y'; }
-        if (this.b === 1) { res += '+y'; }
-        if (this.b < 0 && this.b !== -1) { res += '-' + -this.b + 'y'; }
-        if (this.b === -1) { res += '-y'; }
-        if (this.c > 0) { res += '+' + this.c; }
-        if (this.c < 0) { res += '-' + -this.c; }
+        var a = this.a;
+        var b = this.b;
+        var c = this.c;
+        if (this.a < 0 || this.a === 0 && this.b < 0) {
+            // to output x+y+1=0 instead of -x-y-1=0
+            a *= -1;
+            b *= -1;
+            c *= -1;
+        }
+        if (a > 0 && a !== 1) { res += '+' + a + 'x'; }
+        if (a === 1) { res += '+x'; }
+        // if (a < 0 && a !== -1) { res += '-' + -a + 'x'; }
+        // if (a === -1) { res += '-x'; }
+        if (b > 0 && b !== 1) { res += '+' + b + 'y'; }
+        if (b === 1) { res += '+y'; }
+        if (b < 0 && b !== -1) { res += '-' + -b + 'y'; }
+        if (b === -1) { res += '-y'; }
+        if (c > 0) { res += '+' + c; }
+        if (c < 0) { res += '-' + -c; }
         if (res.charAt(0) === '+') { res = res.slice(1); }
         return res + '=0';
     }
