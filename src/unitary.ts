@@ -438,6 +438,16 @@ export class Circle extends UnitaryObject{
     move(dx: number, dy: number): UnitaryObject {
         return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
     }
+    getEquation(): string {
+        var res = '(x';
+        if (this.Origin.x > 0) res += '-' + this.Origin.x;
+        else if (this.Origin.x < 0) res += '+' + (-this.Origin.x); // + abs(this.Origin.x)
+        res += ')^2+(y';
+        if (this.Origin.y > 0) res += '-' + this.Origin.y;
+        else if (this.Origin.y < 0) res += '+' + (-this.Origin.y); // + abs(this.Origin.x)
+        res += ')^2=' + this.r + '^2';
+        return res;
+    }
     equals(C: Circle): boolean {
         if (!super.equals(C)) {
             return false;
