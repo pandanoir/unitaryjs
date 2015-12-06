@@ -46,6 +46,11 @@ describe('Unitary', function() {
     });
     describe('Graph', function() {
     });
+    describe('Group', function() {
+        it('name', function() {
+            assert.equal(new Group().name(), 'Group');
+        });
+    });
     describe('Image_', function() {
         it('equals', function() {
             assert.ok(new Image_('./hoge.png', A).equals(new Image_('./hoge.png', A)));
@@ -112,6 +117,12 @@ describe('Unitary', function() {
     describe('Polygon', function() {
         it('name', function() {
             assert.equal(new Polygon(new Point(48,84), new Point(86,65), new Point(29,43), new Point(64,48), new Point(68,41)).name(), 'Polygon');
+        });
+        it('move', function() {
+            assert.deepEqual(
+                new Polygon(new Point(48,84), new Point(86,65), new Point(29,43), new Point(64,48), new Point(68,41)).move(30, 30), 
+                new Polygon(new Point(78,114), new Point(116,95), new Point(59,73), new Point(94,78), new Point(98,71))
+            );
         });
     });
     describe('Quadrilateral', function() {
