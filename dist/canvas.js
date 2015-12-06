@@ -38,17 +38,13 @@ Canvas.fn.draw = function() {
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
         if (obj.style && obj.style.fillColor !== null) {
-            var beforeFillColor = this.canvas.fillStyle;
             this.canvas.fillStyle = obj.style.fillColor;
         }
         if (obj.style && obj.style.strokeColor !== null) {
-            var beforeStrokeColor = this.canvas.strokeStyle;
             this.canvas.strokeStyle = obj.style.strokeColor;
         }
         var name = obj.name();
         Canvas.drawFunction[name].call(this, obj);
-        if (obj.style && obj.style.fillColor !== null) {this.canvas.fillStyle = beforeFillColor;}
-        if (obj.style && obj.style.strokeColor !== null) {this.canvas.strokeStyle = beforeStrokeColor;}
     }
 };
 Canvas.drawFunction = {
