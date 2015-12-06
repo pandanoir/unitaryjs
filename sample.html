@@ -38,7 +38,8 @@
           rectCanvas = new Canvas('rect'),
           pentagonCanvas = new Canvas('pentagon'),
           logoCanvas = new Canvas('logo'),
-          graphCanvas = new Canvas('graph');
+          graphCanvas = new Canvas('graph'),
+          starCanvas = new Canvas('star');
 
       circleCanvas.add(circleC);
       circleCanvas.add(circleC.Origin);
@@ -84,6 +85,15 @@
       graphCanvas.add(new Text_('5', new Point(5 * scale,4)));
       graphCanvas.add(new Text_('1', new Point(0,1 * scale)));
 
+      var r = 30;
+      var star = new Triangle(
+        new Point(Math.cos(1 / 2 * Math.PI) * r, Math.sin(1 / 2 * Math.PI) * r),
+        new Point(Math.cos(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r),
+        new Point(Math.cos(1 / 2 * Math.PI + 4 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 4 / 3 * Math.PI) * r)
+      ).move(100, 100);
+      starCanvas.add(star);
+      starCanvas.add(star.rotate(Math.PI));
+
       circleCanvas.draw();
       lineCanvas.draw();
       segmentCanvas.draw();
@@ -93,6 +103,7 @@
       pentagonCanvas.draw();
       logoCanvas.draw();
       graphCanvas.draw();
+      starCanvas.draw();
     });
     </script>
     <style>
@@ -111,5 +122,6 @@
     <canvas id="pentagon" width="200" height="200"></canvas>
     <canvas id="logo" width="200" height="200"></canvas>
     <canvas id="graph" width="200" height="200"></canvas>
+    <canvas id="star" width="200" height="200"></canvas>
   </body>
 </html>
