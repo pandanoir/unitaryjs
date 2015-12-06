@@ -591,6 +591,12 @@ export class Triangle extends Polygon{
         var r = 2 * this.getArea() / (a + b + c);
         return new Circle(O, r);
     }
+    getCenter(): Point {
+        var A = this.points[0],
+            B = this.points[1],
+            C = this.points[2];
+        return new Point((A.x + B.x + C.x) / 3, (A.y + B.y + C.y) / 3);
+    }
     getArea(): number {
         var A = this.points[0],
             B = this.points[1],
