@@ -59,15 +59,15 @@ export class UnitaryObject {
     equals(B: UnitaryObject): boolean {
         return this.name() === B.name();
     }
-    setFillColor(color: string): any {
+    setFillColor(color: string): this {
         this.style.fillColor = color;
         return this;
     }
-    setStrokeColor(color: string): any {
+    setStrokeColor(color: string): this {
         this.style.strokeColor = color;
         return this;
     }
-    setStyle(style: any): any {
+    setStyle(style: any): this {
         for (var key in style) {
             this.style[key] = style[key];
         }
