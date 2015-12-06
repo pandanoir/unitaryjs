@@ -330,31 +330,31 @@ var Line = (function (_super) {
             b *= -1;
             c *= -1;
         }
-        if (this.a > 0 && this.a !== 1) {
-            res += '+' + this.a + 'x';
+        if (a > 0 && a !== 1) {
+            res += '+' + a + 'x';
         }
-        if (this.a === 1) {
+        if (a === 1) {
             res += '+x';
         }
-        // if (this.a < 0 && this.a !== -1) { res += '-' + -this.a + 'x'; }
-        // if (this.a === -1) { res += '-x'; }
-        if (this.b > 0 && this.b !== 1) {
-            res += '+' + this.b + 'y';
+        // if (a < 0 && a !== -1) { res += '-' + -a + 'x'; }
+        // if (a === -1) { res += '-x'; }
+        if (b > 0 && b !== 1) {
+            res += '+' + b + 'y';
         }
-        if (this.b === 1) {
+        if (b === 1) {
             res += '+y';
         }
-        if (this.b < 0 && this.b !== -1) {
-            res += '-' + -this.b + 'y';
+        if (b < 0 && b !== -1) {
+            res += '-' + -b + 'y';
         }
-        if (this.b === -1) {
+        if (b === -1) {
             res += '-y';
         }
-        if (this.c > 0) {
-            res += '+' + this.c;
+        if (c > 0) {
+            res += '+' + c;
         }
-        if (this.c < 0) {
-            res += '-' + -this.c;
+        if (c < 0) {
+            res += '-' + -c;
         }
         if (res.charAt(0) === '+') {
             res = res.slice(1);
@@ -514,7 +514,7 @@ var Polygon = (function (_super) {
         return false;
     };
     Polygon.prototype.move = function (dx, dy) {
-        var points;
+        var points = [];
         for (var i = 0, len = this.points.length; i < len; i++) {
             points[i] = this.points[i].move(dx, dy);
         }
@@ -752,6 +752,22 @@ var Image = (function (_super) {
     return Image;
 })(UnitaryObject);
 exports.Image = Image;
+var Group = (function (_super) {
+    __extends(Group, _super);
+    function Group() {
+        var objects = [];
+        for (var _a = 0; _a < arguments.length; _a++) {
+            objects[_a - 0] = arguments[_a];
+        }
+        _super.call(this);
+        this.group = objects;
+    }
+    Group.prototype.name = function () {
+        return 'Group';
+    };
+    return Group;
+})(UnitaryObject);
+exports.Group = Group;
 var Graph = (function (_super) {
     __extends(Graph, _super);
     function Graph(f, scale) {

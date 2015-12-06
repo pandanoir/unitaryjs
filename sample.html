@@ -44,9 +44,11 @@
       circleCanvas.add(circleC.Origin);
       circleCanvas.add(new Text_('O', circleC.Origin));
 
-      lineCanvas.add(AB);
-      lineCanvas.add(new Line(new Point(20, 0), new Point(20,20)));
-      lineCanvas.add(new Line(new Point(0, 20), new Point(20,20)));
+      var group = new Unitary.Group(AB, new Line(new Point(20, 0), new Point(20,20)), new Line(new Point(0, 20), new Point(20,20)));
+      // lineCanvas.add(AB);
+      // lineCanvas.add(new Line(new Point(20, 0), new Point(20,20)));
+      // lineCanvas.add(new Line(new Point(0, 20), new Point(20,20)));
+      lineCanvas.add(group);
 
       segmentCanvas.add(SegAB);
 

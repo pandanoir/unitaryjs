@@ -513,7 +513,7 @@ var Polygon = (function (_super) {
         return false;
     };
     Polygon.prototype.move = function (dx, dy) {
-        var points;
+        var points = [];
         for (var i = 0, len = this.points.length; i < len; i++) {
             points[i] = this.points[i].move(dx, dy);
         }
@@ -751,6 +751,22 @@ var Image = (function (_super) {
     return Image;
 })(UnitaryObject);
 exports.Image = Image;
+var Group = (function (_super) {
+    __extends(Group, _super);
+    function Group() {
+        var objects = [];
+        for (var _a = 0; _a < arguments.length; _a++) {
+            objects[_a - 0] = arguments[_a];
+        }
+        _super.call(this);
+        this.group = objects;
+    }
+    Group.prototype.name = function () {
+        return 'Group';
+    };
+    return Group;
+})(UnitaryObject);
+exports.Group = Group;
 var Graph = (function (_super) {
     __extends(Graph, _super);
     function Graph(f, scale) {
