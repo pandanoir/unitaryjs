@@ -98,6 +98,11 @@ var Point = (function (_super) {
     Point.prototype.move = function (dx, dy) {
         return new Point(this.x + dx, this.y + dy).setStyle(this.style);
     };
+    Point.prototype.rotate = function (rad, center) {
+        var x = Math.cos(rad) * (this.x - center.x) - Math.sin(rad) * (this.y - center.y) + center.x;
+        var y = Math.sin(rad) * (this.y - center.y) + Math.cos(rad) * (this.y - center.y) + center.y;
+        return new Point(x, y);
+    };
     Point.prototype.toString = function () {
         return '(' + this.x + ', ' + this.y + ')';
     };
@@ -520,6 +525,13 @@ var Polygon = (function (_super) {
         }
         return new Polygon(points).setStyle(this.style);
     };
+    Polygon.prototype.rotate = function (rad, center) {
+        var points = [];
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            points[i] = this.points[i].rotate(rad, center);
+        }
+        return new Polygon(points).setStyle(this.style);
+    };
     Polygon.prototype.has = function (P) {
         var a, b, cos, v;
         var before_v = this.points[this.points.length - 1];
@@ -559,6 +571,16 @@ var Quadrilateral = (function (_super) {
         var S1 = new Triangle(A, B, C).getArea();
         var S2 = new Triangle(A, C, D).getArea();
         return S1 + S2;
+    };
+    Quadrilateral.prototype.move = function (dx, dy) {
+        var newObject = _super.prototype.move.call(this, dx, dy);
+        var A = newObject.points[0], B = newObject.points[1], C = newObject.points[2], D = newObject.points[3];
+        return new Quadrilateral(A, B, C, D);
+    };
+    Quadrilateral.prototype.rotate = function (rad, center) {
+        var newObject = _super.prototype.rotate.call(this, rad, center);
+        var A = newObject.points[0], B = newObject.points[1], C = newObject.points[2], D = newObject.points[3];
+        return new Quadrilateral(A, B, C, D);
     };
     Quadrilateral.prototype.name = function () {
         return 'Quadrilateral';
@@ -606,6 +628,10 @@ var Triangle = (function (_super) {
         var r = 2 * this.getArea() / (a + b + c);
         return new Circle(O, r);
     };
+    Triangle.prototype.getCenter = function () {
+        var A = this.points[0], B = this.points[1], C = this.points[2];
+        return new Point((A.x + B.x + C.x) / 3, (A.y + B.y + C.y) / 3);
+    };
     Triangle.prototype.getArea = function () {
         var A = this.points[0], B = this.points[1], C = this.points[2];
         var AB = new Segment(A, B), AC = new Segment(A, C);
@@ -613,6 +639,19 @@ var Triangle = (function (_super) {
         var cosA = vAB.product(vAC) / (AB.length * AC.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
         var S = AB.length * AC.length * sinA / 2;
         return S;
+    };
+    Triangle.prototype.move = function (dx, dy) {
+        var newObject = _super.prototype.move.call(this, dx, dy);
+        var A = newObject.points[0], B = newObject.points[1], C = newObject.points[2];
+        return new Triangle(A, B, C);
+    };
+    Triangle.prototype.rotate = function (rad, center) {
+        if (typeof center === 'undefined') {
+            center = this.getCenter();
+        }
+        var newObject = _super.prototype.rotate.call(this, rad, center);
+        var A = newObject.points[0], B = newObject.points[1], C = newObject.points[2];
+        return new Triangle(A, B, C);
     };
     Triangle.prototype.name = function () {
         return 'Triangle';
@@ -632,6 +671,16 @@ var Rect = (function (_super) {
         var A = this.points[0];
         var B = this.points[1];
         return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0;
+    };
+    Rect.prototype.move = function (dx, dy) {
+        var newObject = _super.prototype.move.call(this, dx, dy);
+        var A = newObject.points[0], B = newObject.points[1];
+        return new Rect(A, B);
+    };
+    Rect.prototype.rotate = function (rad, center) {
+        var newObject = _super.prototype.rotate.call(this, rad, center);
+        var A = newObject.points[0], B = newObject.points[1];
+        return new Rect(A, B);
     };
     Rect.prototype.name = function () {
         return 'Rect';
