@@ -489,7 +489,7 @@ export class Polygon extends UnitaryObject{
         return false;
     }
     move(dx: number, dy: number): Polygon {
-        var points:Point[];
+        var points:Point[] = [];
         for (var i = 0, len = this.points.length; i < len; i++) {
             points[i] = this.points[i].move(dx, dy);
         }
