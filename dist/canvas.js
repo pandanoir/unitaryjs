@@ -35,18 +35,21 @@ Canvas.fn.Y = function(y) {
 Canvas.fn.draw = function() {
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
         var obj = this.objects[i];
-        this.canvas.strokeStyle = '#000';
-        this.canvas.fillStyle = '#000';
-        if (obj.style && obj.style.fillColor !== null) {
-            this.canvas.fillStyle = obj.style.fillColor;
-        }
-        if (obj.style && obj.style.strokeColor !== null) {
-            this.canvas.strokeStyle = obj.style.strokeColor;
-        }
-        var name = obj.name();
-        Canvas.drawFunction[name].call(this, obj);
+        this.__drawHelper__(obj);
     }
 };
+Canvas.fn.__drawHelper__ = function(obj) {
+    var name = obj.name();
+    this.canvas.strokeStyle = '#000';
+    this.canvas.fillStyle = '#000';
+    if (obj.style && obj.style.fillColor !== null) {
+        this.canvas.fillStyle = obj.style.fillColor;
+    }
+    if (obj.style && obj.style.strokeColor !== null) {
+        this.canvas.strokeStyle = obj.style.strokeColor;
+    }
+    Canvas.drawFunction[name].call(this, obj);
+}
 Canvas.drawFunction = {
     Segment: function(obj) {
         this.canvas.beginPath();
@@ -129,6 +132,11 @@ Canvas.drawFunction = {
             }.bind(this);
         } else if (obj.dx === null) {
             this.canvas.drawImage(obj.src);
+        }
+    },
+    Group: function(obj) {
+        for (var i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) {
+            this.__drawHelper__(obj.group[i]);
         }
     },
     Graph: function(obj) {

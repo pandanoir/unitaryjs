@@ -740,7 +740,16 @@ export class Image extends UnitaryObject{
         return 'Image';
     }
 }
-
+export class Group extends UnitaryObject {
+    group: UnitaryObject[];
+    constructor(...objects: UnitaryObject[]) {
+        super();
+        this.group = objects;
+    }
+    name(): string {
+        return 'Group';
+    }
+}
 export class Graph extends UnitaryObject{
     f: Function;
     scale: number;
