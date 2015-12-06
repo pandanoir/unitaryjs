@@ -103,6 +103,11 @@ export class Point extends UnitaryObject {
     move(dx: number, dy: number): Point {
         return new Point(this.x + dx, this.y + dy).setStyle(this.style);
     }
+    rotate(rad: number, center: Point): Point {
+        var x = Math.cos(rad) * (this.x - center.x) - Math.sin(rad) * (this.y - center.y) + center.x;
+        var y = Math.sin(rad) * (this.y - center.y) + Math.cos(rad) * (this.y - center.y) + center.y;
+        return new Point(x, y);
+    }
     toString(): string {
         return '(' + this.x + ', ' + this.y + ')';
     }
@@ -495,6 +500,13 @@ export class Polygon extends UnitaryObject{
         }
         return new Polygon(points).setStyle(this.style);
     }
+    rotate(rad: number, center: Point): Polygon {
+        var points:Point[] = [];
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            points[i] = this.points[i].rotate(rad, center);
+        }
+        return new Polygon(points).setStyle(this.style);
+    }
     has(P: Point): boolean {
         var a:Vector, b:Vector, cos:number, v:Point;
         var before_v = this.points[this.points.length - 1];
@@ -534,6 +546,22 @@ export class Quadrilateral extends Polygon{
         var S1 = new Triangle(A, B, C).getArea();
         var S2 = new Triangle(A, C, D).getArea();
         return S1 + S2;
+    }
+    move(dx: number, dy: number): Quadrilateral {
+        var newObject = super.move(dx, dy);
+        var A = newObject.points[0],
+            B = newObject.points[1],
+            C = newObject.points[2],
+            D = newObject.points[3];
+        return new Quadrilateral(A, B, C, D);
+    }
+    rotate(rad: number, center: Point): Quadrilateral {
+        var newObject = super.rotate(rad, center);
+        var A = newObject.points[0],
+            B = newObject.points[1],
+            C = newObject.points[2],
+            D = newObject.points[3];
+        return new Quadrilateral(A, B, C, D);
     }
     name(): string {
         return 'Quadrilateral';
@@ -610,6 +638,23 @@ export class Triangle extends Polygon{
         var S = AB.length * AC.length * sinA / 2;
         return S;
     }
+    move(dx: number, dy: number): Triangle {
+        var newObject = super.move(dx, dy);
+        var A = newObject.points[0],
+            B = newObject.points[1],
+            C = newObject.points[2];
+        return new Triangle(A, B, C);
+    }
+    rotate(rad: number, center?: Point): Triangle{
+        if (typeof center === 'undefined') {
+            center = this.getCenter();
+        }
+        var newObject = super.rotate(rad, center);
+        var A = newObject.points[0],
+            B = newObject.points[1],
+            C = newObject.points[2];
+        return new Triangle(A, B, C);
+    }
     name(): string {
         return 'Triangle';
     }
@@ -625,6 +670,18 @@ export class Rect extends Polygon{
         var A = this.points[0];
         var B = this.points[1];
         return (A.x - P.x) * (B.x - P.x) <= 0 && (A.y - P.y) * (B.y - P.y) <= 0;
+    }
+    move(dx: number, dy: number): Rect {
+        var newObject = super.move(dx, dy);
+        var A = newObject.points[0],
+        B = newObject.points[1];
+        return new Rect(A, B);
+    }
+    rotate(rad: number, center: Point): Rect {
+        var newObject = super.rotate(rad, center);
+        var A = newObject.points[0],
+            B = newObject.points[1];
+        return new Rect(A, B);
     }
     name(): string {
         return 'Rect';
