@@ -3,7 +3,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var ts = require('gulp-tsc');
 
-gulp.task('browserify', function() {
+gulp.task('browserify', ['compile'], function() {
     return browserify({
         entries: ['./src/browser.js']
     }).bundle().pipe(source('unitary.browser.js')).pipe(gulp.dest('./dist'));
@@ -13,4 +13,4 @@ gulp.task('compile', function() {
         .pipe(ts())
         .pipe(gulp.dest('dist'));
 });
-gulp.task('default', ['compile', 'browserify']);
+gulp.task('default', ['browserify']);
