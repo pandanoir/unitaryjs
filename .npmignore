@@ -1,6 +1,5 @@
-canvas.js
-logo.html
-logo.png
-sample.html
-test.js
-unitary.coffee
+*.html
+*.png
+gulpfile.js
+src/
+test/
