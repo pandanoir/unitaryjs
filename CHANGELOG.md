@@ -7,7 +7,7 @@ interpret all scripts into TypeScript.
 * add Vector3D class.
 * add BaseVector. this class is a parent of Vector and Vector3D.
 * add removeAllObjects() to Canvas. removeAllObjects() removes all objects which were added by Canvas.prototype.add() method.
-* add clear() to Canvas. this method clears <canvas>.
+* add clear() to Canvas. this method clears &lt;canvas&gt;.
 * canvas.prototype.draw() behaves more naturally when it was thrown NaN.
 * add style property. properties, such as font, fillColor, align, are put into style property.
 * add getEquation() method to Line class.
