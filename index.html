@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+      section {
+        padding-left:10px;
+      }
+      pre, code{
+        background: #eee;
+      }
+      pre {
+        padding: 0 5px;
+      }
+      code {
+        margin: 0 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      UnitaryJS is a library for handling canvas with objects. You don't need to write any code like <code>ctx.beginPath(); ctx.moveTo(x, y);</code>.
+    </p>
+    <p>
+      Demo: <a href="http://pandanoir.web.fc2.com/UnitaryJS/sample.html">Demo</a>
+    </p>
+
+    <h2>Quick Example</h2>
+<pre><code><!--{{{-->
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Sample&lt;/title&gt;
+    &lt;script src=&quot;./unitary.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;./canvas.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+    window.addEventListener(&#x27;load&#x27;, function(){
+      for (var key in Unitary) {
+        window[key] = Unitary[key];
+      }
+      var A = new Point(30,30),
+          B = new Point(90,90),
+          C = new Point(90,40),
+          ABC = new Triangle(A, B, C),
+          circumcircleABC = ABC.getCircumcircle(),
+          incircleABC = ABC.getIncircle(),
+          canvas = new Canvas(&#x27;canvas&#x27;);
+      canvas.add(ABC);
+      canvas.add(circumcircleABC);
+      canvas.add(incircleABC);
+      canvas.draw();
+    });
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;canvas id=&quot;canvas&quot; width=&quot;200&quot; height=&quot;200&quot;&gt;&lt;/canvas&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><!--}}}-->
+    <h3>Getting started</h3>
+    <code>
+      npm install unitaryjs
+    </code>
+    <p>
+      and require unitaryjs.
+    </p>
+<pre><code>var Unitary = require('unitaryjs');
+Unitary.Vector(1, 1);</code></pre>
+    <h2>Browser</h2>
+    <p>
+      download <a href="/dist/unitary.browser.js">dist/unitary.browser.js</a> and load it.
+    </p>
+
+    <code>
+      &lt;script src=&quot;unitary.browser.js&quot;&gt;&lt;/script&gt;
+    </code>
+    <h2>Classes</h2>
+    <section>
+      <h3>UnitaryObject</h3>
+      <p>
+        Almost all classes inherits this class. I sometimes call classes in UnitaryJS as UnitaryObject in this document.
+      </p>
+    </section>
+    <section>
+      <h3>Circle</h3>
+<pre><code>var O = new Point(30,30);
+var C = new Circle(O, 30);</code></pre>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves circle by dx and dy. x-coordinate of circle increases by dx. y-coordinate of circle increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Circle instance which are moved.
+      </p>
+      <h4>moveTo(x, y)</h4>
+      <p>
+        moves circle at coordinate(x, y). x-coordinate of circle will be x. y-coordinate of circle will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Circle instance which are moved.
+      </p>
+      <h4>getEquation()</h4>
+      <p>
+        returns a equation representing the circle.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        returns if A equals the circle. If origin of A and origin of the circle are same and radius of A and radius of B are same, A equals the circle.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Circle'.
+      </p>
+    </section>
+    <section>
+      <h3>Graph</h3>
+      <h4>setRange(start, end)</h4>
+      <p>
+        sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
+      </p>
+      <h4>equals()</h4>
+      <p>
+        always returns <code>false</code>.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Graph'.
+      </p>
+    </section>
+    <section>
+      <h3>Group</h3>
+      <p>
+        Group contains UnitaryObjects.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Group'.
+      </p>
+    </section>
+    <section>
+      <h3>Image</h3>
+      <h4>trim(startPoint, sw, sh, dw, dh)</h4>
+      <p>
+        this method behaves like trim() of HTML5 canvas.
+      </p>
+      <h4>resize(dw, dh)</h4>
+      <p>
+        this method behaves like resize() of HTML5 canvas.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        returns if A equals the image.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves image by dx and dy. x-coordinate of image increases by dx. y-coordinate of image increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Image instance which are moved.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Image'.
+      </p>
+    </section>
+    <section>
+      <h3>Line</h3>
+      <p>
+        Line isn't segment.
+      </p>
+<pre><code>var A = new Point(10,20);
+var B = new Point(30,40);
+var AB = new Line(A, B);</code></pre>
+
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves line by dx and dy. x-coordinate of line increases by dx. y-coordinate of line increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new line instance which are moved.
+      </p>
+      <h4>getEquation()</h4>
+      <p>
+        returns a equation representing the line.
+      </p>
+      <h4>toString()</h4>
+      <p>
+        returns the result of <code>.getEquation()</code>.
+      </p>
+      <h4>inspect()</h4>
+      <p>
+        returns the result of <code>.getEquation()</code>.
+      </p>
+      <h4>getIntersection(AB)</h4>
+      <p>
+        returns an intersection of the line and line AB. If the line doesn't intersect AB, <code>.getEquation()</code> returns false.
+      </p>
+      <h4>equals(AB)</h4>
+      <p>
+        returns if A equals the line.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Line'.
+      </p>
+    </section>
+    <section>
+      <h3>Point</h3>
+      <p>
+        Point has two constructors.
+      </p>
+<pre><code>var A1 = new Point(0, 0);
+var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
+      <p>
+        A1 and A2 are same Point.
+      </p>
+      <h4>moveTo(x, y)</h4>
+      <p>
+        moves point at coordinate(x, y). x-coordinate of point will be x. y-coordinate of point will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Point instance which are moved.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves point by dx and dy. x-coordinate of point increases by dx. y-coordinate of point increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Point instance which are moved.
+      </p>
+      <h4>rotate(rad, center)</h4>
+      <p>
+      </p>
+      <h4>toString()</h4>
+      <p>
+        returns coordinate of point as '(x, y)'.
+      </p>
+      <h4>inspect()</h4>
+      <p>
+        returns the result of <code>.toString()</code>.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        returns if A equals the point.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Point'.
+      </p>
+    </section>
+    <section>
+      <h3>Polygon</h3>
+      <p>
+        Polygon accepts more than two arguments. These arguments are vertices of the polygon.
+      </p>
+<pre><code>var ABCDE = new Polygon(
+  new Point(Math.cos(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30),
+  new Point(Math.cos(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30),
+  new Point(Math.cos(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30),
+  new Point(Math.cos(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30),
+  new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
+)</code></pre>
+    </section>
+    <section>
+      <h3>Quadrilateral</h3>
+      <p>
+        This constructor accepts four arguments. The argumetns are vertices of the quadrilateral.
+      </p>
+<pre><code>var ABCD = new Quadrilateral(
+  new Point(30,30),
+  new Point(90,90),
+  new Point(90,40),
+  new Point(60,20)
+);</code></pre>
+
+    </section>
+    <section>
+      <h3>Rect</h3>
+      <p>
+        This constructor accepts two arguments. First argument is upper-left corner of this rect. The other is bottom-right corner of this rect.
+      </p>
+<pre><code>var ABCD = new Quadrilateral(
+  new Point(30,30),
+  new Point(90,90)
+);</code></pre>
+
+    </section>
+    <section>
+      <h3>Segment</h3>
+      <p>
+        This Segment isn't Line.
+      </p>
+      <ul>
+        <li>.has(P) return whether P is on this segment or not.</li>
+      </ul>
+<pre><code>var A = new Point(10,20);
+var B = new Point(30,40);
+var segmentAB = new Segment(A, B);</code></pre>
+
+    </section>
+    <section>
+      <h3>Text</h3>
+      <ul>
+        <li><code>.strokeOutline()</code> Outline of the text aren't drawn if you don't call this method.</li>
+        <li><code>.setOutlineColor(color)</code> set outline color.</li>
+        <li><code>.setFillColor(color)</code> set fill color.</li>
+        <li><code>.setBaseline()</code> set baseline.</li>
+      </ul>
+<pre><code>var circleC = new Circle(new Point(30, 30), 30),
+var text = new Text('O', circleC.Origin));</code></pre>
+    </section>
+    <section>
+      <h3>Triangle</h3>
+      <p>
+        This constructor accpects three arguments. The arguments are vertices of the triangle.
+      </p>
+<pre><code>var ABCD = new Quadrilateral(
+  new Point(30,30),
+  new Point(90,90),
+  new Point(90,40)
+);</code></pre>
+      <ul>
+        <li><code>.getCircumcircle()</code> return its circumcircle.</li>
+        <li><code>.getIncircle()</code> return its incircle.</li>
+        <li><code>.getArea()</code> return area.</li>
+      </ul>
+
+    </section>
+    <section>
+      <h3>Vector</h3>
+      <p>
+        Vector aren't drawn on canvas. Vector has two constructors.
+      </p>
+      <ul>
+        <li><code>.add(n)</code> vector addition.</li>
+        <li><code>.minus(n)</code> vector subtraction.</li>
+        <li><code>.multiple(k)</code> multiple vector.</li>
+        <li><code>.product(v)</code> inner product of this with v.</li>
+        <li><code>.abs()</code> vector absolute value.</li>
+      </ul>
+
+<pre><code>var vectorA = new Vector(10, 10);
+var vectorOA = new Vector.from(new Point(10, 10), new Point(0, 0));</code></pre>
+      <p>
+        vectorA and vectorOA are same vector.
+      </p>
+    </section>
+  </body>
+</html>
