@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PandaNoir/UnitaryJS.git"
+    "url": "git+https://github.com/pandanoir/unitaryjs.git"
   },
   "keywords": [
     "canvas",
@@ -25,7 +25,7 @@
   "author": "PandaNoir",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PandaNoir/UnitaryJS/issues"
+    "url": "https://github.com/pandanoir/unitaryjs/issues"
   },
-  "homepage": "https://github.com/PandaNoir/UnitaryJS"
+  "homepage": "https://github.com/pandanoir/unitaryjs"
 }
