@@ -1,4 +1,6 @@
-#UnitaryJS [![Build Status](https://travis-ci.org/PandaNoir/UnitaryJS.svg?branch=master)](https://travis-ci.org/PandaNoir/UnitaryJS)
+# UnitaryJS
+
+[![Build Status](https://travis-ci.org/pandanoir/unitaryjs.svg?branch=master)](https://travis-ci.org/pandanoir/unitaryjs)
 
 ![logo.png](logo.png)
 
@@ -7,7 +9,7 @@ UnitaryJS is a library for handling canvas with objects.
 Demo: [Demo](http://pandanoir.web.fc2.com/UnitaryJS/sample.html)
 
 
-#Quick Example
+## Quick Example
 
 ```html
 <!DOCTYPE html>
@@ -43,7 +45,7 @@ Demo: [Demo](http://pandanoir.web.fc2.com/UnitaryJS/sample.html)
 </html>
 ```
 
-#Getting started
+## Getting started
 
 ```
 npm install unitaryjs
@@ -56,7 +58,7 @@ var Unitary = require('unitaryjs');
 Unitary.Vector(1, 1);
 ```
 
-#Browser
+## Browser
 
 download [./dist/unitary.browser.js](./dist/unitary.browser.js) and load it.
 
@@ -65,9 +67,9 @@ download [./dist/unitary.browser.js](./dist/unitary.browser.js) and load it.
 <script src="unitary.browser.js"></script>
 ```
 
-#Classes
+## Classes
 
-##Point
+### Point
 Point has two constructors.
 
 ```js
@@ -77,7 +79,7 @@ var A2 = new Point.fromVector(new Vector(0, 0));
 
 A1 and A2 are same Point.
 
-##Vector
+### Vector
 Vector aren't drawn on canvas. Vector has two constructors.
 
 * `.add(n)` vector addition.
@@ -94,7 +96,7 @@ var vectorOA = new Vector.from(new Point(10, 10), new Point(0, 0));
 
 vectorA and vectorOA are same vector.
 
-##Line
+### Line
 This Line isn't segment.
 
 ```js
@@ -103,7 +105,7 @@ var B = new Point(30,40);
 var AB = new Line(A, B);
 ```
 
-##Segment
+### Segment
 This Segment isn't Line.
 
   * .has(P) return whether P is on this segment or not.
@@ -114,14 +116,14 @@ var B = new Point(30,40);
 var segmentAB = new Segment(A, B);
 ```
 
-##Circle
+### Circle
 
 ```js
 var O = new Point(30,30);
 var C = new Circle(O, 30);
 ```
 
-##Polygon
+### Polygon
 Polygon accepts more than two arguments. These arguments are vertices of the polygon.
 
 ```js
@@ -134,7 +136,7 @@ var ABCDE = new Polygon(
 )
 ```
 
-##Quadrilateral
+### Quadrilateral
 This constructor accepts four arguments. The argumetns are vertices of the quadrilateral.
 
 ```js
@@ -146,7 +148,7 @@ var ABCD = new Quadrilateral(
 );
 ```
 
-##Triangle
+### Triangle
 This constructor accpects three arguments. The arguments are vertices of the triangle.
 
 ```js
@@ -161,7 +163,7 @@ var ABCD = new Quadrilateral(
 * `.getIncircle()` return its incircle.
 * `.getArea()` return area.
 
-##Rect
+### Rect
 This constructor accepts two arguments. First argument is upper-left corner of this rect. The other is bottom-right corner of this rect.
 
 ```js
@@ -171,7 +173,7 @@ var ABCD = new Quadrilateral(
 );
 ```
 
-##Text
+### Text
 
 * `.strokeOutline()` Outline of the text aren't drawn if you don't call this method.
 * `.setOutlineColor(color)` set outline color.
