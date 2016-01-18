@@ -81,14 +81,30 @@ Unitary.Vector(1, 1);</code></pre>
       &lt;script src=&quot;unitary.browser.js&quot;&gt;&lt;/script&gt;
     </code>
     <h2>Classes</h2>
+    <ul>
+      <li><a href="#UnitaryObject">UnitaryObject</a></li>
+      <li><a href="#Circle">Circle</a></li>
+      <li><a href="#Graph">Graph</a></li>
+      <li><a href="#Group">Group</a></li>
+      <li><a href="#Image">Image</a></li>
+      <li><a href="#Line">Line</a></li>
+      <li><a href="#Point">Point</a></li>
+      <li><a href="#Polygon">Polygon</a></li>
+      <li><a href="#Quadrilateral">Quadrilateral</a></li>
+      <li><a href="#Rect">Rect</a></li>
+      <li><a href="#Segment">Segment</a></li>
+      <li><a href="#Text">Text</a></li>
+      <li><a href="#Triangle">Triangle</a></li>
+      <li><a href="#Vector">Vector</a></li>
+    </ul>
     <section>
-      <h3>UnitaryObject</h3>
+      <h3 id="UnitaryObject">UnitaryObject</h3>
       <p>
         Almost all classes inherits this class. I sometimes call classes in UnitaryJS as UnitaryObject in this document.
       </p>
     </section>
     <section>
-      <h3>Circle</h3>
+      <h3 id="Circle">Circle</h3>
 <pre><code>var O = new Point(30,30);
 var C = new Circle(O, 30);</code></pre>
       <h4>move(dx, dy)</h4>
@@ -113,7 +129,7 @@ var C = new Circle(O, 30);</code></pre>
       </p>
     </section>
     <section>
-      <h3>Graph</h3>
+      <h3 id="Graph">Graph</h3>
       <h4>setRange(start, end)</h4>
       <p>
         sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
@@ -128,7 +144,7 @@ var C = new Circle(O, 30);</code></pre>
       </p>
     </section>
     <section>
-      <h3>Group</h3>
+      <h3 id="Group">Group</h3>
       <p>
         Group contains UnitaryObjects.
       </p>
@@ -138,7 +154,7 @@ var C = new Circle(O, 30);</code></pre>
       </p>
     </section>
     <section>
-      <h3>Image</h3>
+      <h3 id="Image">Image</h3>
       <h4>trim(startPoint, sw, sh, dw, dh)</h4>
       <p>
         this method behaves like trim() of HTML5 canvas.
@@ -161,7 +177,7 @@ var C = new Circle(O, 30);</code></pre>
       </p>
     </section>
     <section>
-      <h3>Line</h3>
+      <h3 id="Line">Line</h3>
       <p>
         Line isn't segment.
       </p>
@@ -199,7 +215,7 @@ var AB = new Line(A, B);</code></pre>
       </p>
     </section>
     <section>
-      <h3>Point</h3>
+      <h3 id="Point">Point</h3>
       <p>
         Point has two constructors.
       </p>
@@ -237,7 +253,7 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
       </p>
     </section>
     <section>
-      <h3>Polygon</h3>
+      <h3 id="Polygon">Polygon</h3>
       <p>
         Polygon accepts more than two arguments. These arguments are vertices of the polygon.
       </p>
@@ -250,7 +266,7 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
 )</code></pre>
     </section>
     <section>
-      <h3>Quadrilateral</h3>
+      <h3 id="Quadrilateral">Quadrilateral</h3>
       <p>
         This constructor accepts four arguments. The argumetns are vertices of the quadrilateral.
       </p>
@@ -263,7 +279,7 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
 
     </section>
     <section>
-      <h3>Rect</h3>
+      <h3 id="Rect">Rect</h3>
       <p>
         This constructor accepts two arguments. First argument is upper-left corner of this rect. The other is bottom-right corner of this rect.
       </p>
@@ -274,7 +290,7 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
 
     </section>
     <section>
-      <h3>Segment</h3>
+      <h3 id="Segment">Segment</h3>
       <p>
         This Segment isn't Line.
       </p>
@@ -287,7 +303,7 @@ var segmentAB = new Segment(A, B);</code></pre>
 
     </section>
     <section>
-      <h3>Text</h3>
+      <h3 id="Text">Text</h3>
       <ul>
         <li><code>.strokeOutline()</code> Outline of the text aren't drawn if you don't call this method.</li>
         <li><code>.setOutlineColor(color)</code> set outline color.</li>
@@ -298,7 +314,7 @@ var segmentAB = new Segment(A, B);</code></pre>
 var text = new Text('O', circleC.Origin));</code></pre>
     </section>
     <section>
-      <h3>Triangle</h3>
+      <h3 id="Triangle">Triangle</h3>
       <p>
         This constructor accpects three arguments. The arguments are vertices of the triangle.
       </p>
@@ -315,7 +331,7 @@ var text = new Text('O', circleC.Origin));</code></pre>
 
     </section>
     <section>
-      <h3>Vector</h3>
+      <h3 id="Vector">Vector</h3>
       <p>
         Vector aren't drawn on canvas. Vector has two constructors.
       </p>
