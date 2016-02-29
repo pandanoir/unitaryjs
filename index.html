@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -8,18 +7,25 @@
     <style>
       body {
         font-size:17px;
+        background: #f6f6f6;
+        color: #444;
       }
       section {
-        padding-left:10px;
+        padding-left:1em;
       }
       code {
         overflow-x: scroll;
         -webkit-overflow-scrolling : touch;
       }
       h4 {
+        border: 1px solid #e3e3e3;
         background: #eee;
         padding: 0 10px;
         border-radius: 3px;
+      }
+      #classes-nav li {
+        display: inline-block;
+        width:49%;
       }
     </style>
   </head>
@@ -30,8 +36,15 @@
     <p>
       Demo: <a href="http://pandanoir.web.fc2.com/UnitaryJS/sample.html">Demo</a>
     </p>
+    <nav>
+      <ul>
+        <li><a href="#quick">Quick Example</a></li>
+        <li><a href="#browser">Browser</a></li>
+        <li><a href="#classes">Classes</a></li>
+      </ul>
+    </nav>
 
-    <h2>Quick Example</h2>
+    <h2 id="quick">Quick Example</h2>
 <pre><code><!--{{{-->
 &lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;ja&quot;&gt;
@@ -73,7 +86,7 @@
     </p>
 <pre><code>var Unitary = require('unitaryjs');
 Unitary.Vector(1, 1);</code></pre>
-    <h2>Browser</h2>
+    <h2 id="browser">Browser</h2>
     <p>
       download <a href="/dist/unitary.browser.js">dist/unitary.browser.js</a> and load it.
     </p>
@@ -81,23 +94,25 @@ Unitary.Vector(1, 1);</code></pre>
     <code>
       &lt;script src=&quot;unitary.browser.js&quot;&gt;&lt;/script&gt;
     </code>
-    <h2>Classes</h2>
-    <ul>
-      <li><a href="#UnitaryObject">UnitaryObject</a></li>
-      <li><a href="#Circle">Circle</a></li>
-      <li><a href="#Graph">Graph</a></li>
-      <li><a href="#Group">Group</a></li>
-      <li><a href="#Image">Image</a></li>
-      <li><a href="#Line">Line</a></li>
-      <li><a href="#Point">Point</a></li>
-      <li><a href="#Polygon">Polygon</a></li>
-      <li><a href="#Quadrilateral">Quadrilateral</a></li>
-      <li><a href="#Rect">Rect</a></li>
-      <li><a href="#Segment">Segment</a></li>
-      <li><a href="#Text">Text</a></li>
-      <li><a href="#Triangle">Triangle</a></li>
-      <li><a href="#Vector">Vector</a></li>
-    </ul>
+    <h2 id="classes">Classes</h2>
+    <nav id="classes-nav">
+      <ul>
+        <li><a href="#UnitaryObject">UnitaryObject</a></li>
+        <li><a href="#Circle">Circle</a></li>
+        <li><a href="#Graph">Graph</a></li>
+        <li><a href="#Group">Group</a></li>
+        <li><a href="#Image">Image</a></li>
+        <li><a href="#Line">Line</a></li>
+        <li><a href="#Point">Point</a></li>
+        <li><a href="#Polygon">Polygon</a></li>
+        <li><a href="#Quadrilateral">Quadrilateral</a></li>
+        <li><a href="#Rect">Rect</a></li>
+        <li><a href="#Segment">Segment</a></li>
+        <li><a href="#Text">Text</a></li>
+        <li><a href="#Triangle">Triangle</a></li>
+        <li><a href="#Vector">Vector</a></li>
+      </ul>
+    </nav>
     <section>
       <h3 id="UnitaryObject">UnitaryObject</h3>
       <p>
@@ -105,6 +120,7 @@ Unitary.Vector(1, 1);</code></pre>
       </p>
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Circle">Circle</h3>
 <pre><code>var O = new Point(30,30);
 var C = new Circle(O, 30);</code></pre>
@@ -115,149 +131,156 @@ var C = new Circle(O, 30);</code></pre>
       <h4>moveTo(x, y)</h4>
       <p>
         moves circle at coordinate(x, y). x-coordinate of circle will be x. y-coordinate of circle will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Circle instance which are moved.
-      </p>
-      <h4>getEquation()</h4>
-      <p>
-        returns a equation representing the circle.
-      </p>
-      <h4>equals(A)</h4>
-      <p>
-        returns if A equals the circle. If origin of A and origin of the circle are same and radius of A and radius of B are same, A equals the circle.
-      </p>
-      <h4>name()</h4>
-      <p>
-        returns 'Circle'.
-      </p>
-    </section>
-    <section>
-      <h3 id="Graph">Graph</h3>
-      <h4>setRange(start, end)</h4>
-      <p>
-        sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
-      </p>
-      <h4>equals()</h4>
-      <p>
-        always returns <code>false</code>.
-      </p>
-      <h4>name()</h4>
-      <p>
-        returns 'Graph'.
-      </p>
-    </section>
-    <section>
-      <h3 id="Group">Group</h3>
-      <p>
-        Group contains UnitaryObjects.
-      </p>
-      <h4>name()</h4>
-      <p>
-        returns 'Group'.
-      </p>
-    </section>
-    <section>
-      <h3 id="Image">Image</h3>
-      <h4>trim(startPoint, sw, sh, dw, dh)</h4>
-      <p>
-        this method behaves like trim() of HTML5 canvas.
-      </p>
-      <h4>resize(dw, dh)</h4>
-      <p>
-        this method behaves like resize() of HTML5 canvas.
-      </p>
-      <h4>equals(A)</h4>
-      <p>
-        returns if A equals the image.
-      </p>
-      <h4>move(dx, dy)</h4>
-      <p>
-        moves image by dx and dy. x-coordinate of image increases by dx. y-coordinate of image increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Image instance which are moved.
-      </p>
-      <h4>name()</h4>
-      <p>
-        returns 'Image'.
-      </p>
-    </section>
-    <section>
-      <h3 id="Line">Line</h3>
-      <p>
-        Line isn't segment.
-      </p>
+    </p>
+    <h4>getEquation()</h4>
+    <p>
+      returns a equation representing the circle.
+    </p>
+    <h4>equals(A)</h4>
+    <p>
+      if origin of A and origin of this circle are same and radius of A and radius of this circle are same, .equals(A) returns true. Otherwise .equals(A) returns false.
+    </p>
+    <h4>name()</h4>
+    <p>
+      returns 'Circle'.
+    </p>
+  </section>
+  <section>
+    <small><a href="#classes-nav">back to nav</a></small>
+    <h3 id="Graph">Graph</h3>
+    <h4>setRange(start, end)</h4>
+    <p>
+      sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
+    </p>
+    <h4>equals()</h4>
+    <p>
+      always returns <code>false</code>.
+    </p>
+    <h4>name()</h4>
+    <p>
+      returns 'Graph'.
+    </p>
+  </section>
+  <section>
+    <small><a href="#classes-nav">back to nav</a></small>
+    <h3 id="Group">Group</h3>
+    <p>
+      Group contains UnitaryObjects.
+    </p>
+    <h4>name()</h4>
+    <p>
+      returns 'Group'.
+    </p>
+  </section>
+  <section>
+    <small><a href="#classes-nav">back to nav</a></small>
+    <h3 id="Image">Image</h3>
+    <h4>trim(startPoint, sw, sh, dw, dh)</h4>
+    <p>
+      this method behaves like trim() of HTML5 canvas.
+    </p>
+    <h4>resize(dw, dh)</h4>
+    <p>
+      this method behaves like resize() of HTML5 canvas.
+    </p>
+    <h4>equals(A)</h4>
+    <p>
+      if A equals this image, .equals(A) returns true. Otherwise .equals(A) returns false.
+    </p>
+    <h4>move(dx, dy)</h4>
+    <p>
+      moves image by dx and dy. x-coordinate of image increases by dx. y-coordinate of image increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Image instance which are moved.
+    </p>
+    <h4>name()</h4>
+    <p>
+      returns 'Image'.
+    </p>
+  </section>
+  <section>
+    <small><a href="#classes-nav">back to nav</a></small>
+    <h3 id="Line">Line</h3>
+    <p>
+      Line isn't segment.
+    </p>
 <pre><code>var A = new Point(10,20);
 var B = new Point(30,40);
 var AB = new Line(A, B);</code></pre>
 
-      <h4>move(dx, dy)</h4>
-      <p>
-        moves line by dx and dy. x-coordinate of line increases by dx. y-coordinate of line increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new line instance which are moved.
-      </p>
-      <h4>getEquation()</h4>
-      <p>
-        returns a equation representing the line.
-      </p>
-      <h4>toString()</h4>
-      <p>
-        returns the result of <code>.getEquation()</code>.
-      </p>
-      <h4>inspect()</h4>
-      <p>
-        returns the result of <code>.getEquation()</code>.
-      </p>
-      <h4>getIntersection(AB)</h4>
-      <p>
-        returns an intersection of the line and line AB. If the line doesn't intersect AB, <code>.getEquation()</code> returns false.
-      </p>
-      <h4>equals(AB)</h4>
-      <p>
-        returns if A equals the line.
-      </p>
-      <h4>name()</h4>
-      <p>
-        returns 'Line'.
-      </p>
-    </section>
-    <section>
-      <h3 id="Point">Point</h3>
-      <p>
-        Point has two constructors.
-      </p>
+    <h4>move(dx, dy)</h4>
+    <p>
+      moves line by dx and dy. x-coordinate of line increases by dx. y-coordinate of line increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new line instance which are moved.
+    </p>
+    <h4>getEquation()</h4>
+    <p>
+      returns a equation representing the line.
+    </p>
+    <h4>toString()</h4>
+    <p>
+      returns the result of <code>.getEquation()</code>.
+    </p>
+    <h4>inspect()</h4>
+    <p>
+      returns the result of <code>.getEquation()</code>.
+    </p>
+    <h4>getIntersection(AB)</h4>
+    <p>
+      returns an intersection of the line and line AB. If the line doesn't intersect AB, <code>.getEquation()</code> returns false.
+    </p>
+    <h4>equals(AB)</h4>
+    <p>
+      if A equals this line, .equals(A) returns true. Otherwise .equals(A) returns false.
+    </p>
+    <h4>name()</h4>
+    <p>
+      returns 'Line'.
+    </p>
+  </section>
+  <section>
+    <small><a href="#classes-nav">back to nav</a></small>
+    <h3 id="Point">Point</h3>
+    <p>
+      Point has two constructors.
+    </p>
 <pre><code>var A1 = new Point(0, 0);
 var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
-      <p>
-        A1 and A2 are same Point.
-      </p>
-      <h4>moveTo(x, y)</h4>
-      <p>
-        moves point at coordinate(x, y). x-coordinate of point will be x. y-coordinate of point will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Point instance which are moved.
-      </p>
-      <h4>move(dx, dy)</h4>
-      <p>
-        moves point by dx and dy. x-coordinate of point increases by dx. y-coordinate of point increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Point instance which are moved.
-      </p>
-      <h4>rotate(rad, center)</h4>
-      <p>
-      </p>
-      <h4>toString()</h4>
-      <p>
-        returns coordinate of point as '(x, y)'.
-      </p>
-      <h4>inspect()</h4>
-      <p>
-        returns the result of <code>.toString()</code>.
-      </p>
-      <h4>equals(A)</h4>
-      <p>
-        returns if A equals the point.
-      </p>
-      <h4>name()</h4>
-      <p>
-        return 'Point'.
-      </p>
-    </section>
-    <section>
-      <h3 id="Polygon">Polygon</h3>
-      <p>
-        Polygon accepts more than two arguments. These arguments are vertices of the polygon.
-      </p>
+    <p>
+      A1 and A2 are same Point.
+    </p>
+    <h4>moveTo(x, y)</h4>
+    <p>
+      moves point at coordinate(x, y). x-coordinate of point will be x. y-coordinate of point will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Point instance which are moved.
+  </p>
+  <h4>move(dx, dy)</h4>
+  <p>
+    moves point by dx and dy. x-coordinate of point increases by dx. y-coordinate of point increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Point instance which are moved.
+  </p>
+  <h4>rotate(rad, center)</h4>
+  <p>
+    rotates around center by rad.
+  </p>
+  <h4>toString()</h4>
+  <p>
+    returns coordinate of point as '(x, y)'.
+  </p>
+  <h4>inspect()</h4>
+  <p>
+    returns the result of <code>.toString()</code>.
+  </p>
+  <h4>equals(A)</h4>
+  <p>
+    if A equals this point, .equals(A) returns true. Otherwise .equals(A) returns false.
+  </p>
+  <h4>name()</h4>
+  <p>
+    return 'Point'.
+  </p>
+</section>
+<section>
+  <small><a href="#classes-nav">back to nav</a></small>
+  <h3 id="Polygon">Polygon</h3>
+  <p>
+    Polygon accepts more than two arguments. These arguments are vertices of the polygon.
+  </p>
 <pre><code>var ABCDE = new Polygon(
   new Point(Math.cos(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30),
   new Point(Math.cos(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30),
@@ -265,8 +288,33 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
   new Point(Math.cos(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30),
   new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
 )</code></pre>
+  <h4>equals()</h4>
+  <p>
+    always returns false.
+  </p>
+  <h4>move(dx, dy)</h4>
+  <p>
+    moves polygon by dx and dy. x-coordinate of each vertex increases by dx. y-coordinate of each vertex increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Polygon instance which are moved.
+  </p>
+  <h4>moveTo(x, y)</h4>
+  <p>
+    moves polygon at coordinate(x, y). x-coordinate of each vertex will be x. y-coordinate of each vertex will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Polygon instance which are moved.
+</p>
+<h4>rotate(rad, center)</h4>
+<p>
+  rotates around center by rad.
+</p>
+<h4>has(P)</h4>
+<p>
+  if P is in this polygon, .has(P) returns true. Otherwise .has(P) returns false.
+</p>
+<h4>name()</h4>
+<p>
+  returns 'Polygon'.
+</p>
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Quadrilateral">Quadrilateral</h3>
       <p>
         This constructor accepts four arguments. The argumetns are vertices of the quadrilateral.
@@ -277,9 +325,25 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
   new Point(90,40),
   new Point(60,20)
 );</code></pre>
-
+      <h4>getArea()</h4>
+      <p>
+        returns the area of this Quadrilateral.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves Quadrilateral by dx and dy. x-coordinate of each vertex increases by dx. y-coordinate of each vertex increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Quadrilateral instance which are moved.
+      </p>
+      <h4>rotate(rad, center)</h4>
+      <p>
+        rotates around center by rad.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Circle'.
+      </p>
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Rect">Rect</h3>
       <p>
         This constructor accepts two arguments. First argument is upper-left corner of this rect. The other is bottom-right corner of this rect.
@@ -288,33 +352,94 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
   new Point(30,30),
   new Point(90,90)
 );</code></pre>
-
+      <h4>has(P)</h4>
+      <p>
+        if P is in this rect, .has(P) returns true. Otherwise .has(P) returns false.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves the rect by dx and dy. x-coordinate of each vertex increases by dx. y-coordinate of each vertex increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Rect instance which are moved.
+      </p>
+      <h4>rotate(rad, center)</h4>
+      <p>
+        rotates around center by rad.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Rect'.
+      </p>
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Segment">Segment</h3>
       <p>
         This Segment isn't Line.
       </p>
-      <ul>
-        <li>.has(P) return whether P is on this segment or not.</li>
-      </ul>
 <pre><code>var A = new Point(10,20);
 var B = new Point(30,40);
 var segmentAB = new Segment(A, B);</code></pre>
+      <h4>intersects(L)</h4>
+      <p>
+        if L and this segment intersects, .intersects(L) returns true. Otherwise .intersects(L) returns false. L should be Line or Segment.
+      </p>
+      <h4>toLine()</h4>
+      <p>
+        extends this segment infinitely to transform this segment into a line.
+      </p>
+      <h4>equals(L)</h4>
+      <p>
+        if L equals this segment, .equals(L) returns true. Otherwise .equals(L) returns false.
+      </p>
+      <h4>has(P)</h4>
+      <p>
+        if P is on this segment, .has(P) returns true. Otherwise .has(P) returns false.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves the segment by dx and dy. x-coordinate of this increases by dx. y-coordinate of this increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Segment instance which are moved.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Segment'.
+      </p>
 
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Text">Text</h3>
-      <ul>
-        <li><code>.strokeOutline()</code> Outline of the text aren't drawn if you don't call this method.</li>
-        <li><code>.setOutlineColor(color)</code> set outline color.</li>
-        <li><code>.setFillColor(color)</code> set fill color.</li>
-        <li><code>.setBaseline()</code> set baseline.</li>
-      </ul>
 <pre><code>var circleC = new Circle(new Point(30, 30), 30),
 var text = new Text('O', circleC.Origin));</code></pre>
+      <h4>strokeOutline()</h4>
+      <p>
+        if you call this method, text will stroke outline.
+      </p>
+      <h4>setAlign(align)</h4>
+      <p>
+        sets align of this text.
+      </p>
+      <h4>setOutlineColor(color)</h4>
+      <p>
+        sets outline color of this text.
+      </p>
+      <h4>setBaseline(base)</h4>
+      <p>
+        sets baseline of this text.
+      </p>
+      <h4>setFont(font)</h4>
+      <p>
+        sets font of this text.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves this text by dx and dy. x-coordinate of this increases by dx. y-coordinate of this increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Text instance which are moved.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Text'.
+      </p>
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Triangle">Triangle</h3>
       <p>
         This constructor accpects three arguments. The arguments are vertices of the triangle.
@@ -324,14 +449,37 @@ var text = new Text('O', circleC.Origin));</code></pre>
   new Point(90,90),
   new Point(90,40)
 );</code></pre>
-      <ul>
-        <li><code>.getCircumcircle()</code> return its circumcircle.</li>
-        <li><code>.getIncircle()</code> return its incircle.</li>
-        <li><code>.getArea()</code> return area.</li>
-      </ul>
-
+      <h4>getCircumcircle()</h4>
+      <p>
+        returns the circumcircle of this triangle.
+      </p>
+      <h4>getIncircle()</h4>
+      <p>
+        returns the incircle of thie triangle.
+      </p>
+      <h4>getArea()</h4>
+      <p>
+        return the area of this triangle.
+      </p>
+      <h4>getCenter()</h4>
+      <p>
+        return the centroid of this triangle.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves the triangle by dx and dy. x-coordinate of each vertex increases by dx. y-coordinate of each vertex increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Triangle instance which are moved.
+      </p>
+      <h4>rotate(rad, center)</h4>
+      <p>
+        rotates around center by rad.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Triangle'.
+      </p>
     </section>
     <section>
+      <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Vector">Vector</h3>
       <p>
         Vector aren't drawn on canvas. Vector has two constructors.
@@ -349,6 +497,39 @@ var vectorOA = new Vector.from(new Point(10, 10), new Point(0, 0));</code></pre>
       <p>
         vectorA and vectorOA are same vector.
       </p>
+      <h4>add(V)</h4>
+      <p>
+        adds V to this vector.
+      </p>
+      <h4>minus(V)</h4>
+      <p>
+        subtracts V from this vector.
+      </p>
+      <h4>multiple(k)</h4>
+      <p>
+        multiples this vector by a real number k. this method provides scalar multiplication.
+      </p>
+      <h4>product(V)</h4>
+      <p>
+        returns the result of dot product of this vector and V.
+      </p>
+      <h4>abs()</h4>
+      <p>
+        returns the length of this vector.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        if each component of this vector and A is same, .equals(A) returns true. Otherwise .equals(A) returns false.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves this vector by dx and dy. x-component of this vector increases by dx. y-component of this vector increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Vector instance which are moved.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Vector'.
+      </p>
+      <small><a href="#classes-nav">back to nav</a></small>
     </section>
   </body>
 </html>
