@@ -33,9 +33,38 @@ Canvas.fn.Y = function(y) {
     return Math.round(res);
 };
 Canvas.fn.draw = function() {
-    for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
+    var promises = [];
+    function load(src, obj) {
+        promises.push(new Promise(function(resolve, rejector) {
+            var image = new Image();
+            image.src = src;
+            image.addEventListener('load', function() {
+                obj.__image__ = image;
+                resolve();
+            });
+            image.addEventListener('error', rejector);
+        }));
+    }
+    for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1){
         var obj = this.objects[i];
-        this.__drawHelper__(obj);
+        if (obj.name() === 'Image') {
+            if (!obj.__image__) {
+                load(obj.src, obj);
+            }
+        }
+    }
+    if (promises.length === 0) {
+        for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
+            var obj = this.objects[i];
+            this.__drawHelper__(obj);
+        }
+    } else {
+        Promise.all(promises).then(function(values) {
+            for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
+                var obj = this.objects[i];
+                this.__drawHelper__(obj);
+            }
+        }.bind(this));
     }
 };
 Canvas.fn.__drawHelper__ = function(obj) {
@@ -119,21 +148,18 @@ Canvas.drawFunction = {
         this.canvas.fillRect(this.X(obj.x), this.Y(obj.y), 1, 1);
     },
     Image: function(obj) {
-        var image = new Image();
-        image.src = obj.src;
-        image.onload = function() {
-            if (obj.dx !== null && obj.sx !== null) {
-                this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
-            } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
-                this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
-            } else if (obj.dx !== null && obj.dw === null) {
-                // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
-                // 対偶をとり obj.dw === nullならばobj.sx === null
-                this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
-            } else if (obj.dx === null) {
-                this.canvas.drawImage(image);
-            }
-        }.bind(this);
+        var image = obj.__image__;
+        if (obj.dx !== null && obj.sx !== null) {
+            this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+        } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
+            this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+        } else if (obj.dx !== null && obj.dw === null) {
+            // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
+            // 対偶をとり obj.dw === nullならばobj.sx === null
+            this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
+        } else if (obj.dx === null) {
+            this.canvas.drawImage(image);
+        }
     },
     Group: function(obj) {
         for (var i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) {
