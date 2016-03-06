@@ -87,8 +87,8 @@ Canvas.drawFunction = {
         var y = this.Y(obj.points[0].y);
         var w = obj.points[1].x - obj.points[0].x;
         var h = - (obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
-        this.canvas.strokeRect(x, y, w, h); // 上でX()、Y()している
-        if (obj.style.fillColor !== null) this.canvas.fill();
+        if (obj.style.fillColor !== null) this.canvas.fillRect(x, y, w, h); // 上でそれぞれX()、Y()適用済み
+        else this.canvas.strokeRect(x, y, w, h);
     },
     Text: function(obj) {
         this.canvas.textAlign = obj.style.align;
