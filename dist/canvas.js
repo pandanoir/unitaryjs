@@ -95,20 +95,21 @@ Canvas.drawFunction = {
         this.canvas.textBaseline = obj.style.baseline;
         var x = obj.P.x;
         var y = obj.P.y;
+        var maxWidth = obj.style.maxWidth;
         if (obj.style.font !== null) {
             var defaultFont = this.canvas.font;
             this.canvas.font = obj.style.font;
         }
-        if (obj.maxWidth === null) {
+        if (maxWidth === null) {
             if (obj.style.strokesOutline) {
                 this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
             }
             this.canvas.fillText(obj.text, this.X(x), this.Y(y));
         } else {
             if (obj.style.strokesOutline) {
-                this.canvas.strokeText(obj.text, this.X(x), this.Y(y), obj.maxWidth);
+                this.canvas.strokeText(obj.text, this.X(x), this.Y(y), maxWidth);
             }
-            this.canvas.fillText(obj.text, this.X(x), this.Y(y), obj.maxWidth);
+            this.canvas.fillText(obj.text, this.X(x), this.Y(y), maxWidth);
         }
         if(obj.style.font !== null) {
             this.canvas.font = defaultFont;
