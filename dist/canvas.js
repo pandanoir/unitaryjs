@@ -118,21 +118,21 @@ Canvas.drawFunction = {
         this.canvas.fillRect(this.X(obj.x), this.Y(obj.y), 1, 1);
     },
     Image: function(obj) {
-        if (obj.dx !== null && obj.sx !== null) {
-            this.canvas.drawImage(obj.src, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
-        } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
-            this.canvas.drawImage(obj.src, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
-        } else if (obj.dx !== null && obj.dw === null) {
-            // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
-            // 対偶をとり obj.dw === nullならばobj.sx === null
-            var image = new Image();
-            image.src = obj.src;
-            image.onload = function() {
+        var image = new Image();
+        image.src = obj.src;
+        image.onload = function() {
+            if (obj.dx !== null && obj.sx !== null) {
+                this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+            } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
+                this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+            } else if (obj.dx !== null && obj.dw === null) {
+                // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
+                // 対偶をとり obj.dw === nullならばobj.sx === null
                 this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
-            }.bind(this);
-        } else if (obj.dx === null) {
-            this.canvas.drawImage(obj.src);
-        }
+            } else if (obj.dx === null) {
+                this.canvas.drawImage(image);
+            }
+        }.bind(this);
     },
     Group: function(obj) {
         for (var i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) {
