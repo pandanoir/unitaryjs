@@ -152,7 +152,7 @@ var BaseVector = (function (_super) {
         }
         return new BaseVector(component);
     };
-    BaseVector.prototype.minus = function (CD) {
+    BaseVector.prototype.substract = function (CD) {
         return this.add(CD.multiple(-1));
     };
     BaseVector.prototype.product = function (CD) {
@@ -229,8 +229,8 @@ var Vector = (function (_super) {
         var newVector = _super.prototype.add.call(this, CD);
         return new Vector(newVector.component[0], newVector.component[1]);
     };
-    Vector.prototype.minus = function (CD) {
-        var newVector = _super.prototype.minus.call(this, CD);
+    Vector.prototype.substract = function (CD) {
+        var newVector = _super.prototype.substract.call(this, CD);
         return new Vector(newVector.component[0], newVector.component[1]);
     };
     Vector.prototype.multiple = function (k) {
@@ -275,8 +275,8 @@ var Vector3D = (function (_super) {
         var newVector = _super.prototype.add.call(this, CD);
         return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
     };
-    Vector3D.prototype.minus = function (CD) {
-        var newVector = _super.prototype.minus.call(this, CD);
+    Vector3D.prototype.substract = function (CD) {
+        var newVector = _super.prototype.substract.call(this, CD);
         return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
     };
     Vector3D.prototype.multiple = function (k) {
@@ -538,8 +538,8 @@ var Polygon = (function (_super) {
         var rad = 0;
         for (var i = 0, len = this.points.length; i < len; i++) {
             v = this.points[i];
-            a = new Vector(v).minus(new Vector(P));
-            b = new Vector(before_v).minus(new Vector(P));
+            a = new Vector(v).substract(new Vector(P));
+            b = new Vector(before_v).substract(new Vector(P));
             cos = a.product(b) / (a.abs() * b.abs());
             rad += Math.acos(cos);
             before_v = v;
@@ -614,13 +614,13 @@ var Triangle = (function (_super) {
             .add(vC.multiple(c * (a + b - c)))
             .multiple(1 / (16 * (Math.pow(S, 2))));
         var O = new Point(vO.x, vO.y);
-        var cosA = vB.minus(vA).product(vC.minus(vA)) / (AB.length * CA.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
+        var cosA = vB.substract(vA).product(vC.substract(vA)) / (AB.length * CA.length), sinA = Math.sqrt(1 - Math.pow(cosA, 2));
         var R = BC.length / sinA / 2;
         return new Circle(O, R);
     };
     Triangle.prototype.getIncircle = function () {
         var vA = new Vector(this.points[0].x, this.points[0].y), vB = new Vector(this.points[1].x, this.points[1].y), vC = new Vector(this.points[2].x, this.points[2].y);
-        var a = vC.minus(vB).abs(), b = vC.minus(vA).abs(), c = vB.minus(vA).abs();
+        var a = vC.substract(vB).abs(), b = vC.substract(vA).abs(), c = vB.substract(vA).abs();
         var vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c)))
             .add(vB.multiple(b / (a + b + c)))
             .add(vC.multiple(c / (a + b + c)));
