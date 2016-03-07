@@ -26,10 +26,6 @@ describe('Unitary', function() {
     log(distance(A, C) === 2.23606797749979);
     log(distance(B, C) === 6.4031242374328485);
 
-    it('version', function() {
-        assert.equal(require('../package.json').version, Unitary.VERSION);
-    });
-
     describe('Circle', function() {
         it('moveTo', function() {
             assert.ok(new Circle(A, 3).moveTo(0, 0).equals(new Circle(new Point(0, 0), 3)));
