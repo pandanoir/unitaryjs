@@ -27,7 +27,7 @@
     "mocha": "*",
     "vinyl-source-stream": "^1.1.0"
   },
-  "author": "PandaNoir",
+  "author": "Naoto Ikuno <moon_in_france@yahoo.co.jp>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pandanoir/unitaryjs/issues"
