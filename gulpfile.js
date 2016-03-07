@@ -4,6 +4,7 @@ var source = require('vinyl-source-stream');
 var ts = require('gulp-tsc');
 var closureCompiler = require('gulp-closure-compiler');
 var gzip = require('gulp-gzip');
+var replace = require('gulp-replace');
 
 gulp.task('browserify', ['compile'], function() {
     return browserify({
@@ -59,5 +60,10 @@ gulp.task('minify', ['browserify', 'canvas'], function(cb) {
     }))
     .pipe(gulp.dest('./dist/'))
     .pipe(gzip()).pipe(gulp.dest('./dist/'));
+});
+gulp.task('version', function(cb) {
+    gulp.src('./src/unitary.ts')
+        .pipe(replace(/^export var VERSION = .+$/m, "export var VERSION = '" + require('./package.json').version + "';"))
+        .pipe(gulp.dest('./src'));
 });
 gulp.task('default', ['minify']);
