@@ -846,7 +846,7 @@ var Graph = (function (_super) {
 exports.Graph = Graph;
 exports.XAxis = new Line(new Point(0, 0), new Point(1, 0));
 exports.YAxis = new Line(new Point(0, 0), new Point(0, 1));
-exports.VERSION = '0.0.4';
+exports.VERSION = '0.0.5';
 
 },{}],2:[function(require,module,exports){
 window.Unitary = require('../dist/unitary.js');
