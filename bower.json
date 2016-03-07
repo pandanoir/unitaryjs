@@ -1,0 +1,27 @@
+{
+  "name": "unitaryjs",
+  "description": "Canvas Library",
+  "main": "./dist/unitary.js",
+  "authors": [
+    "Naoto Ikuno <moon_in_france@yahoo.co.jp>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "canvas",
+    "library",
+    "unitaryjs"
+  ],
+  "homepage": "https://github.com/pandanoir/unitaryjs",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+      "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip"
+  }
+}

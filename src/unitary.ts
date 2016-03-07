@@ -1,3 +1,4 @@
+"use strict";
 type Style = {
     fillColor: string;
     strokeColor: string;
@@ -11,7 +12,6 @@ type Style = {
     strokesOutline?: string;
     text?: string;
 }
-"use strict";
 function gcd(m: number, n: number): number {
     if (m < n) {
         return gcd(n, m);

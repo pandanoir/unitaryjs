@@ -20,14 +20,15 @@ gulp.task('canvas', function() {
         entries: ['./src/canvas.js']
     }).bundle().pipe(source('canvas.js')).pipe(gulp.dest('./dist'));
 });
-gulp.task('minify', function(cb) {
+gulp.task('minify', ['browserify', 'canvas'], function(cb) {
     gulp.src('./dist/canvas.js')
     .pipe(closureCompiler({
         compilerPath: './bower_components/closure-compiler/compiler.jar',
         fileName: 'canvas.min.js',
         compilerFlags: {
             compilation_level: 'SIMPLE_OPTIMIZATIONS',
-            language_in: 'ECMASCRIPT5_STRICT'
+            language_in: 'ECMASCRIPT5_STRICT',
+            warning_level: 'QUIET'
         }
     }))
     .pipe(gulp.dest('./dist/'))
@@ -39,7 +40,8 @@ gulp.task('minify', function(cb) {
         fileName: 'unitary.min.js',
         compilerFlags: {
             compilation_level: 'SIMPLE_OPTIMIZATIONS',
-            language_in: 'ECMASCRIPT5_STRICT'
+            language_in: 'ECMASCRIPT5_STRICT',
+            warning_level: 'QUIET'
         }
     }))
     .pipe(gulp.dest('./dist/'))
@@ -51,10 +53,11 @@ gulp.task('minify', function(cb) {
         fileName: 'unitary.browser.min.js',
         compilerFlags: {
             compilation_level: 'SIMPLE_OPTIMIZATIONS',
-            language_in: 'ECMASCRIPT5_STRICT'
+            language_in: 'ECMASCRIPT5_STRICT',
+            warning_level: 'QUIET'
         }
     }))
     .pipe(gulp.dest('./dist/'))
     .pipe(gzip()).pipe(gulp.dest('./dist/'));
 });
-gulp.task('default', ['browserify', 'canvas', 'minify']);
+gulp.task('default', ['minify']);

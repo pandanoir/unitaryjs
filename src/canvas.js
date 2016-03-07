@@ -1,3 +1,4 @@
+require("babel-polyfill");
 function Canvas(id) {
     var canvas = document.getElementById(id);
     this.canvas = canvas.getContext('2d');
