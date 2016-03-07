@@ -16,8 +16,11 @@
     "unitaryjs"
   ],
   "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-polyfill": "^6.6.1",
     "browserify": "^11.2.0",
     "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.2",
     "gulp-tsc": "^1.1.4",
     "mocha": "*",
     "vinyl-source-stream": "^1.1.0"

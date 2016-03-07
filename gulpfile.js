@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var ts = require('gulp-tsc');
+var babel = require("gulp-babel");
 
 gulp.task('browserify', ['compile'], function() {
     return browserify({
@@ -13,4 +14,9 @@ gulp.task('compile', function() {
         .pipe(ts())
         .pipe(gulp.dest('dist'));
 });
-gulp.task('default', ['browserify']);
+gulp.task('babel', function () {
+    return gulp.src('src/canvas.js')
+        .pipe(babel())
+        .pipe(gulp.dest('dist'));
+});
+gulp.task('default', ['browserify', 'babel']);
