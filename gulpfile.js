@@ -2,7 +2,8 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var ts = require('gulp-tsc');
-var babel = require("gulp-babel");
+var closureCompiler = require('gulp-closure-compiler');
+var gzip = require('gulp-gzip');
 
 gulp.task('browserify', ['compile'], function() {
     return browserify({
@@ -14,9 +15,46 @@ gulp.task('compile', function() {
         .pipe(ts())
         .pipe(gulp.dest('dist'));
 });
-gulp.task('babel', function () {
-    return gulp.src('src/canvas.js')
-        .pipe(babel())
-        .pipe(gulp.dest('dist'));
+gulp.task('canvas', function() {
+    return browserify({
+        entries: ['./src/canvas.js']
+    }).bundle().pipe(source('canvas.js')).pipe(gulp.dest('./dist'));
 });
-gulp.task('default', ['browserify', 'babel']);
+gulp.task('minify', function(cb) {
+    gulp.src('./dist/canvas.js')
+    .pipe(closureCompiler({
+        compilerPath: './bower_components/closure-compiler/compiler.jar',
+        fileName: 'canvas.min.js',
+        compilerFlags: {
+            compilation_level: 'SIMPLE_OPTIMIZATIONS',
+            language_in: 'ECMASCRIPT5_STRICT'
+        }
+    }))
+    .pipe(gulp.dest('./dist/'))
+    .pipe(gzip()).pipe(gulp.dest('./dist/'));
+
+    gulp.src('./dist/unitary.js')
+    .pipe(closureCompiler({
+        compilerPath: './bower_components/closure-compiler/compiler.jar',
+        fileName: 'unitary.min.js',
+        compilerFlags: {
+            compilation_level: 'SIMPLE_OPTIMIZATIONS',
+            language_in: 'ECMASCRIPT5_STRICT'
+        }
+    }))
+    .pipe(gulp.dest('./dist/'))
+    .pipe(gzip()).pipe(gulp.dest('./dist/'));
+
+    gulp.src('./dist/unitary.browser.js')
+    .pipe(closureCompiler({
+        compilerPath: './bower_components/closure-compiler/compiler.jar',
+        fileName: 'unitary.browser.min.js',
+        compilerFlags: {
+            compilation_level: 'SIMPLE_OPTIMIZATIONS',
+            language_in: 'ECMASCRIPT5_STRICT'
+        }
+    }))
+    .pipe(gulp.dest('./dist/'))
+    .pipe(gzip()).pipe(gulp.dest('./dist/'));
+});
+gulp.task('default', ['browserify', 'canvas', 'minify']);

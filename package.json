@@ -21,6 +21,8 @@
     "browserify": "^11.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",
+    "gulp-closure-compiler": "^0.4.0",
+    "gulp-gzip": "^1.2.0",
     "gulp-tsc": "^1.1.4",
     "mocha": "*",
     "vinyl-source-stream": "^1.1.0"
