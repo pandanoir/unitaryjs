@@ -54,12 +54,14 @@ Canvas.fn.draw = function() {
         }
     }
     if (promises.length === 0) {
-        for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
-            var obj = this.objects[i];
-            this.__drawHelper__(obj);
-        }
+        return Promise().then(function() {
+            for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
+                var obj = this.objects[i];
+                this.__drawHelper__(obj);
+            }
+        }.bind(this));
     } else {
-        Promise.all(promises).then(function(values) {
+        return Promise.all(promises).then(function(values) {
             for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
                 var obj = this.objects[i];
                 this.__drawHelper__(obj);
