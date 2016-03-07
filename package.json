@@ -4,10 +4,7 @@
   "description": "Canvas Library",
   "main": "./dist/unitary.js",
   "scripts": {
-    "test": "mocha -R spec",
-    "preversion": "npm test",
-    "version": "gulp version && gulp",
-    "postversion": "git push && git push --tags"
+    "test": "mocha -R spec"
   },
   "repository": {
     "type": "git",
