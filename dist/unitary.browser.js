@@ -459,31 +459,33 @@ var Segment = (function (_super) {
 exports.Segment = Segment;
 var Circle = (function (_super) {
     __extends(Circle, _super);
-    function Circle(O, radius) {
+    function Circle(center, radius) {
         if (!(this instanceof Circle)) {
             throw new Error('Constructor cannot be called as a function.');
         }
         _super.call(this);
-        this.Origin = O;
+        this.center = center;
+        this.Origin = center;
         this.r = radius;
+        this.radius = radius;
     }
     Circle.prototype.moveTo = function (x, y) {
-        return new Circle(this.Origin.moveTo(x, y), this.r).setStyle(this.style);
+        return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style);
     };
     Circle.prototype.move = function (dx, dy) {
-        return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
+        return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
     };
     Circle.prototype.getEquation = function () {
         var res = '(x';
-        if (this.Origin.x > 0)
-            res += '-' + this.Origin.x;
-        else if (this.Origin.x < 0)
-            res += '+' + (-this.Origin.x); // + abs(this.Origin.x)
+        if (this.center.x > 0)
+            res += '-' + this.center.x;
+        else if (this.center.x < 0)
+            res += '+' + (-this.center.x); // + abs(this.center.x)
         res += ')^2+(y';
-        if (this.Origin.y > 0)
-            res += '-' + this.Origin.y;
-        else if (this.Origin.y < 0)
-            res += '+' + (-this.Origin.y); // + abs(this.Origin.x)
+        if (this.center.y > 0)
+            res += '-' + this.center.y;
+        else if (this.center.y < 0)
+            res += '+' + (-this.center.y); // + abs(this.center.x)
         res += ')^2=' + this.r + '^2';
         return res;
     };
@@ -491,7 +493,7 @@ var Circle = (function (_super) {
         if (!_super.prototype.equals.call(this, C)) {
             return false;
         }
-        return this.Origin.equals(C.Origin) && this.r === C.r;
+        return this.center.equals(C.center) && this.r === C.r;
     };
     Circle.prototype.name = function () {
         return 'Circle';
@@ -508,6 +510,7 @@ var CircularSector = (function (_super) {
         }
         _super.call(this);
         this.center = center;
+        this.Origin = center;
         this.radius = radius;
         this.r = radius;
         this.endAngle = endAngle;

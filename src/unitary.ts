@@ -439,6 +439,7 @@ export class Circle extends UnitaryObject{
     center: Point;
     Origin: Point;
     r: number;
+    radius: number;
     constructor(center: Point, radius: number) {
         if (!(this instanceof Circle)) {
             throw new Error('Constructor cannot be called as a function.');
@@ -477,6 +478,7 @@ export class Circle extends UnitaryObject{
 }
 export class CircularSector extends UnitaryObject{
     center: Point;
+    Origin: Point;
     radius: number;
     r: number;
     endAngle: number;
