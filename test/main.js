@@ -44,6 +44,23 @@ describe('Unitary', function() {
             assert.equal(new Circle(A, 3).name(), 'Circle');
         });
     });
+    describe('CircularSector', function() {
+        var rad = Math.PI / 2;
+        var A = new Point(3, 3);
+        it('moveTo', function() {
+            assert.ok(new CircularSector(A, 3, rad).moveTo(0, 0).equals(new CircularSector(new Point(0, 0), 3, rad)));
+        });
+        it('move', function() {
+            assert.ok(new CircularSector(A, 3, rad).move(109, 31).equals(new CircularSector(new Point(112, 34), 3, rad)));
+        });
+        it('rotate', function() {
+            assert.ok(new CircularSector(A, 3, rad, 0).rotate(3).equals(new CircularSector(A, 3, rad + 3, 3)));
+            assert.ok(new CircularSector(A, 3, Math.PI / 2, 0).rotate(Math.PI * 2).equals(new CircularSector(A, 3, Math.PI / 2, 0)));
+        })
+        it('name', function() {
+            assert.equal(new CircularSector(A, 3).name(), 'CircularSector');
+        });
+    });
     describe('Graph', function() {
     });
     describe('Group', function() {

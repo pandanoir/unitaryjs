@@ -499,6 +499,44 @@ var Circle = (function (_super) {
     return Circle;
 })(UnitaryObject);
 exports.Circle = Circle;
+var CircularSector = (function (_super) {
+    __extends(CircularSector, _super);
+    function CircularSector(center, radius, endAngle, startAngle) {
+        if (startAngle === void 0) { startAngle = 0; }
+        if (!(this instanceof CircularSector)) {
+            throw new Error('Constructor cannot be called as a function.');
+        }
+        _super.call(this);
+        this.center = center;
+        this.radius = radius;
+        this.r = radius;
+        this.endAngle = endAngle;
+        this.startAngle = startAngle;
+    }
+    CircularSector.prototype.moveTo = function (x, y) {
+        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+    };
+    CircularSector.prototype.move = function (dx, dy) {
+        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+    };
+    CircularSector.prototype.rotate = function (rad) {
+        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style);
+    };
+    CircularSector.prototype.equals = function (C) {
+        function angleCompare(A, B) {
+            return (A - B) % (2 * Math.PI) === 0;
+        }
+        if (!_super.prototype.equals.call(this, C)) {
+            return false;
+        }
+        return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
+    };
+    CircularSector.prototype.name = function () {
+        return 'CircularSector';
+    };
+    return CircularSector;
+})(UnitaryObject);
+exports.CircularSector = CircularSector;
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon() {

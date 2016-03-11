@@ -472,6 +472,45 @@ export class Circle extends UnitaryObject{
         return 'Circle';
     }
 }
+export class CircularSector extends UnitaryObject{
+    center: Point;
+    radius: number;
+    r: number;
+    endAngle: number;
+    startAngle: number;
+    constructor(center: Point, radius: number, endAngle: number, startAngle: number = 0) {
+        if (!(this instanceof CircularSector)) {
+            throw new Error('Constructor cannot be called as a function.');
+        }
+        super();
+        this.center = center;
+        this.radius = radius;
+        this.r = radius;
+        this.endAngle = endAngle;
+        this.startAngle = startAngle;
+    }
+    moveTo(x: number, y: number): UnitaryObject {
+        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+    }
+    move(dx: number, dy: number): UnitaryObject {
+        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+    }
+    rotate(rad: number): UnitaryObject {
+        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style);
+    }
+    equals(C: CircularSector): boolean {
+        function angleCompare(A, B) {
+            return (A - B) % (2 * Math.PI) === 0;
+        }
+        if (!super.equals(C)) {
+            return false;
+        }
+        return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
+    }
+    name(): string {
+        return 'CircularSector';
+    }
+}
 
 export class Polygon extends UnitaryObject{
     points: Point[];
