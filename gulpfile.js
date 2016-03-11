@@ -18,7 +18,7 @@ gulp.task('compile', function() {
 });
 gulp.task('canvas', function() {
     return browserify({
-        entries: ['./src/canvas.js']
+        entries: ['./src/canvasBrowser.js']
     }).bundle().pipe(source('canvas.js')).pipe(gulp.dest('./dist'));
 });
 gulp.task('minify', ['browserify', 'canvas'], function(cb) {

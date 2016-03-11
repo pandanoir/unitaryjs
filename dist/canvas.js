@@ -6476,7 +6476,7 @@ Canvas.fn.draw = function() {
         }
     }
     if (promises.length === 0) {
-        return Promise().then(function() {
+        return Promise.resolve().then(function() {
             for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
                 var obj = this.objects[i];
                 this.__drawHelper__(obj);
@@ -6528,6 +6528,19 @@ Canvas.drawFunction = {
         r = obj.r;
         this.canvas.beginPath();
         this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
+        this.canvas.closePath();
+        this.canvas.stroke();
+        if (obj.style.fillColor !== null) this.canvas.fill();
+    },
+    CircularSector: function(obj) {
+        var center = obj.center,
+            r = obj.r,
+            startAngle = obj.startAngle,
+            endAngle = obj.endAngle;
+        this.canvas.beginPath();
+        this.canvas.moveTo(this.X(center.x), this.Y(center.y));
+        this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, false);
+        this.canvas.lineTo(this.X(center.x), this.Y(center.y));
         this.canvas.closePath();
         this.canvas.stroke();
         if (obj.style.fillColor !== null) this.canvas.fill();
@@ -6654,5 +6667,9 @@ if (!Function.prototype.bind) {
     return fBound;
   };
 }
+module.exports = Canvas;
 
-},{"babel-polyfill":1}]},{},[286]);
+},{"babel-polyfill":1}],287:[function(require,module,exports){
+window.Canvas = require('./canvas.js');
+
+},{"./canvas.js":286}]},{},[287]);

@@ -19,6 +19,7 @@
           Triangle = Unitary.Triangle;
 
       var circleCanvas = new Canvas('circle'),
+          circularSectorCanvas = new Canvas('circularSector'),
           graphCanvas = new Canvas('graph'),
           groupCanvas = new Canvas('group'),
           imageCanvas = new Canvas('image'),
@@ -34,6 +35,10 @@
           triangleCanvas = new Canvas('triangle');
 
       circleCanvas.add(new Unitary.Circle(new Point(30, 30), 30));
+      circleCanvas.add(new Unitary.Circle(new Point(60, 90), 20).setFillColor('red'));
+
+      circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2));
+      circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
 
       graphCanvas.add(new Unitary.Graph(function(x) {return x * x;}, 30));
       graphCanvas.add(new Unitary.Graph(function(x) {return Math.log(x);}, 30));
@@ -118,20 +123,21 @@
       triangleCanvas.add(triangle.getIncircle());
       triangleCanvas.add(triangle.move(40, 60).setFillColor('#f90'));
 
-      circleCanvas.draw(); // x
+      circleCanvas.draw();
+      circularSectorCanvas.draw();
       graphCanvas.draw();
       groupCanvas.draw();
-      imageCanvas.draw(); // x
-      imageCanvas2.draw(); // x
-      lineCanvas.draw(); // x
-      pointCanvas.draw(); // x
-      polygonCanvas.draw(); // x
-      polygonCanvas2.draw(); // x
-      quadrilateralCanvas.draw(); // x
-      rectCanvas.draw(); // x
-      segmentCanvas.draw(); // x
-      textCanvas.draw(); // x
-      triangleCanvas.draw(); // x
+      imageCanvas.draw();
+      imageCanvas2.draw();
+      lineCanvas.draw();
+      pointCanvas.draw();
+      polygonCanvas.draw();
+      polygonCanvas2.draw();
+      quadrilateralCanvas.draw();
+      rectCanvas.draw();
+      segmentCanvas.draw();
+      textCanvas.draw();
+      triangleCanvas.draw();
     });
     </script>
     <style>
@@ -142,6 +148,7 @@
   </head>
   <body>
     <canvas id="circle" width="200" height="200"></canvas>
+    <canvas id="circularSector" width="200" height="200"></canvas>
     <canvas id="graph" width="200" height="200"></canvas>
     <canvas id="group" width="200" height="200"></canvas>
     <canvas id="image" width="200" height="200"></canvas>
