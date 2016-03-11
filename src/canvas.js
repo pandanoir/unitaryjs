@@ -103,7 +103,7 @@ Canvas.drawFunction = {
         this.canvas.stroke();
     },
     Circle: function(obj) {
-        var O = obj.Origin,
+        var O = obj.center,
         r = obj.r;
         this.canvas.beginPath();
         this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);

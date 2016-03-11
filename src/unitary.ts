@@ -436,29 +436,32 @@ export class Segment extends UnitaryObject{
 }
 
 export class Circle extends UnitaryObject{
+    center: Point;
     Origin: Point;
     r: number;
-    constructor(O: Point, radius: number) {
+    constructor(center: Point, radius: number) {
         if (!(this instanceof Circle)) {
             throw new Error('Constructor cannot be called as a function.');
         }
         super();
-        this.Origin = O;
+        this.center = center;
+        this.Origin = center;
         this.r = radius;
+        this.radius = radius;
     }
     moveTo(x: number, y: number): UnitaryObject {
-        return new Circle(this.Origin.moveTo(x, y), this.r).setStyle(this.style);
+        return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style);
     }
     move(dx: number, dy: number): UnitaryObject {
-        return new Circle(this.Origin.move(dx, dy), this.r).setStyle(this.style);
+        return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
     }
     getEquation(): string {
         var res = '(x';
-        if (this.Origin.x > 0) res += '-' + this.Origin.x;
-        else if (this.Origin.x < 0) res += '+' + (-this.Origin.x); // + abs(this.Origin.x)
+        if (this.center.x > 0) res += '-' + this.center.x;
+        else if (this.center.x < 0) res += '+' + (-this.center.x); // + abs(this.center.x)
         res += ')^2+(y';
-        if (this.Origin.y > 0) res += '-' + this.Origin.y;
-        else if (this.Origin.y < 0) res += '+' + (-this.Origin.y); // + abs(this.Origin.x)
+        if (this.center.y > 0) res += '-' + this.center.y;
+        else if (this.center.y < 0) res += '+' + (-this.center.y); // + abs(this.center.x)
         res += ')^2=' + this.r + '^2';
         return res;
     }
@@ -466,7 +469,7 @@ export class Circle extends UnitaryObject{
         if (!super.equals(C)) {
             return false;
         }
-        return this.Origin.equals(C.Origin) && this.r === C.r;
+        return this.center.equals(C.center) && this.r === C.r;
     }
     name(): string {
         return 'Circle';
@@ -484,6 +487,7 @@ export class CircularSector extends UnitaryObject{
         }
         super();
         this.center = center;
+        this.Origin = center;
         this.radius = radius;
         this.r = radius;
         this.endAngle = endAngle;
