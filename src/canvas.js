@@ -47,11 +47,17 @@ Canvas.fn.draw = function() {
             } else{
                 image = __imageCaches[src];
             }
-            image.addEventListener('load', function() {
+            if (!image.loaded) {
+                image.addEventListener('load', function() {
+                    obj.__image__ = image;
+                    image.loaded = true;
+                    resolve();
+                });
+                image.addEventListener('error', rejector);
+            } else {
                 obj.__image__ = image;
                 resolve();
-            });
-            image.addEventListener('error', rejector);
+            }
         }));
     }
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1){
