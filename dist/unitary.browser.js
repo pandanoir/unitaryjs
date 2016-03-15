@@ -803,25 +803,31 @@ var Image = (function (_super) {
     Image.prototype.trim = function (startPoint, sw, sh, dw, dh) {
         if (dw === void 0) { dw = null; }
         if (dh === void 0) { dh = null; }
+        var newImage = new Image(this.src, this.startPoint);
         if (dw == null) {
             dw = sw;
         }
         if (dh == null) {
             dh = sh;
         }
-        this.sx = startPoint.x;
-        this.sy = startPoint.y;
-        this.sw = sw;
-        this.sh = sh;
-        this.dw = dw;
-        this.dh = dh;
-        return this;
+        newImage.sx = startPoint.x;
+        newImage.sy = startPoint.y;
+        newImage.sw = sw;
+        newImage.sh = sh;
+        newImage.dw = dw;
+        newImage.dh = dh;
+        return newImage;
     };
     ;
     Image.prototype.resize = function (dw, dh) {
-        this.dw = dw;
-        this.dh = dh;
-        return this;
+        var newImage = new Image(this.src, this.startPoint);
+        newImage.dw = dw;
+        newImage.dh = dh;
+        newImage.sw = this.sw;
+        newImage.sh = this.sh;
+        newImage.sx = this.sx;
+        newImage.sy = this.sy;
+        return newImage;
     };
     Image.prototype.equals = function (B) {
         if (!_super.prototype.equals.call(this, B)) {

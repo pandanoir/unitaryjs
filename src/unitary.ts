@@ -812,24 +812,30 @@ export class Image extends UnitaryObject{
         this.sy = null;
     }
     trim(startPoint: Point, sw: number, sh: number, dw: number = null, dh: number = null): Image {
+        var newImage = new Image(this.src, this.startPoint);
         if (dw == null) {
             dw = sw;
         }
         if (dh == null) {
             dh = sh;
         }
-        this.sx = startPoint.x;
-        this.sy = startPoint.y;
-        this.sw = sw;
-        this.sh = sh;
-        this.dw = dw;
-        this.dh = dh;
-        return this;
+        newImage.sx = startPoint.x;
+        newImage.sy = startPoint.y;
+        newImage.sw = sw;
+        newImage.sh = sh;
+        newImage.dw = dw;
+        newImage.dh = dh;
+        return newImage;
     };
     resize(dw: number, dh: number): Image {
-        this.dw = dw;
-        this.dh = dh;
-        return this;
+        var newImage = new Image(this.src, this.startPoint);
+        newImage.dw = dw;
+        newImage.dh = dh;
+        newImage.sw = this.sw;
+        newImage.sh = this.sh;
+        newImage.sx = this.sx;
+        newImage.sy = this.sy;
+        return newImage;
     }
     equals(B: Image): boolean {
         if (!super.equals(B)) {
