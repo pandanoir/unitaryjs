@@ -6646,6 +6646,19 @@ Canvas.drawFunction = {
 Canvas.fn.toDataURL = function() {
     return document.getElementById(this.id).toDataURL();
 };
+Canvas.preload = function() {
+    for (var i = 0, _i = arguments.length; i < _i; i++) {
+        var src = arguments[i];
+        if (!__imageCaches[src]) {
+            var image = new Image();
+            image.src = src;
+            image.addEventListener('load', function() {
+                image.loaded = true;
+            });
+            __imageCaches[src] = image;
+        }
+    }
+};
 function PolygonDrawFunction(obj) {
     this.canvas.beginPath();
     this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
