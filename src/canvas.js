@@ -1,4 +1,5 @@
 require("babel-polyfill");
+var __imageCaches = [];
 function Canvas(id) {
     var canvas = document.getElementById(id);
     this.canvas = canvas.getContext('2d');
@@ -37,8 +38,15 @@ Canvas.fn.draw = function() {
     var promises = [];
     function load(src, obj) {
         promises.push(new Promise(function(resolve, rejector) {
-            var image = new Image();
-            image.src = src;
+            var image;
+            if (!__imageCaches[src]) {
+                // 画像を読み込む回数を抑える
+                image = new Image();
+                image.src = src;
+                __imageCaches[src] = image;
+            } else{
+                image = __imageCaches[src];
+            }
             image.addEventListener('load', function() {
                 obj.__image__ = image;
                 resolve();
