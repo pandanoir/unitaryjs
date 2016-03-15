@@ -226,17 +226,23 @@ Canvas.fn.toDataURL = function() {
     return document.getElementById(this.id).toDataURL();
 };
 Canvas.preload = function() {
+    var promises = [];
     for (var i = 0, _i = arguments.length; i < _i; i++) {
         var src = arguments[i];
         if (!__imageCaches[src]) {
-            var image = new Image();
-            image.src = src;
-            image.addEventListener('load', function() {
-                image.loaded = true;
-            });
-            __imageCaches[src] = image;
+            promises.push(new Promise(function(resolve, reject) {
+                var image = new Image();
+                image.src = src;
+                image.addEventListener('load', function() {
+                    image.loaded = true;
+                    resolve();
+                });
+                image.addEventListener('error', reject);
+                __imageCaches[src] = image;
+            }));
         }
     }
+    return Promise.all(promises);
 };
 function PolygonDrawFunction(obj) {
     this.canvas.beginPath();
