@@ -838,7 +838,7 @@ var Image = (function (_super) {
     Image.prototype.move = function (dx, dy) {
         var newImage = new Image(this.src, this.startPoint.move(dx, dy));
         if (this.sx !== null) {
-            newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
+            newImage = newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
         }
         return newImage;
     };
