@@ -131,184 +131,211 @@ Unitary.Vector(1, 1);</code></pre>
       <h4>moveTo(x, y)</h4>
       <p>
         moves circle at coordinate(x, y). x-coordinate of circle will be x. y-coordinate of circle will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Circle instance which are moved.
-    </p>
-    <h4>getEquation()</h4>
-    <p>
-      returns a equation representing the circle.
-    </p>
-    <h4>equals(A)</h4>
-    <p>
-      if origin of A and origin of this circle are same and radius of A and radius of this circle are same, .equals(A) returns true. Otherwise .equals(A) returns false.
-    </p>
-    <h4>name()</h4>
-    <p>
-      returns 'Circle'.
-    </p>
-  </section>
-  <section>
-    <small><a href="#classes-nav">back to nav</a></small>
-    <h3 id="Graph">Graph</h3>
-    <h4>constructor</h4>
-    <pre><code>Graph(f: Function, scale: number)
+      </p>
+      <h4>getEquation()</h4>
+      <p>
+        returns a equation representing the circle.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        if origin of A and origin of this circle are same and radius of A and radius of this circle are same, .equals(A) returns true. Otherwise .equals(A) returns false.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Circle'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="CircularSector">CircularSector</h3>
+      <h4>constructor</h4>
+      <pre><code>CircularSector(center: Point, radius: number, endAngle: number, startAngle: number = 0)
 </code></pre>
-    <h4>setRange(start, end)</h4>
-    <p>
-      sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
-    </p>
-    <h4>equals()</h4>
-    <p>
-      always returns <code>false</code>.
-    </p>
-    <h4>name()</h4>
-    <p>
-      returns 'Graph'.
-    </p>
-  </section>
-  <section>
-    <small><a href="#classes-nav">back to nav</a></small>
-    <h3 id="Group">Group</h3>
-    <p>
-      Group contains UnitaryObjects.
-    </p>
-    <h4>constructor</h4>
-    <pre><code>Group(...objects: UnitaryObject)
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves circular sector by dx and dy. x-coordinate of circular sector increases by dx. y-coordinate of circular sector increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new CircularSector instance which are moved.
+      </p>
+      <h4>moveTo(x, y)</h4>
+      <p>
+        moves circular sector at coordinate(x, y). x-coordinate of circular sector will be x. y-coordinate of circular sector will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new CircularSector instance which are moved.
+      </p>
+      <h4>rotate(rad)</h4>
+      <p>
+        rotates around center by rad.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        if origin of A and one of this circle are same, radius of A and one of this circle are same, endAngle of A and one of this are same and startAngle of A and one of this are same, .equals(A) returns true. Otherwise .equals(A) returns false.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'CircularSector'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="Graph">Graph</h3>
+      <h4>constructor</h4>
+      <pre><code>Graph(f: Function, scale: number)
 </code></pre>
-    <h4>name()</h4>
-    <p>
-      returns 'Group'.
-    </p>
-  </section>
-  <section>
-    <small><a href="#classes-nav">back to nav</a></small>
-    <h3 id="Image">Image</h3>
-    <h4>constructor</h4>
-    <pre><code>Image(src: string, startPoint: Point)
+      <h4>setRange(start, end)</h4>
+      <p>
+        sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
+      </p>
+      <h4>equals()</h4>
+      <p>
+        always returns <code>false</code>.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Graph'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="Group">Group</h3>
+      <p>
+        Group contains UnitaryObjects.
+      </p>
+      <h4>constructor</h4>
+      <pre><code>Group(...objects: UnitaryObject)
 </code></pre>
-    <h4>trim(startPoint, sw, sh, dw, dh)</h4>
-    <p>
-      this method behaves like trim() of HTML5 canvas.
-    </p>
-    <h4>resize(dw, dh)</h4>
-    <p>
-      this method behaves like resize() of HTML5 canvas.
-    </p>
-    <h4>equals(A)</h4>
-    <p>
-      if A equals this image, .equals(A) returns true. Otherwise .equals(A) returns false.
-    </p>
-    <h4>move(dx, dy)</h4>
-    <p>
-      moves image by dx and dy. x-coordinate of image increases by dx. y-coordinate of image increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Image instance which are moved.
-    </p>
-    <h4>name()</h4>
-    <p>
-      returns 'Image'.
-    </p>
-  </section>
-  <section>
-    <small><a href="#classes-nav">back to nav</a></small>
-    <h3 id="Line">Line</h3>
-    <p>
-      Line isn't segment.
-    </p>
-    <h4>constructor</h4>
-    <pre><code>Line(A: Point, B: Point)
+      <h4>name()</h4>
+      <p>
+        returns 'Group'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="Image">Image</h3>
+      <h4>constructor</h4>
+      <pre><code>Image(src: string, startPoint: Point)
 </code></pre>
-    <h4>move(dx, dy)</h4>
-    <p>
-      moves line by dx and dy. x-coordinate of line increases by dx. y-coordinate of line increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new line instance which are moved.
-    </p>
-    <h4>getEquation()</h4>
-    <p>
-      returns a equation representing the line.
-    </p>
-    <h4>toString()</h4>
-    <p>
-      returns the result of <code>.getEquation()</code>.
-    </p>
-    <h4>inspect()</h4>
-    <p>
-      returns the result of <code>.getEquation()</code>.
-    </p>
-    <h4>getIntersection(AB)</h4>
-    <p>
-      returns an intersection of the line and line AB. If the line doesn't intersect AB, <code>.getEquation()</code> returns false.
-    </p>
-    <h4>equals(AB)</h4>
-    <p>
-      if A equals this line, .equals(A) returns true. Otherwise .equals(A) returns false.
-    </p>
-    <h4>name()</h4>
-    <p>
-      returns 'Line'.
-    </p>
-  </section>
-  <section>
-    <small><a href="#classes-nav">back to nav</a></small>
-    <h3 id="Point">Point</h3>
-    <h4>constructor</h4>
-    <pre><code>Point(x: number, y: number)
+      <h4>trim(startPoint, sw, sh, dw, dh)</h4>
+      <p>
+        this method behaves like trim() of HTML5 canvas.
+      </p>
+      <h4>resize(dw, dh)</h4>
+      <p>
+        this method behaves like resize() of HTML5 canvas.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        if A equals this image, .equals(A) returns true. Otherwise .equals(A) returns false.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves image by dx and dy. x-coordinate of image increases by dx. y-coordinate of image increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Image instance which are moved.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Image'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="Line">Line</h3>
+      <p>
+        Line isn't segment.
+      </p>
+      <h4>constructor</h4>
+      <pre><code>Line(A: Point, B: Point)
 </code></pre>
-    <h4>moveTo(x, y)</h4>
-    <p>
-      moves point at coordinate(x, y). x-coordinate of point will be x. y-coordinate of point will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Point instance which are moved.
-  </p>
-  <h4>move(dx, dy)</h4>
-  <p>
-    moves point by dx and dy. x-coordinate of point increases by dx. y-coordinate of point increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Point instance which are moved.
-  </p>
-  <h4>rotate(rad, center)</h4>
-  <p>
-    rotates around center by rad.
-  </p>
-  <h4>toString()</h4>
-  <p>
-    returns coordinate of point as '(x, y)'.
-  </p>
-  <h4>inspect()</h4>
-  <p>
-    returns the result of <code>.toString()</code>.
-  </p>
-  <h4>equals(A)</h4>
-  <p>
-    if A equals this point, .equals(A) returns true. Otherwise .equals(A) returns false.
-  </p>
-  <h4>name()</h4>
-  <p>
-    return 'Point'.
-  </p>
-</section>
-<section>
-  <small><a href="#classes-nav">back to nav</a></small>
-  <h3 id="Polygon">Polygon</h3>
-    <h4>constructor</h4>
-    <pre><code>Polygon(...points: Point[])
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves line by dx and dy. x-coordinate of line increases by dx. y-coordinate of line increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new line instance which are moved.
+      </p>
+      <h4>getEquation()</h4>
+      <p>
+        returns a equation representing the line.
+      </p>
+      <h4>toString()</h4>
+      <p>
+        returns the result of <code>.getEquation()</code>.
+      </p>
+      <h4>inspect()</h4>
+      <p>
+        returns the result of <code>.getEquation()</code>.
+      </p>
+      <h4>getIntersection(AB)</h4>
+      <p>
+        returns an intersection of the line and line AB. If the line doesn't intersect AB, <code>.getEquation()</code> returns false.
+      </p>
+      <h4>equals(AB)</h4>
+      <p>
+        if A equals this line, .equals(A) returns true. Otherwise .equals(A) returns false.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Line'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="Point">Point</h3>
+      <h4>constructor</h4>
+      <pre><code>Point(x: number, y: number)
+</code></pre>
+      <h4>moveTo(x, y)</h4>
+      <p>
+        moves point at coordinate(x, y). x-coordinate of point will be x. y-coordinate of point will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Point instance which are moved.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves point by dx and dy. x-coordinate of point increases by dx. y-coordinate of point increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Point instance which are moved.
+      </p>
+      <h4>rotate(rad, center)</h4>
+      <p>
+        rotates around center by rad.
+      </p>
+      <h4>toString()</h4>
+      <p>
+        returns coordinate of point as '(x, y)'.
+      </p>
+      <h4>inspect()</h4>
+      <p>
+        returns the result of <code>.toString()</code>.
+      </p>
+      <h4>equals(A)</h4>
+      <p>
+        if A equals this point, .equals(A) returns true. Otherwise .equals(A) returns false.
+      </p>
+      <h4>name()</h4>
+      <p>
+        return 'Point'.
+      </p>
+    </section>
+    <section>
+      <small><a href="#classes-nav">back to nav</a></small>
+      <h3 id="Polygon">Polygon</h3>
+      <h4>constructor</h4>
+      <pre><code>Polygon(...points: Point[])
 Polygon(points: Point[])
 </code></pre>
-  <h4>equals()</h4>
-  <p>
-    always returns false.
-  </p>
-  <h4>move(dx, dy)</h4>
-  <p>
-    moves polygon by dx and dy. x-coordinate of each vertex increases by dx. y-coordinate of each vertex increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Polygon instance which are moved.
-  </p>
-  <h4>moveTo(x, y)</h4>
-  <p>
-    moves polygon at coordinate(x, y). x-coordinate of each vertex will be x. y-coordinate of each vertex will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Polygon instance which are moved.
-</p>
-<h4>rotate(rad, center)</h4>
-<p>
-  rotates around center by rad.
-</p>
-<h4>has(P)</h4>
-<p>
-  if P is in this polygon, .has(P) returns true. Otherwise .has(P) returns false.
-</p>
-<h4>name()</h4>
-<p>
-  returns 'Polygon'.
-</p>
+      <h4>equals()</h4>
+      <p>
+        always returns false.
+      </p>
+      <h4>move(dx, dy)</h4>
+      <p>
+        moves polygon by dx and dy. x-coordinate of each vertex increases by dx. y-coordinate of each vertex increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Polygon instance which are moved.
+      </p>
+      <h4>moveTo(x, y)</h4>
+      <p>
+        moves polygon at coordinate(x, y). x-coordinate of each vertex will be x. y-coordinate of each vertex will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Polygon instance which are moved.
+      </p>
+      <h4>rotate(rad, center)</h4>
+      <p>
+        rotates around center by rad.
+      </p>
+      <h4>has(P)</h4>
+      <p>
+        if P is in this polygon, .has(P) returns true. Otherwise .has(P) returns false.
+      </p>
+      <h4>name()</h4>
+      <p>
+        returns 'Polygon'.
+      </p>
     </section>
     <section>
       <small><a href="#classes-nav">back to nav</a></small>
