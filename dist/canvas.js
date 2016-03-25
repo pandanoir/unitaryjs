@@ -6421,6 +6421,9 @@ process.umask = function() { return 0; };
 },{}],286:[function(require,module,exports){
 require("babel-polyfill");
 var __imageCaches = [];
+function errorCatcher(e) {
+    console.log(e);
+};
 function Canvas(id) {
     var canvas = document.getElementById(id);
     this.canvas = canvas.getContext('2d');
@@ -6479,7 +6482,7 @@ Canvas.fn.draw = function() {
                 obj.__image__ = image;
                 resolve();
             }
-        }));
+        }).catch(errorCatcher));
     }
     for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1){
         var obj = this.objects[i];
@@ -6495,14 +6498,14 @@ Canvas.fn.draw = function() {
                 var obj = this.objects[i];
                 this.__drawHelper__(obj);
             }
-        }.bind(this));
+        }.bind(this)).catch(errorCatcher);
     } else {
         return Promise.all(promises).then(function(values) {
             for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
                 var obj = this.objects[i];
                 this.__drawHelper__(obj);
             }
-        }.bind(this));
+        }.bind(this)).catch(errorCatcher);
     }
 };
 Canvas.fn.__drawHelper__ = function(obj) {
@@ -6660,10 +6663,10 @@ Canvas.preload = function() {
                 });
                 image.addEventListener('error', reject);
                 __imageCaches[src] = image;
-            }));
+            }).catch(errorCatcher));
         }
     }
-    return Promise.all(promises);
+    return Promise.all(promises).catch(errorCatcher);
 };
 function PolygonDrawFunction(obj) {
     this.canvas.beginPath();
