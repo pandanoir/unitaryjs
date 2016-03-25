@@ -121,8 +121,9 @@ Unitary.Vector(1, 1);</code></pre>
     <section>
       <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Circle">Circle</h3>
-<pre><code>var O = new Point(30,30);
-var C = new Circle(O, 30);</code></pre>
+      <h4>constructor</h4>
+<pre><code>Circle(center: Point, radius: number)
+</code></pre>
       <h4>move(dx, dy)</h4>
       <p>
         moves circle by dx and dy. x-coordinate of circle increases by dx. y-coordinate of circle increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new Circle instance which are moved.
@@ -147,6 +148,9 @@ var C = new Circle(O, 30);</code></pre>
   <section>
     <small><a href="#classes-nav">back to nav</a></small>
     <h3 id="Graph">Graph</h3>
+    <h4>constructor</h4>
+    <pre><code>Graph(f: Function, scale: number)
+</code></pre>
     <h4>setRange(start, end)</h4>
     <p>
       sets range of x. Constructor of Graph accpects function. However, it doesn't accept range. So if you want to set range, you have to use <code>.setRange()</code>. <code>.setRange()</code> changes itself.
@@ -166,6 +170,9 @@ var C = new Circle(O, 30);</code></pre>
     <p>
       Group contains UnitaryObjects.
     </p>
+    <h4>constructor</h4>
+    <pre><code>Group(...objects: UnitaryObject)
+</code></pre>
     <h4>name()</h4>
     <p>
       returns 'Group'.
@@ -174,6 +181,9 @@ var C = new Circle(O, 30);</code></pre>
   <section>
     <small><a href="#classes-nav">back to nav</a></small>
     <h3 id="Image">Image</h3>
+    <h4>constructor</h4>
+    <pre><code>Image(src: string, startPoint: Point)
+</code></pre>
     <h4>trim(startPoint, sw, sh, dw, dh)</h4>
     <p>
       this method behaves like trim() of HTML5 canvas.
@@ -201,10 +211,9 @@ var C = new Circle(O, 30);</code></pre>
     <p>
       Line isn't segment.
     </p>
-<pre><code>var A = new Point(10,20);
-var B = new Point(30,40);
-var AB = new Line(A, B);</code></pre>
-
+    <h4>constructor</h4>
+    <pre><code>Line(A: Point, B: Point)
+</code></pre>
     <h4>move(dx, dy)</h4>
     <p>
       moves line by dx and dy. x-coordinate of line increases by dx. y-coordinate of line increases by dy. <code>.move()</code> don't change itself. <code>.move()</code> returns new line instance which are moved.
@@ -237,14 +246,9 @@ var AB = new Line(A, B);</code></pre>
   <section>
     <small><a href="#classes-nav">back to nav</a></small>
     <h3 id="Point">Point</h3>
-    <p>
-      Point has two constructors.
-    </p>
-<pre><code>var A1 = new Point(0, 0);
-var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
-    <p>
-      A1 and A2 are same Point.
-    </p>
+    <h4>constructor</h4>
+    <pre><code>Point(x: number, y: number)
+</code></pre>
     <h4>moveTo(x, y)</h4>
     <p>
       moves point at coordinate(x, y). x-coordinate of point will be x. y-coordinate of point will be y. <code>.moveTo()</code> doesn't change itself. <coe>moveTo()</code> returns new Point instance which are moved.
@@ -277,16 +281,10 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
 <section>
   <small><a href="#classes-nav">back to nav</a></small>
   <h3 id="Polygon">Polygon</h3>
-  <p>
-    Polygon accepts more than two arguments. These arguments are vertices of the polygon.
-  </p>
-<pre><code>var ABCDE = new Polygon(
-  new Point(Math.cos(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30),
-  new Point(Math.cos(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30),
-  new Point(Math.cos(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30),
-  new Point(Math.cos(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30),
-  new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
-)</code></pre>
+    <h4>constructor</h4>
+    <pre><code>Polygon(...points: Point[])
+Polygon(points: Point[])
+</code></pre>
   <h4>equals()</h4>
   <p>
     always returns false.
@@ -315,15 +313,9 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
     <section>
       <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Quadrilateral">Quadrilateral</h3>
-      <p>
-        This constructor accepts four arguments. The argumetns are vertices of the quadrilateral.
-      </p>
-<pre><code>var ABCD = new Quadrilateral(
-  new Point(30,30),
-  new Point(90,90),
-  new Point(90,40),
-  new Point(60,20)
-);</code></pre>
+      <h4>constructor</h4>
+      <pre><code>Quadrilateral(A: Point, B: Point, C: Point, D: Point)
+</code></pre>
       <h4>getArea()</h4>
       <p>
         returns the area of this Quadrilateral.
@@ -344,13 +336,12 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
     <section>
       <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Rect">Rect</h3>
+      <h4>constructor</h4>
+      <pre><code>Rect(A: Point, B: Point)
+</code></pre>
       <p>
         This constructor accepts two arguments. First argument is upper-left corner of this rect. The other is bottom-right corner of this rect.
       </p>
-<pre><code>var ABCD = new Quadrilateral(
-  new Point(30,30),
-  new Point(90,90)
-);</code></pre>
       <h4>has(P)</h4>
       <p>
         if P is in this rect, .has(P) returns true. Otherwise .has(P) returns false.
@@ -371,12 +362,9 @@ var A2 = new Point.fromVector(new Vector(0, 0));</code></pre>
     <section>
       <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Segment">Segment</h3>
-      <p>
-        This Segment isn't Line.
-      </p>
-<pre><code>var A = new Point(10,20);
-var B = new Point(30,40);
-var segmentAB = new Segment(A, B);</code></pre>
+      <h4>constructor</h4>
+      <pre><code>Segment(A: Point, B: Point)
+</code></pre>
       <h4>intersects(L)</h4>
       <p>
         if L and this segment intersects, .intersects(L) returns true. Otherwise .intersects(L) returns false. L should be Line or Segment.
@@ -406,8 +394,9 @@ var segmentAB = new Segment(A, B);</code></pre>
     <section>
       <small><a href="#classes-nav">back to nav</a></small>
       <h3 id="Text">Text</h3>
-<pre><code>var circleC = new Circle(new Point(30, 30), 30),
-var text = new Text('O', circleC.Origin));</code></pre>
+      <h4>constructor</h4>
+      <pre><code>Text(str: string, P: Point, align: string = 'left', maxWidth: number = null) {
+</code></pre>
       <h4>strokeOutline()</h4>
       <p>
         if you call this method, text will stroke outline.
@@ -448,6 +437,9 @@ var text = new Text('O', circleC.Origin));</code></pre>
   new Point(90,90),
   new Point(90,40)
 );</code></pre>
+      <h4>constructor</h4>
+      <pre><code>Triangle(A: Point, B: Point, C: Point)
+</code></pre>
       <h4>getCircumcircle()</h4>
       <p>
         returns the circumcircle of this triangle.
@@ -485,6 +477,10 @@ var text = new Text('O', circleC.Origin));</code></pre>
       </p>
 <pre><code>var vectorA = new Vector(10, 10);
 var vectorOA = new Vector.from(new Point(10, 10), new Point(0, 0));</code></pre>
+      <h4>constructor</h4>
+      <pre><code>Vector(v: Point)
+Vector(x: number, y: number)
+</code></pre>
       <p>
         vectorA and vectorOA are same vector.
       </p>
