@@ -49,7 +49,12 @@
 
       var starTriangle = new Triangle(new Point(0, 0), new Point(30, 0), new Point(15, 15 * Math.sqrt(3)));
       var star = new Unitary.Group(starTriangle.move(30, 30), starTriangle.move(30, 30).rotate(Math.PI));
+      var images = new Unitary.Group(
+          new Unitary.Image('logo.png', new Point(0, 180)),
+          new Unitary.Image('logo.png', new Point(20, 160))
+        );
       groupCanvas.add(star);
+      groupCanvas.add(images);
 
 
       var logoImage = new Unitary.Image('logo.png', new Point(0, 0)),

@@ -63,14 +63,19 @@ Canvas.fn.draw = function() {
             }
         }).catch(errorCatcher));
     }
-    for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1){
-        var obj = this.objects[i];
-        if (obj.name() === 'Image') {
-            if (!obj.__image__) {
-                load(obj.src, obj);
+    function loadImage(objects) {
+        for (var i = 0, _i = objects.length; i < _i; i = 0|i+1){
+            var obj = objects[i];
+            if (obj.name() === 'Image') {
+                if (!obj.__image__) {
+                    load(obj.src, obj);
+                }
+            } else if(obj.name() === 'Group') {
+                loadImage(obj.group);
             }
         }
     }
+    loadImage(this.objects);
     if (promises.length === 0) {
         return Promise.resolve().then(function() {
             for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
