@@ -851,12 +851,14 @@ exports.Image = Image;
 var Group = (function (_super) {
     __extends(Group, _super);
     function Group() {
-        var objects = [];
-        for (var _a = 0; _a < arguments.length; _a++) {
-            objects[_a - 0] = arguments[_a];
-        }
         _super.call(this);
-        this.group = objects;
+        var args = [];
+        for (var i = 0, _i = arguments.length; i < _i; i++)
+            args[i] = arguments[i];
+        if (Object.prototype.toString.call(args[0]) === '[object Array]')
+            this.group = args[0];
+        else
+            this.group = args;
     }
     Group.prototype.name = function () {
         return 'Group';

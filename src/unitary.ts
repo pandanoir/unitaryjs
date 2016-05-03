@@ -856,9 +856,13 @@ export class Image extends UnitaryObject{
 }
 export class Group extends UnitaryObject {
     group: UnitaryObject[];
-    constructor(...objects: UnitaryObject[]) {
+    constructor() {
         super();
-        this.group = objects;
+        var args = [];
+        for (var i = 0, _i = arguments.length; i < _i; i++) args[i] = arguments[i];
+        
+        if (Object.prototype.toString.call(args[0]) === '[object Array]') this.group = args[0];
+        else this.group = args;
     }
     name(): string {
         return 'Group';
