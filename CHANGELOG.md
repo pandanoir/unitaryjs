@@ -4,7 +4,7 @@ UnitaryJS now controls events! You can handle objects, such as triangle, circle 
 ## Features
 
 * add CircularSector class.
-* add origin property to Circle and CircularSector.
+* add center property to Circle and CircularSector.
 * add .has() method to Circle, CircularSector, Group and UnitaryObject. UnitaryObject.fn.has() always returns false.
 * load an image once and cache it. If you create Image objects that has same source, Image will use a cache.
 * add Canvas.preload(). If you don't use Canvas.preload() and load image, Image instance isn't load until Canvas.fn.draw() is called.
