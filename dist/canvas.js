@@ -6666,6 +6666,7 @@ Unitary.UnitaryObject.prototype.on = function(name, handler) {
     return this;
 }
 Unitary.UnitaryObject.prototype.trigger = function(name, e) {
+    if (!this.handlers || !this.handlers[name]) return this;
     for (var i = 0, _i = this.handlers[name].length; i < _i; i++) {
         this.handlers[name][i](e);
     }
