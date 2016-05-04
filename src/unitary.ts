@@ -472,6 +472,9 @@ export class Circle extends UnitaryObject{
         }
         return this.center.equals(C.center) && this.r === C.r;
     }
+    has(P: Point): boolean {
+        return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
+    }
     name(): string {
         return 'Circle';
     }
@@ -512,6 +515,12 @@ export class CircularSector extends UnitaryObject{
             return false;
         }
         return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
+    }
+    has(P: Point): boolean {
+        var theta = Math.atan2(P.y, P.x);
+        return new Vector(P).substract(new Vector(this.center)).abs() <= this.r &&
+            this.startAngle <= theta &&
+            theta <= this.endAngle;
     }
     name(): string {
         return 'CircularSector';

@@ -494,6 +494,9 @@ var Circle = (function (_super) {
         }
         return this.center.equals(C.center) && this.r === C.r;
     };
+    Circle.prototype.has = function (P) {
+        return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
+    };
     Circle.prototype.name = function () {
         return 'Circle';
     };
@@ -532,6 +535,12 @@ var CircularSector = (function (_super) {
             return false;
         }
         return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
+    };
+    CircularSector.prototype.has = function (P) {
+        var theta = Math.atan2(P.y, P.x);
+        return new Vector(P).substract(new Vector(this.center)).abs() <= this.r &&
+            this.startAngle <= theta &&
+            theta <= this.endAngle;
     };
     CircularSector.prototype.name = function () {
         return 'CircularSector';
