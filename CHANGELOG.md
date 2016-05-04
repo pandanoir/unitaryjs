@@ -1,3 +1,20 @@
+# 0.0.6
+UnitaryJS now controls events! You can handle objects, such as triangle, circle or rect, as DOM Elements! Your game's parts are no longer &lt;div&gt; or &lt;span&gt;! It's objects drawn in canvas!
+
+## Features
+
+* add CircularSector class.
+* add origin property to Circle and CircularSector.
+* add .has() method to Circle, CircularSector, Group and UnitaryObject. UnitaryObject.fn.has() always returns false.
+* load an image once and cache it. If you create Image objects that has same source, Image will use a cache.
+* add Canvas.preload(). If you don't use Canvas.preload() and load image, Image instance isn't load until Canvas.fn.draw() is called.
+* Group constructor now accepts the array of UnitaryObject.
+* UnitaryObject can listen events. If you click the triangle, it feels it was clicked!
+
+## Breaking Changes
+
+* Image.fn.trim() and Image.fn.resize() return new Image object that contain changes. These methods changed itself instead of returning new object before.
+
 # 0.0.5
 0.0.5 includes many bugfixes.
 

@@ -916,4 +916,4 @@ export class Graph extends UnitaryObject{
 }
 export var XAxis = new Line(new Point(0, 0), new Point(1, 0));
 export var YAxis = new Line(new Point(0, 0), new Point(0, 1));
-export var VERSION = '0.0.5';
+export var VERSION = '0.0.6';
