@@ -76,6 +76,9 @@ var UnitaryObject = (function () {
     UnitaryObject.prototype.moveY = function (dy) {
         return this.move(0, dy);
     };
+    UnitaryObject.prototype.has = function (P) {
+        return false;
+    };
     UnitaryObject.prototype.name = function () {
         return 'UnitaryObject';
     };
@@ -869,6 +872,13 @@ var Group = (function (_super) {
         else
             this.group = args;
     }
+    Group.prototype.has = function (P) {
+        for (var i = 0, _i = this.group.length; i < _i; i++) {
+            if (this.group[i].has && this.group[i].has(P))
+                return true;
+        }
+        return false;
+    };
     Group.prototype.name = function () {
         return 'Group';
     };

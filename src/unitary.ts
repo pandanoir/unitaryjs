@@ -82,6 +82,9 @@ export class UnitaryObject {
     moveY(dy: number): any {
         return this.move(0, dy);
     }
+    has(P: Point): boolean {
+        return false;
+    }
     name(): string {
         return 'UnitaryObject';
     }
@@ -872,6 +875,12 @@ export class Group extends UnitaryObject {
         
         if (Object.prototype.toString.call(args[0]) === '[object Array]') this.group = args[0];
         else this.group = args;
+    }
+    has(P: Point): boolean {
+        for (var i = 0, _i = this.group.length; i < _i; i++) {
+            if (this.group[i].has && this.group[i].has(P)) return true;
+        }
+        return false;
     }
     name(): string {
         return 'Group';
