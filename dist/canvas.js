@@ -6637,6 +6637,7 @@ function errorCatcher(e) {
 function Canvas(id) {
     var canvas = document.getElementById(id);
     this.canvas = canvas.getContext('2d');
+    this.element = canvas;
     this.canvasHeight = canvas.height;
     this.canvasWidth = canvas.width;
     this.id = id;
@@ -6644,7 +6645,36 @@ function Canvas(id) {
     this.mode = 'graph';
     this.origin = new Unitary.Point(0, 0);
 };
+function eventTrigger(e) {
+    var rect = e.target.getBoundingClientRect();
+    var x = this.X(e.clientX - rect.left),
+        y = this.Y(e.clientY - rect.top);
+
+    var stopPropagationCalled = false;
+    e.stopPropagation = function() {stopPropagationCalled = true};
+    for (var i = this.objects.length - 1; i >= 0; i--) {
+        if (stopPropagationCalled) break;
+        if (this.objects[i].has && this.objects[i].has(new Unitary.Point(x, y))) {
+            this.objects[i].trigger(e.type, e);
+        }
+    }
+};
+Unitary.UnitaryObject.prototype.on = function(name, handler) {
+    if (!this.handlers) this.handlers = {};
+    if (!this.handlers[name]) this.handlers[name] = [];
+    this.handlers[name].push(handler);
+    return this;
+}
+Unitary.UnitaryObject.prototype.trigger = function(name, e) {
+    for (var i = 0, _i = this.handlers[name].length; i < _i; i++) {
+        this.handlers[name][i](e);
+    }
+    return this;
+};
 Canvas.fn = Canvas.prototype;
+Canvas.fn.listen = function(type) {
+    this.element.addEventListener(type, eventTrigger.bind(this), false);
+};
 Canvas.fn.add = function(obj) {
     this.objects.push(obj);
 };

@@ -80,7 +80,17 @@
       pointCanvas.add(new Point(30, 30).setFillColor('#f00'));
       pointCanvas.add(new Point(50, 30).setFillColor('#f00'));
 
-      polygonCanvas.add(new Unitary.Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)))
+      polygonCanvas.listen('click');
+      polygonCanvas.add(new Unitary.Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', function() {
+        polygonCanvas.clear();
+        polygonCanvas.objects[0] = polygonCanvas.objects[0].setFillColor('black');
+        polygonCanvas.draw();
+        setTimeout(function() {
+          polygonCanvas.clear();
+          polygonCanvas.objects[0] = polygonCanvas.objects[0].setFillColor('white');
+          polygonCanvas.draw();
+        }, 100);
+      }))
 
       polygonCanvas2.add(new Unitary.Polygon(new Point(10, 10), new Point(30, 30), new Point(100, 10), new Point(50, 0), new Point(10, 50)))
 
