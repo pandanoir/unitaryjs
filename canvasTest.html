@@ -118,7 +118,7 @@
       segmentCanvas.add(new Unitary.Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
       segmentCanvas.add(new Unitary.Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
 
-      textCanvas.load.then(function() {
+      textCanvas.ready.then(function() {
         var size = textCanvas.canvas.measureText('あ').width;
         textCanvas.mode = 'normal';
         var wagahaiText = '吾輩は猫である。名前はまだ無い。\n' +

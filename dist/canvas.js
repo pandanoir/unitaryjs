@@ -6637,7 +6637,7 @@ function errorCatcher(e) {
 function Canvas(id) {
     if (document.getElementById(id) === null) {
         if (document.readyState === 'complete') throw new Error('not found canvas.');
-        this.load = new Promise(function(resolve) {
+        this.ready = new Promise(function(resolve) {
             window.addEventListener('load', function() {
                 resolve();
                 console.log('loaded');
@@ -6653,7 +6653,7 @@ function Canvas(id) {
         var canvas = document.getElementById(id);
         this.canvas = canvas.getContext('2d');
         this.element = canvas;
-        this.load = Promise.resolve();
+        this.ready = Promise.resolve();
         this.canvasHeight = canvas.height;
         this.canvasWidth = canvas.width;
     }
@@ -6691,7 +6691,7 @@ Unitary.UnitaryObject.prototype.trigger = function(name, e) {
 };
 Canvas.fn = Canvas.prototype;
 Canvas.fn.listen = function(type) {
-    this.load.then(function() {
+    this.ready.then(function() {
         this.element.addEventListener(type, eventTrigger.bind(this), false)
     }.bind(this));
 };
@@ -6757,7 +6757,7 @@ Canvas.fn.draw = function() {
         }
     }
     loadImage(this.objects);
-    return Promise.all(promises.concat(this.load)).then(function() {
+    return Promise.all(promises.concat(this.ready)).then(function() {
         for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
             var obj = this.objects[i];
             this.__drawHelper__(obj);
