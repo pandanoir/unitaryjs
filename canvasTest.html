@@ -6,7 +6,6 @@
     <script src="./dist/unitary.browser.js"></script> <!-- ライブラリ本体 -->
     <script src="./dist/canvas.js"></script>
     <script>
-    window.addEventListener('load', function(){
       var Circle = Unitary.Circle,
           Graph = Unitary.Graph,
           Image_ = Unitary.Image,
@@ -119,20 +118,23 @@
       segmentCanvas.add(new Unitary.Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
       segmentCanvas.add(new Unitary.Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
 
-      var size = textCanvas.canvas.measureText('あ').width;
-      textCanvas.mode = 'normal';
-      var wagahaiText = '吾輩は猫である。名前はまだ無い。\n' +
-          'どこで生れたかとんと見当がつかぬ。\n' +
-          '何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。\n' +
-          '吾輩はここで始めて人間というものを見た。\n' +
-          'しかもあとで聞くとそれは書生という人間中で一番獰悪な種族であったそうだ。\n' +
-          'この書生というのは時々我々を捕えて煮て食うという話である。\n' +
-          'しかしその当時は何という考もなかったから別段恐しいとも思わなかった。\n' +
-          'ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。';
-      var splitWagahai = wagahaiText.split('\n');
-      for (var i = 0, _i = splitWagahai.length; i < _i; i++) {
-          textCanvas.add(new Unitary.Text(splitWagahai[i], new Point(0, size * i)).setBaseline('top'));
-      }
+      textCanvas.load.then(function() {
+        var size = textCanvas.canvas.measureText('あ').width;
+        textCanvas.mode = 'normal';
+        var wagahaiText = '吾輩は猫である。名前はまだ無い。\n' +
+            'どこで生れたかとんと見当がつかぬ。\n' +
+            '何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。\n' +
+            '吾輩はここで始めて人間というものを見た。\n' +
+            'しかもあとで聞くとそれは書生という人間中で一番獰悪な種族であったそうだ。\n' +
+            'この書生というのは時々我々を捕えて煮て食うという話である。\n' +
+            'しかしその当時は何という考もなかったから別段恐しいとも思わなかった。\n' +
+            'ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。';
+        var splitWagahai = wagahaiText.split('\n');
+        for (var i = 0, _i = splitWagahai.length; i < _i; i++) {
+            textCanvas.add(new Unitary.Text(splitWagahai[i], new Point(0, size * i)).setBaseline('top'));
+        }
+        textCanvas.draw();
+      });
 
 
       var triangle = new Unitary.Triangle(new Point(10, 10), new Point(100, 40), new Point(50, 60));
@@ -156,7 +158,6 @@
       segmentCanvas.draw();
       textCanvas.draw();
       triangleCanvas.draw();
-    });
     </script>
     <style>
       canvas {

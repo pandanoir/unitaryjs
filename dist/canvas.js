@@ -6635,11 +6635,28 @@ function errorCatcher(e) {
     console.log(e);
 };
 function Canvas(id) {
-    var canvas = document.getElementById(id);
-    this.canvas = canvas.getContext('2d');
-    this.element = canvas;
-    this.canvasHeight = canvas.height;
-    this.canvasWidth = canvas.width;
+    if (document.getElementById(id) === null) {
+        if (document.readyState === 'complete') throw new Error('not found canvas.');
+        this.load = new Promise(function(resolve) {
+            window.addEventListener('load', function() {
+                resolve();
+                console.log('loaded');
+            });
+        }).then(function() {
+            var canvas = document.getElementById(id);
+            this.canvas = canvas.getContext('2d');
+            this.element = canvas;
+            this.canvasHeight = canvas.height;
+            this.canvasWidth = canvas.width;
+        }.bind(this));
+    } else {
+        var canvas = document.getElementById(id);
+        this.canvas = canvas.getContext('2d');
+        this.element = canvas;
+        this.load = Promise.resolve();
+        this.canvasHeight = canvas.height;
+        this.canvasWidth = canvas.width;
+    }
     this.id = id;
     this.objects = [];
     this.mode = 'graph';
@@ -6674,7 +6691,9 @@ Unitary.UnitaryObject.prototype.trigger = function(name, e) {
 };
 Canvas.fn = Canvas.prototype;
 Canvas.fn.listen = function(type) {
-    this.element.addEventListener(type, eventTrigger.bind(this), false);
+    this.load.then(function() {
+        this.element.addEventListener(type, eventTrigger.bind(this), false)
+    }.bind(this));
 };
 Canvas.fn.add = function(obj) {
     this.objects.push(obj);
@@ -6738,21 +6757,12 @@ Canvas.fn.draw = function() {
         }
     }
     loadImage(this.objects);
-    if (promises.length === 0) {
-        return Promise.resolve().then(function() {
-            for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
-                var obj = this.objects[i];
-                this.__drawHelper__(obj);
-            }
-        }.bind(this)).catch(errorCatcher);
-    } else {
-        return Promise.all(promises).then(function(values) {
-            for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
-                var obj = this.objects[i];
-                this.__drawHelper__(obj);
-            }
-        }.bind(this)).catch(errorCatcher);
-    }
+    return Promise.all(promises.concat(this.load)).then(function() {
+        for (var i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
+            var obj = this.objects[i];
+            this.__drawHelper__(obj);
+        }
+    }.bind(this)).catch(errorCatcher);
 };
 Canvas.fn.__drawHelper__ = function(obj) {
     var name = obj.name();
