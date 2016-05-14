@@ -878,6 +878,14 @@ var Group = (function (_super) {
         }
         return false;
     };
+    Group.prototype.move = function (dx, dy) {
+        var newGroup = this.group.concat();
+        for (var i = 0, _i = newGroup.length; i < _i; i++) {
+            if (newGroup[i].move)
+                newGroup[i] = newGroup[i].move(dx, dy);
+        }
+        return new Group(newGroup);
+    };
     Group.prototype.name = function () {
         return 'Group';
     };

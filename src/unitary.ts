@@ -868,6 +868,8 @@ export class Image extends UnitaryObject{
 }
 export class Group extends UnitaryObject {
     group: UnitaryObject[];
+    constructor(...objects: UnitaryObject[]);
+    constructor(objects: UnitaryObject[]);
     constructor() {
         super();
         var args = [];
@@ -881,6 +883,13 @@ export class Group extends UnitaryObject {
             if (this.group[i].has && this.group[i].has(P)) return true;
         }
         return false;
+    }
+    move(dx: number, dy: number): any {
+        var newGroup = this.group.concat();
+        for (var i = 0, _i = newGroup.length; i < _i; i++) {
+            if (newGroup[i].move) newGroup[i] = newGroup[i].move(dx, dy);
+        }
+        return new Group(newGroup);
     }
     name(): string {
         return 'Group';
