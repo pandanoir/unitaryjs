@@ -17,9 +17,12 @@
         var canvas = new Canvas('logo');
         var logo = new Unitary.Text('UnitaryJS', new Unitary.Point(0, 30));
         logo.setFont('50px "Play"');
-        canvas.add(logo);
-        canvas.draw();
-        document.getElementById('logoImage').src = canvas.toDataURL();
+        setTimeout(_ => {
+          canvas.add(logo);
+          canvas.draw().then(_ => {
+            document.getElementById('logoImage').src = canvas.toDataURL();
+          });
+        }, 100);
       });
     </script>
   </head>
