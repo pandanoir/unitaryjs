@@ -234,30 +234,6 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
-function gcd(m, n) {
-    if (m < n) return gcd(n, m);
-    if (m < 0) return gcd(-m, n);
-    if (n < 0) return gcd(m, -n);
-    return n === 0 ? m : gcd(n, m % n);
-}
-function distance(A, B) {
-    var res = void 0;
-    if (A instanceof Point && B instanceof Point) {
-        return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
-    }
-    if (A instanceof Point && B instanceof Line) {
-        res = B.a * A.x + B.b * A.y + B.c;
-        if (res < 0) {
-            res *= -1;
-        }
-        res /= Math.sqrt(B.a * B.a + B.b * B.b);
-        return res;
-    }
-    if (A instanceof Line && B instanceof Point) {
-        return distance(B, A);
-    }
-}
-
 var UnitaryObject = function () {
     function UnitaryObject() {
         classCallCheck(this, UnitaryObject);
@@ -344,87 +320,71 @@ var UnitaryObject = function () {
     return UnitaryObject;
 }();
 
-var Point = function (_UnitaryObject) {
-    inherits(Point, _UnitaryObject);
+var BezierCurve = function (_UnitaryObject) {
+    inherits(BezierCurve, _UnitaryObject);
 
-    function Point(x, y) {
-        classCallCheck(this, Point);
+    function BezierCurve() {
+        classCallCheck(this, BezierCurve);
 
-        var _this = possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this));
+        var _this = possibleConstructorReturn(this, (BezierCurve.__proto__ || Object.getPrototypeOf(BezierCurve)).call(this));
 
-        _this.x = x;
-        _this.y = y;
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        if (Object.prototype.toString.call(args[0]) === '[object Array]') _this.controlPoints = args[0];else _this.controlPoints = args;
+        _this.step = 0.05;
         return _this;
     }
 
-    createClass(Point, [{
-        key: 'moveTo',
-        value: function moveTo(x, y) {
-            return new Point(x, y).setStyle(this.style);
+    createClass(BezierCurve, [{
+        key: 'setStep',
+        value: function setStep(step) {
+            this.step = step;
+            return this;
         }
     }, {
         key: 'move',
         value: function move(dx, dy) {
-            return new Point(this.x + dx, this.y + dy).setStyle(this.style);
-        }
-    }, {
-        key: 'rotate',
-        value: function rotate(rad, center) {
-            var x = Math.cos(rad) * (this.x - center.x) - Math.sin(rad) * (this.y - center.y) + center.x;
-            var y = Math.sin(rad) * (this.y - center.y) + Math.cos(rad) * (this.y - center.y) + center.y;
-            return new Point(x, y);
-        }
-    }, {
-        key: 'toString',
-        value: function toString() {
-            return '(' + this.x + ', ' + this.y + ')';
-        }
-    }, {
-        key: 'inspect',
-        value: function inspect() {
-            return '(' + this.x + ', ' + this.y + ')';
-        }
-    }, {
-        key: 'equals',
-        value: function equals(B) {
-            if (!get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'equals', this).call(this, B)) {
-                return false;
+            var newBezier = this.controlPoints.concat();
+            for (var i = 0, _i = newBezier.length; i < _i; i++) {
+                newBezier[i] = newBezier[i].move(dx, dy);
             }
-            return this.x === B.x && this.y === B.y;
+            return new BezierCurve(newBezier).setStep(this.step);
         }
     }, {
         key: 'name',
         value: function name() {
-            return 'Point';
+            return 'BezierCurve';
         }
     }]);
-    return Point;
+    return BezierCurve;
 }(UnitaryObject);
 
-var BaseVector = function (_UnitaryObject2) {
-    inherits(BaseVector, _UnitaryObject2);
+var BaseVector = function (_UnitaryObject) {
+    inherits(BaseVector, _UnitaryObject);
 
     function BaseVector() {
         classCallCheck(this, BaseVector);
 
-        var _this2 = possibleConstructorReturn(this, (BaseVector.__proto__ || Object.getPrototypeOf(BaseVector)).call(this));
+        var _this = possibleConstructorReturn(this, (BaseVector.__proto__ || Object.getPrototypeOf(BaseVector)).call(this));
 
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
         }
 
         if (args.length === 1 && Object.prototype.toString.call(args[0]) === '[object Array]') {
-            _this2.component = new Array(args[0].length);
+            _this.component = new Array(args[0].length);
             for (var i = 0, _i = args[0].length; i < _i; i = 0 | i + 1) {
-                _this2.component[i] = args[0][i];
+                _this.component[i] = args[0][i];
             }
         } else {
-            _this2.component = new Array(args.length);
+            _this.component = new Array(args.length);
             for (var _i2 = 0, _i3 = args.length; _i2 < _i3; _i2 = 0 | _i2 + 1) {
-                _this2.component[_i2] = args[_i2];
+                _this.component[_i2] = args[_i2];
             }
         }
-        return _this2;
+        return _this;
     }
 
     createClass(BaseVector, [{
@@ -516,17 +476,17 @@ var Vector = function (_BaseVector) {
         }
 
         if (args.length === 2) {
-            var _this3 = possibleConstructorReturn(this, (Vector.__proto__ || Object.getPrototypeOf(Vector)).call(this, args[0], args[1]));
+            var _this2 = possibleConstructorReturn(this, (Vector.__proto__ || Object.getPrototypeOf(Vector)).call(this, args[0], args[1]));
 
-            _this3.x = args[0];
-            _this3.y = args[1];
+            _this2.x = args[0];
+            _this2.y = args[1];
         } else if (args.length === 1) {
-            var _this3 = possibleConstructorReturn(this, (Vector.__proto__ || Object.getPrototypeOf(Vector)).call(this, args[0].x, args[0].y));
+            var _this2 = possibleConstructorReturn(this, (Vector.__proto__ || Object.getPrototypeOf(Vector)).call(this, args[0].x, args[0].y));
 
-            _this3.x = args[0].x;
-            _this3.y = args[0].y;
+            _this2.x = args[0].x;
+            _this2.y = args[0].y;
         }
-        return possibleConstructorReturn(_this3);
+        return possibleConstructorReturn(_this2);
     }
 
     createClass(Vector, [{
@@ -580,19 +540,19 @@ var Vector3D = function (_BaseVector2) {
         }
 
         if (args.length === 3) {
-            var _this4 = possibleConstructorReturn(this, (Vector3D.__proto__ || Object.getPrototypeOf(Vector3D)).call(this, args[0], args[1], args[2]));
+            var _this3 = possibleConstructorReturn(this, (Vector3D.__proto__ || Object.getPrototypeOf(Vector3D)).call(this, args[0], args[1], args[2]));
 
-            _this4.x = args[0];
-            _this4.y = args[1];
-            _this4.z = args[2];
+            _this3.x = args[0];
+            _this3.y = args[1];
+            _this3.z = args[2];
         } else if (args.length === 1) {
-            var _this4 = possibleConstructorReturn(this, (Vector3D.__proto__ || Object.getPrototypeOf(Vector3D)).call(this, args[0].x, args[0].y, args[0].z));
+            var _this3 = possibleConstructorReturn(this, (Vector3D.__proto__ || Object.getPrototypeOf(Vector3D)).call(this, args[0].x, args[0].y, args[0].z));
 
-            _this4.x = args[0].x;
-            _this4.y = args[0].y;
-            _this4.z = args[0].z;
+            _this3.x = args[0].x;
+            _this3.y = args[0].y;
+            _this3.z = args[0].z;
         }
-        return possibleConstructorReturn(_this4);
+        return possibleConstructorReturn(_this3);
     }
 
     createClass(Vector3D, [{
@@ -627,8 +587,352 @@ var Vector3D = function (_BaseVector2) {
     return Vector3D;
 }(BaseVector);
 
-var Line = function (_UnitaryObject3) {
-    inherits(Line, _UnitaryObject3);
+var Circle = function (_UnitaryObject) {
+    inherits(Circle, _UnitaryObject);
+
+    function Circle(center, radius) {
+        classCallCheck(this, Circle);
+
+        var _this = possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this));
+
+        _this.center = center;
+        _this.Origin = center;
+        _this.r = radius;
+        _this.radius = radius;
+        return _this;
+    }
+
+    createClass(Circle, [{
+        key: 'moveTo',
+        value: function moveTo(x, y) {
+            return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style);
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
+        }
+    }, {
+        key: 'getEquation',
+        value: function getEquation() {
+            var res = '(x';
+            if (this.center.x > 0) res += '-' + this.center.x;else if (this.center.x < 0) res += '+' + -this.center.x; // + abs(this.center.x)
+            res += ')^2+(y';
+            if (this.center.y > 0) res += '-' + this.center.y;else if (this.center.y < 0) res += '+' + -this.center.y; // + abs(this.center.x)
+            res += ')^2=' + this.r + '^2';
+            return res;
+        }
+    }, {
+        key: 'equals',
+        value: function equals(C) {
+            if (!get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), 'equals', this).call(this, C)) {
+                return false;
+            }
+            return this.center.equals(C.center) && this.r === C.r;
+        }
+    }, {
+        key: 'has',
+        value: function has(P) {
+            return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Circle';
+        }
+    }]);
+    return Circle;
+}(UnitaryObject);
+
+var CircularSector = function (_UnitaryObject) {
+    inherits(CircularSector, _UnitaryObject);
+
+    function CircularSector(center, radius, endAngle) {
+        var startAngle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+        classCallCheck(this, CircularSector);
+
+        var _this = possibleConstructorReturn(this, (CircularSector.__proto__ || Object.getPrototypeOf(CircularSector)).call(this));
+
+        _this.center = center;
+        _this.Origin = center;
+        _this.radius = radius;
+        _this.r = radius;
+        _this.endAngle = endAngle;
+        _this.startAngle = startAngle;
+        return _this;
+    }
+
+    createClass(CircularSector, [{
+        key: 'moveTo',
+        value: function moveTo(x, y) {
+            return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+        }
+    }, {
+        key: 'rotate',
+        value: function rotate(rad) {
+            return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style);
+        }
+    }, {
+        key: 'equals',
+        value: function equals(C) {
+            var angleCompare = function angleCompare(A, B) {
+                return (A - B) % (2 * Math.PI) === 0;
+            };
+            if (!get(CircularSector.prototype.__proto__ || Object.getPrototypeOf(CircularSector.prototype), 'equals', this).call(this, C)) {
+                return false;
+            }
+            return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
+        }
+    }, {
+        key: 'has',
+        value: function has(P) {
+            var theta = Math.atan2(P.y, P.x);
+            return new Vector(P).substract(new Vector(this.center)).abs() <= this.r && this.startAngle <= theta && theta <= this.endAngle;
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'CircularSector';
+        }
+    }]);
+    return CircularSector;
+}(UnitaryObject);
+
+var Graph = function (_UnitaryObject) {
+    inherits(Graph, _UnitaryObject);
+
+    function Graph(f, scale) {
+        classCallCheck(this, Graph);
+
+        var _this = possibleConstructorReturn(this, (Graph.__proto__ || Object.getPrototypeOf(Graph)).call(this));
+
+        _this.f = f;
+        _this.scale = scale;
+        _this.start = null;
+        _this.end = null;
+        return _this;
+    }
+
+    createClass(Graph, [{
+        key: 'setRange',
+        value: function setRange(start, end) {
+            this.start = start;
+            this.end = end;
+            return this;
+        }
+    }, {
+        key: 'equals',
+        value: function equals() {
+            return false;
+        }
+    }, {
+        key: 'moveX',
+        value: function moveX() {}
+    }, {
+        key: 'moveY',
+        value: function moveY() {}
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Graph';
+        }
+    }]);
+    return Graph;
+}(UnitaryObject);
+
+var Group = function (_UnitaryObject) {
+    inherits(Group, _UnitaryObject);
+
+    function Group() {
+        classCallCheck(this, Group);
+
+        var _this = possibleConstructorReturn(this, (Group.__proto__ || Object.getPrototypeOf(Group)).call(this));
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        if (Object.prototype.toString.call(args[0]) === '[object Array]') _this.group = args[0];else _this.group = args;
+        return _this;
+    }
+
+    createClass(Group, [{
+        key: 'has',
+        value: function has(P) {
+            for (var i = 0, _i = this.group.length; i < _i; i++) {
+                if (this.group[i].has && this.group[i].has(P)) return true;
+            }
+            return false;
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            var newGroup = this.group.concat();
+            for (var i = 0, _i = newGroup.length; i < _i; i++) {
+                if (newGroup[i].move) newGroup[i] = newGroup[i].move(dx, dy);
+            }
+            return new Group(newGroup);
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Group';
+        }
+    }]);
+    return Group;
+}(UnitaryObject);
+
+var Point = function (_UnitaryObject) {
+    inherits(Point, _UnitaryObject);
+
+    function Point(x, y) {
+        classCallCheck(this, Point);
+
+        var _this = possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this));
+
+        _this.x = x;
+        _this.y = y;
+        return _this;
+    }
+
+    createClass(Point, [{
+        key: 'moveTo',
+        value: function moveTo(x, y) {
+            return new Point(x, y).setStyle(this.style);
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            return new Point(this.x + dx, this.y + dy).setStyle(this.style);
+        }
+    }, {
+        key: 'rotate',
+        value: function rotate(rad, center) {
+            var x = Math.cos(rad) * (this.x - center.x) - Math.sin(rad) * (this.y - center.y) + center.x;
+            var y = Math.sin(rad) * (this.y - center.y) + Math.cos(rad) * (this.y - center.y) + center.y;
+            return new Point(x, y);
+        }
+    }, {
+        key: 'toString',
+        value: function toString() {
+            return '(' + this.x + ', ' + this.y + ')';
+        }
+    }, {
+        key: 'inspect',
+        value: function inspect() {
+            return '(' + this.x + ', ' + this.y + ')';
+        }
+    }, {
+        key: 'equals',
+        value: function equals(B) {
+            if (!get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'equals', this).call(this, B)) {
+                return false;
+            }
+            return this.x === B.x && this.y === B.y;
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Point';
+        }
+    }]);
+    return Point;
+}(UnitaryObject);
+
+var Image_ = function (_UnitaryObject) {
+    inherits(Image_, _UnitaryObject);
+
+    function Image_(src, startPoint) {
+        classCallCheck(this, Image_);
+
+        var _this = possibleConstructorReturn(this, (Image_.__proto__ || Object.getPrototypeOf(Image_)).call(this));
+
+        _this.src = src;
+        _this.startPoint = startPoint;
+        _this.dx = startPoint.x;
+        _this.dy = startPoint.y;
+        _this.dw = null;
+        _this.dh = null;
+        _this.sw = null;
+        _this.sh = null;
+        _this.sx = null;
+        _this.sy = null;
+        return _this;
+    }
+
+    createClass(Image_, [{
+        key: 'trim',
+        value: function trim(startPoint, sw, sh) {
+            var dw = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+            var dh = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+            var newImage = new Image_(this.src, this.startPoint);
+            if (dw == null) {
+                dw = sw;
+            }
+            if (dh == null) {
+                dh = sh;
+            }
+            newImage.sx = startPoint.x;
+            newImage.sy = startPoint.y;
+            newImage.sw = sw;
+            newImage.sh = sh;
+            newImage.dw = dw;
+            newImage.dh = dh;
+            return newImage;
+        }
+    }, {
+        key: 'resize',
+        value: function resize(dw, dh) {
+            var newImage = new Image_(this.src, this.startPoint);
+            newImage.dw = dw;
+            newImage.dh = dh;
+            newImage.sw = this.sw;
+            newImage.sh = this.sh;
+            newImage.sx = this.sx;
+            newImage.sy = this.sy;
+            return newImage;
+        }
+    }, {
+        key: 'equals',
+        value: function equals(B) {
+            if (!get(Image_.prototype.__proto__ || Object.getPrototypeOf(Image_.prototype), 'equals', this).call(this, B)) {
+                return false;
+            }
+            return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            var newImage = new Image_(this.src, this.startPoint.move(dx, dy));
+            if (this.sx !== null) {
+                newImage = newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
+            }
+            return newImage;
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Image';
+        }
+    }]);
+    return Image_;
+}(UnitaryObject);
+
+function gcd(m, n) {
+    if (m < n) return gcd(n, m);
+    if (m < 0) return gcd(-m, n);
+    if (n < 0) return gcd(m, -n);
+    return n === 0 ? m : gcd(n, m % n);
+}
+
+var Line = function (_UnitaryObject) {
+    inherits(Line, _UnitaryObject);
 
     function Line(A, B) {
         classCallCheck(this, Line);
@@ -637,25 +941,25 @@ var Line = function (_UnitaryObject3) {
             throw new Error('A equals B. So AB couldn\'t construct line.');
         }
 
-        var _this5 = possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this));
+        var _this = possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this));
 
-        _this5.points = [A, B];
-        _this5.a = B.y - A.y;
-        _this5.b = A.x - B.x;
-        _this5.c = A.x * (A.y - B.y) - A.y * (A.x - B.x);
-        var g = gcd(gcd(_this5.a, _this5.b), _this5.c);
-        _this5.a /= g;
-        _this5.b /= g;
-        _this5.c /= g;
-        if (_this5.a === 0) {
-            _this5.c /= _this5.b;
-            _this5.b = 1;
+        _this.points = [A, B];
+        _this.a = B.y - A.y;
+        _this.b = A.x - B.x;
+        _this.c = A.x * (A.y - B.y) - A.y * (A.x - B.x);
+        var g = gcd(gcd(_this.a, _this.b), _this.c);
+        _this.a /= g;
+        _this.b /= g;
+        _this.c /= g;
+        if (_this.a === 0) {
+            _this.c /= _this.b;
+            _this.b = 1;
         }
-        if (_this5.b === 0) {
-            _this5.c /= _this5.a;
-            _this5.a = 1;
+        if (_this.b === 0) {
+            _this.c /= _this.a;
+            _this.a = 1;
         }
-        return _this5;
+        return _this;
     }
 
     createClass(Line, [{
@@ -745,21 +1049,93 @@ var Line = function (_UnitaryObject3) {
     return Line;
 }(UnitaryObject);
 
-var Segment = function (_UnitaryObject4) {
-    inherits(Segment, _UnitaryObject4);
+var Polygon = function (_UnitaryObject) {
+    inherits(Polygon, _UnitaryObject);
+
+    function Polygon() {
+        classCallCheck(this, Polygon);
+
+        var _this = possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this));
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var points = 1 <= args.length ? Array.prototype.slice.call(args, 0) : [];
+        if (Object.prototype.toString.call(points[0]) === '[object Array]') {
+            _this.points = points[0];
+        } else {
+            _this.points = points;
+        }
+        return _this;
+    }
+
+    createClass(Polygon, [{
+        key: 'equals',
+        value: function equals() {
+            return false;
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            var points = [];
+            for (var i = 0, len = this.points.length; i < len; i++) {
+                points[i] = this.points[i].move(dx, dy);
+            }
+            return new Polygon(points).setStyle(this.style);
+        }
+    }, {
+        key: 'rotate',
+        value: function rotate(rad, center) {
+            var points = [];
+            for (var i = 0, len = this.points.length; i < len; i++) {
+                points[i] = this.points[i].rotate(rad, center);
+            }
+            return new Polygon(points).setStyle(this.style);
+        }
+    }, {
+        key: 'has',
+        value: function has(P) {
+            var a = void 0,
+                b = void 0,
+                cos = void 0,
+                v = void 0;
+            var before_v = this.points[this.points.length - 1];
+            var rad = 0;
+            for (var i = 0, len = this.points.length; i < len; i++) {
+                v = this.points[i];
+                a = new Vector(v).substract(new Vector(P));
+                b = new Vector(before_v).substract(new Vector(P));
+                cos = a.product(b) / (a.abs() * b.abs());
+                rad += Math.acos(cos);
+                before_v = v;
+            }
+            return Math.round(rad / (2 * Math.PI) * 360) === 360;
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Polygon';
+        }
+    }]);
+    return Polygon;
+}(UnitaryObject);
+
+var Segment = function (_UnitaryObject) {
+    inherits(Segment, _UnitaryObject);
 
     function Segment(A, B) {
         classCallCheck(this, Segment);
 
-        var _this6 = possibleConstructorReturn(this, (Segment.__proto__ || Object.getPrototypeOf(Segment)).call(this));
+        var _this = possibleConstructorReturn(this, (Segment.__proto__ || Object.getPrototypeOf(Segment)).call(this));
 
         if (A.x > B.x) {
-            _this6.points = [B, A];
+            _this.points = [B, A];
         } else {
-            _this6.points = [A, B];
+            _this.points = [A, B];
         }
-        _this6.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
-        return _this6;
+        _this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
+        return _this;
     }
 
     createClass(Segment, [{
@@ -820,251 +1196,8 @@ var Segment = function (_UnitaryObject4) {
     return Segment;
 }(UnitaryObject);
 
-var Circle = function (_UnitaryObject5) {
-    inherits(Circle, _UnitaryObject5);
-
-    function Circle(center, radius) {
-        classCallCheck(this, Circle);
-
-        var _this7 = possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this));
-
-        _this7.center = center;
-        _this7.Origin = center;
-        _this7.r = radius;
-        _this7.radius = radius;
-        return _this7;
-    }
-
-    createClass(Circle, [{
-        key: 'moveTo',
-        value: function moveTo(x, y) {
-            return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style);
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
-        }
-    }, {
-        key: 'getEquation',
-        value: function getEquation() {
-            var res = '(x';
-            if (this.center.x > 0) res += '-' + this.center.x;else if (this.center.x < 0) res += '+' + -this.center.x; // + abs(this.center.x)
-            res += ')^2+(y';
-            if (this.center.y > 0) res += '-' + this.center.y;else if (this.center.y < 0) res += '+' + -this.center.y; // + abs(this.center.x)
-            res += ')^2=' + this.r + '^2';
-            return res;
-        }
-    }, {
-        key: 'equals',
-        value: function equals(C) {
-            if (!get(Circle.prototype.__proto__ || Object.getPrototypeOf(Circle.prototype), 'equals', this).call(this, C)) {
-                return false;
-            }
-            return this.center.equals(C.center) && this.r === C.r;
-        }
-    }, {
-        key: 'has',
-        value: function has(P) {
-            return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Circle';
-        }
-    }]);
-    return Circle;
-}(UnitaryObject);
-
-var CircularSector = function (_UnitaryObject6) {
-    inherits(CircularSector, _UnitaryObject6);
-
-    function CircularSector(center, radius, endAngle) {
-        var startAngle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-        classCallCheck(this, CircularSector);
-
-        var _this8 = possibleConstructorReturn(this, (CircularSector.__proto__ || Object.getPrototypeOf(CircularSector)).call(this));
-
-        _this8.center = center;
-        _this8.Origin = center;
-        _this8.radius = radius;
-        _this8.r = radius;
-        _this8.endAngle = endAngle;
-        _this8.startAngle = startAngle;
-        return _this8;
-    }
-
-    createClass(CircularSector, [{
-        key: 'moveTo',
-        value: function moveTo(x, y) {
-            return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style);
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style);
-        }
-    }, {
-        key: 'rotate',
-        value: function rotate(rad) {
-            return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style);
-        }
-    }, {
-        key: 'equals',
-        value: function equals(C) {
-            var angleCompare = function angleCompare(A, B) {
-                return (A - B) % (2 * Math.PI) === 0;
-            };
-            if (!get(CircularSector.prototype.__proto__ || Object.getPrototypeOf(CircularSector.prototype), 'equals', this).call(this, C)) {
-                return false;
-            }
-            return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
-        }
-    }, {
-        key: 'has',
-        value: function has(P) {
-            var theta = Math.atan2(P.y, P.x);
-            return new Vector(P).substract(new Vector(this.center)).abs() <= this.r && this.startAngle <= theta && theta <= this.endAngle;
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'CircularSector';
-        }
-    }]);
-    return CircularSector;
-}(UnitaryObject);
-
-var Polygon = function (_UnitaryObject7) {
-    inherits(Polygon, _UnitaryObject7);
-
-    function Polygon() {
-        classCallCheck(this, Polygon);
-
-        var _this9 = possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this));
-
-        for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-            args[_key5] = arguments[_key5];
-        }
-
-        var points = 1 <= args.length ? Array.prototype.slice.call(args, 0) : [];
-        if (Object.prototype.toString.call(points[0]) === '[object Array]') {
-            _this9.points = points[0];
-        } else {
-            _this9.points = points;
-        }
-        return _this9;
-    }
-
-    createClass(Polygon, [{
-        key: 'equals',
-        value: function equals() {
-            return false;
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            var points = [];
-            for (var i = 0, len = this.points.length; i < len; i++) {
-                points[i] = this.points[i].move(dx, dy);
-            }
-            return new Polygon(points).setStyle(this.style);
-        }
-    }, {
-        key: 'rotate',
-        value: function rotate(rad, center) {
-            var points = [];
-            for (var i = 0, len = this.points.length; i < len; i++) {
-                points[i] = this.points[i].rotate(rad, center);
-            }
-            return new Polygon(points).setStyle(this.style);
-        }
-    }, {
-        key: 'has',
-        value: function has(P) {
-            var a = void 0,
-                b = void 0,
-                cos = void 0,
-                v = void 0;
-            var before_v = this.points[this.points.length - 1];
-            var rad = 0;
-            for (var i = 0, len = this.points.length; i < len; i++) {
-                v = this.points[i];
-                a = new Vector(v).substract(new Vector(P));
-                b = new Vector(before_v).substract(new Vector(P));
-                cos = a.product(b) / (a.abs() * b.abs());
-                rad += Math.acos(cos);
-                before_v = v;
-            }
-            return Math.round(rad / (2 * Math.PI) * 360) === 360;
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Polygon';
-        }
-    }]);
-    return Polygon;
-}(UnitaryObject);
-
-var Quadrilateral = function (_Polygon) {
-    inherits(Quadrilateral, _Polygon);
-
-    function Quadrilateral(A, B, C, D) {
-        classCallCheck(this, Quadrilateral);
-
-        if (new Segment(A, D).intersects(new Segment(B, C))) {
-            throw new Error('ABCD is not a quadrilateral.');
-        }
-        if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D)) {
-            throw new Error('ABCD is not a quadrilateral.');
-        }
-        return possibleConstructorReturn(this, (Quadrilateral.__proto__ || Object.getPrototypeOf(Quadrilateral)).call(this, A, B, C, D));
-    }
-
-    createClass(Quadrilateral, [{
-        key: 'getArea',
-        value: function getArea() {
-            var A = this.points[0],
-                B = this.points[1],
-                C = this.points[2],
-                D = this.points[3];
-            var S1 = new Triangle(A, B, C).getArea();
-            var S2 = new Triangle(A, C, D).getArea();
-            return S1 + S2;
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            var newObject = get(Quadrilateral.prototype.__proto__ || Object.getPrototypeOf(Quadrilateral.prototype), 'move', this).call(this, dx, dy);
-            var A = newObject.points[0],
-                B = newObject.points[1],
-                C = newObject.points[2],
-                D = newObject.points[3];
-            return new Quadrilateral(A, B, C, D);
-        }
-    }, {
-        key: 'rotate',
-        value: function rotate(rad, center) {
-            var newObject = get(Quadrilateral.prototype.__proto__ || Object.getPrototypeOf(Quadrilateral.prototype), 'rotate', this).call(this, rad, center);
-            var A = newObject.points[0],
-                B = newObject.points[1],
-                C = newObject.points[2],
-                D = newObject.points[3];
-            return new Quadrilateral(A, B, C, D);
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Quadrilateral';
-        }
-    }]);
-    return Quadrilateral;
-}(Polygon);
-
-var Triangle = function (_Polygon2) {
-    inherits(Triangle, _Polygon2);
+var Triangle = function (_Polygon) {
+    inherits(Triangle, _Polygon);
 
     function Triangle(A, B, C) {
         classCallCheck(this, Triangle);
@@ -1168,8 +1301,63 @@ var Triangle = function (_Polygon2) {
     return Triangle;
 }(Polygon);
 
-var Rect = function (_Polygon3) {
-    inherits(Rect, _Polygon3);
+var Quadrilateral = function (_Polygon) {
+    inherits(Quadrilateral, _Polygon);
+
+    function Quadrilateral(A, B, C, D) {
+        classCallCheck(this, Quadrilateral);
+
+        if (new Segment(A, D).intersects(new Segment(B, C))) {
+            throw new Error('ABCD is not a quadrilateral.');
+        }
+        if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D)) {
+            throw new Error('ABCD is not a quadrilateral.');
+        }
+        return possibleConstructorReturn(this, (Quadrilateral.__proto__ || Object.getPrototypeOf(Quadrilateral)).call(this, A, B, C, D));
+    }
+
+    createClass(Quadrilateral, [{
+        key: 'getArea',
+        value: function getArea() {
+            var A = this.points[0],
+                B = this.points[1],
+                C = this.points[2],
+                D = this.points[3];
+            var S1 = new Triangle(A, B, C).getArea();
+            var S2 = new Triangle(A, C, D).getArea();
+            return S1 + S2;
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            var newObject = get(Quadrilateral.prototype.__proto__ || Object.getPrototypeOf(Quadrilateral.prototype), 'move', this).call(this, dx, dy);
+            var A = newObject.points[0],
+                B = newObject.points[1],
+                C = newObject.points[2],
+                D = newObject.points[3];
+            return new Quadrilateral(A, B, C, D);
+        }
+    }, {
+        key: 'rotate',
+        value: function rotate(rad, center) {
+            var newObject = get(Quadrilateral.prototype.__proto__ || Object.getPrototypeOf(Quadrilateral.prototype), 'rotate', this).call(this, rad, center);
+            var A = newObject.points[0],
+                B = newObject.points[1],
+                C = newObject.points[2],
+                D = newObject.points[3];
+            return new Quadrilateral(A, B, C, D);
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Quadrilateral';
+        }
+    }]);
+    return Quadrilateral;
+}(Polygon);
+
+var Rect = function (_Polygon) {
+    inherits(Rect, _Polygon);
 
     function Rect(A, B) {
         classCallCheck(this, Rect);
@@ -1208,30 +1396,30 @@ var Rect = function (_Polygon3) {
     return Rect;
 }(Polygon);
 
-var Text = function (_UnitaryObject8) {
-    inherits(Text, _UnitaryObject8);
+var Text_ = function (_UnitaryObject) {
+    inherits(Text_, _UnitaryObject);
 
-    function Text(str, P) {
+    function Text_(str, P) {
         var align = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'left';
         var maxWidth = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-        classCallCheck(this, Text);
+        classCallCheck(this, Text_);
 
-        var _this13 = possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this));
+        var _this = possibleConstructorReturn(this, (Text_.__proto__ || Object.getPrototypeOf(Text_)).call(this));
 
-        _this13.P = P;
-        _this13.string = str;
-        _this13.text = str;
-        _this13.strokesOutline = false;
-        _this13.style.align = align;
-        _this13.style.maxWidth = maxWidth;
-        _this13.style.fillColor = '#000';
-        _this13.style.outlineColor = '#000';
-        _this13.style.baseline = 'alphabetic';
-        _this13.style.font = null;
-        return _this13;
+        _this.P = P;
+        _this.string = str;
+        _this.text = str;
+        _this.strokesOutline = false;
+        _this.style.align = align;
+        _this.style.maxWidth = maxWidth;
+        _this.style.fillColor = '#000';
+        _this.style.outlineColor = '#000';
+        _this.style.baseline = 'alphabetic';
+        _this.style.font = null;
+        return _this;
     }
 
-    createClass(Text, [{
+    createClass(Text_, [{
         key: 'strokeOutline',
         value: function strokeOutline() {
             this.strokesOutline = true;
@@ -1264,7 +1452,7 @@ var Text = function (_UnitaryObject8) {
     }, {
         key: 'move',
         value: function move(dx, dy) {
-            var newText = new Text(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
+            var newText = new Text_(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
             if (this.strokesOutline) {
                 newText.strokeOutline();
             }
@@ -1276,239 +1464,52 @@ var Text = function (_UnitaryObject8) {
             return 'Text';
         }
     }]);
-    return Text;
+    return Text_;
 }(UnitaryObject);
 
-var Image = function (_UnitaryObject9) {
-    inherits(Image, _UnitaryObject9);
-
-    function Image(src, startPoint) {
-        classCallCheck(this, Image);
-
-        var _this14 = possibleConstructorReturn(this, (Image.__proto__ || Object.getPrototypeOf(Image)).call(this));
-
-        _this14.src = src;
-        _this14.startPoint = startPoint;
-        _this14.dx = startPoint.x;
-        _this14.dy = startPoint.y;
-        _this14.dw = null;
-        _this14.dh = null;
-        _this14.sw = null;
-        _this14.sh = null;
-        _this14.sx = null;
-        _this14.sy = null;
-        return _this14;
+function distance(A, B) {
+    var res = void 0;
+    if (A instanceof Point && B instanceof Point) {
+        return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
     }
-
-    createClass(Image, [{
-        key: 'trim',
-        value: function trim(startPoint, sw, sh) {
-            var dw = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-            var dh = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-
-            var newImage = new Image(this.src, this.startPoint);
-            if (dw == null) {
-                dw = sw;
-            }
-            if (dh == null) {
-                dh = sh;
-            }
-            newImage.sx = startPoint.x;
-            newImage.sy = startPoint.y;
-            newImage.sw = sw;
-            newImage.sh = sh;
-            newImage.dw = dw;
-            newImage.dh = dh;
-            return newImage;
+    if (A instanceof Point && B instanceof Line) {
+        res = B.a * A.x + B.b * A.y + B.c;
+        if (res < 0) {
+            res *= -1;
         }
-    }, {
-        key: 'resize',
-        value: function resize(dw, dh) {
-            var newImage = new Image(this.src, this.startPoint);
-            newImage.dw = dw;
-            newImage.dh = dh;
-            newImage.sw = this.sw;
-            newImage.sh = this.sh;
-            newImage.sx = this.sx;
-            newImage.sy = this.sy;
-            return newImage;
-        }
-    }, {
-        key: 'equals',
-        value: function equals(B) {
-            if (!get(Image.prototype.__proto__ || Object.getPrototypeOf(Image.prototype), 'equals', this).call(this, B)) {
-                return false;
-            }
-            return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            var newImage = new Image(this.src, this.startPoint.move(dx, dy));
-            if (this.sx !== null) {
-                newImage = newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
-            }
-            return newImage;
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Image';
-        }
-    }]);
-    return Image;
-}(UnitaryObject);
-
-var Group = function (_UnitaryObject10) {
-    inherits(Group, _UnitaryObject10);
-
-    function Group() {
-        classCallCheck(this, Group);
-
-        var _this15 = possibleConstructorReturn(this, (Group.__proto__ || Object.getPrototypeOf(Group)).call(this));
-
-        for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-            args[_key6] = arguments[_key6];
-        }
-
-        if (Object.prototype.toString.call(args[0]) === '[object Array]') _this15.group = args[0];else _this15.group = args;
-        return _this15;
+        res /= Math.sqrt(B.a * B.a + B.b * B.b);
+        return res;
     }
-
-    createClass(Group, [{
-        key: 'has',
-        value: function has(P) {
-            for (var i = 0, _i = this.group.length; i < _i; i++) {
-                if (this.group[i].has && this.group[i].has(P)) return true;
-            }
-            return false;
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            var newGroup = this.group.concat();
-            for (var i = 0, _i = newGroup.length; i < _i; i++) {
-                if (newGroup[i].move) newGroup[i] = newGroup[i].move(dx, dy);
-            }
-            return new Group(newGroup);
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Group';
-        }
-    }]);
-    return Group;
-}(UnitaryObject);
-
-var Graph = function (_UnitaryObject11) {
-    inherits(Graph, _UnitaryObject11);
-
-    function Graph(f, scale) {
-        classCallCheck(this, Graph);
-
-        var _this16 = possibleConstructorReturn(this, (Graph.__proto__ || Object.getPrototypeOf(Graph)).call(this));
-
-        _this16.f = f;
-        _this16.scale = scale;
-        _this16.start = null;
-        _this16.end = null;
-        return _this16;
+    if (A instanceof Line && B instanceof Point) {
+        return distance(B, A);
     }
+}
 
-    createClass(Graph, [{
-        key: 'setRange',
-        value: function setRange(start, end) {
-            this.start = start;
-            this.end = end;
-            return this;
-        }
-    }, {
-        key: 'equals',
-        value: function equals() {
-            return false;
-        }
-    }, {
-        key: 'moveX',
-        value: function moveX() {}
-    }, {
-        key: 'moveY',
-        value: function moveY() {}
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Graph';
-        }
-    }]);
-    return Graph;
-}(UnitaryObject);
-
-var BezierCurve = function (_UnitaryObject12) {
-    inherits(BezierCurve, _UnitaryObject12);
-
-    function BezierCurve() {
-        classCallCheck(this, BezierCurve);
-
-        var _this17 = possibleConstructorReturn(this, (BezierCurve.__proto__ || Object.getPrototypeOf(BezierCurve)).call(this));
-
-        for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
-            args[_key7] = arguments[_key7];
-        }
-
-        if (Object.prototype.toString.call(args[0]) === '[object Array]') _this17.controlPoints = args[0];else _this17.controlPoints = args;
-        _this17.step = 0.05;
-        return _this17;
-    }
-
-    createClass(BezierCurve, [{
-        key: 'setStep',
-        value: function setStep(step) {
-            this.step = step;
-            return this;
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            var newBezier = this.controlPoints.concat();
-            for (var i = 0, _i = newBezier.length; i < _i; i++) {
-                newBezier[i] = newBezier[i].move(dx, dy);
-            }
-            return new BezierCurve(newBezier).setStep(this.step);
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'BezierCurve';
-        }
-    }]);
-    return BezierCurve;
-}(UnitaryObject);
-
-var unitary = {
+var main = {
     distance: distance,
     UnitaryObject: UnitaryObject,
-    Point: Point,
     BaseVector: BaseVector,
-    Vector: Vector,
-    Vector3D: Vector3D,
-    Line: Line,
-    Segment: Segment,
+    BezierCurve: BezierCurve,
     Circle: Circle,
     CircularSector: CircularSector,
+    Graph: Graph,
+    Group: Group,
+    Image: Image_,
+    Line: Line,
+    Point: Point,
     Polygon: Polygon,
     Quadrilateral: Quadrilateral,
-    Triangle: Triangle,
     Rect: Rect,
-    Text: Text,
-    Image: Image,
-    Group: Group,
-    Graph: Graph,
-    BezierCurve: BezierCurve,
+    Segment: Segment,
+    Text: Text_,
+    Triangle: Triangle,
+    Vector3D: Vector3D,
+    Vector: Vector,
     XAxis: new Line(new Point(0, 0), new Point(1, 0)),
     YAxis: new Line(new Point(0, 0), new Point(0, 1)),
     VERSION: '0.0.6'
 };
 
-return unitary;
+return main;
 
 })));
