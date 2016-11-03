@@ -11,21 +11,17 @@ class Canvas {
                     resolve();
                     console.log('loaded');
                 });
-            }).then(() => {
-                const canvas = document.getElementById(id);
-                this.canvas = canvas.getContext('2d');
-                this.element = canvas;
-                this.canvasHeight = canvas.height;
-                this.canvasWidth = canvas.width;
             });
         } else {
+            this.ready = Promise.resolve();
+        }
+        this.ready.then(() => {
             const canvas = document.getElementById(id);
             this.canvas = canvas.getContext('2d');
             this.element = canvas;
-            this.ready = Promise.resolve();
             this.canvasHeight = canvas.height;
             this.canvasWidth = canvas.width;
-        }
+        });
         this.id = id;
         this.objects = [];
         this.mode = 'graph';
@@ -37,7 +33,7 @@ class Canvas {
         });
     }
     add(obj) {
-        this.objects.push(obj);
+        this.objects[this.objects.length] = obj;
     }
     removeAllObjects() {
         this.objects = [];
@@ -62,7 +58,7 @@ class Canvas {
     draw() {
         const promises = [];
         const load = (src, obj) => {
-            promises.push(new Promise((resolve, rejector) => {
+            promises[promises.length] = new Promise((resolve, rejector) => {
                 let image;
                 if (!__imageCaches[src]) {
                     // 画像を読み込む回数を抑える
@@ -83,7 +79,7 @@ class Canvas {
                     obj.__image__ = image;
                     resolve();
                 }
-            }).catch(errorCatcher));
+            }).catch(errorCatcher);
         }
         const loadImage  = objects => {
             for (let i = 0, _i = objects.length; i < _i; i = 0|i+1){
@@ -128,7 +124,7 @@ function eventTrigger(e) {
 
     let stopPropagationCalled = false;
     e.stopPropagation = () => {stopPropagationCalled = true};
-    for (let i = this.objects.length - 1; i >= 0; i--) {
+    for (let i = this.objects.length - 1; i >= 0; i = 0|i-1) {
         if (stopPropagationCalled) break;
         if (this.objects[i].has && this.objects[i].has(new Unitary.Point(x, y))) {
             this.objects[i].trigger(e.type, e);
@@ -143,7 +139,7 @@ Unitary.UnitaryObject.prototype.on = function(name, handler) {
 }
 Unitary.UnitaryObject.prototype.trigger = function(name, e) {
     if (!this.handlers || !this.handlers[name]) return this;
-    for (let i = 0, _i = this.handlers[name].length; i < _i; i++) {
+    for (let i = 0, _i = this.handlers[name].length; i < _i; i = 0|i+1) {
         this.handlers[name][i](e);
     }
     return this;
@@ -216,55 +212,41 @@ Canvas.drawFunction = {
             this.canvas.font = obj.style.font;
         }
         if (maxWidth === null) {
-            if (obj.style.strokesOutline) {
+            if (obj.style.strokesOutline)
                 this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
-            }
             this.canvas.fillText(obj.text, this.X(x), this.Y(y));
         } else {
-            if (obj.style.strokesOutline) {
+            if (obj.style.strokesOutline)
                 this.canvas.strokeText(obj.text, this.X(x), this.Y(y), maxWidth);
-            }
             this.canvas.fillText(obj.text, this.X(x), this.Y(y), maxWidth);
         }
-        if(obj.style.font !== null) {
-            this.canvas.font = defaultFont;
-        }
+        if(obj.style.font !== null) this.canvas.font = defaultFont;
     },
     Point: function(obj) {
         this.canvas.fillRect(this.X(obj.x), this.Y(obj.y), 1, 1);
     },
     Image: function(obj) {
         const image = obj.__image__;
-        if (obj.dx !== null && obj.sx !== null) {
-            this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
-        } else if (obj.dx !== null && obj.sx === null && obj.dw !== null) {
-            this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
-        } else if (obj.dx !== null && obj.dw === null) {
+        if (obj.dx !== null && obj.sx !== null) this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+        else if (obj.dx !== null && obj.sx === null && obj.dw !== null) this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);
+        else if (obj.dx !== null && obj.dw === null) {
             // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
             // 対偶をとり obj.dw === nullならばobj.sx === null
             this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
-        } else if (obj.dx === null) {
-            this.canvas.drawImage(image);
-        }
+        } else if (obj.dx === null) this.canvas.drawImage(image);
     },
     Group: function(obj) {
-        for (let i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) {
-            this.__drawHelper__(obj.group[i]);
-        }
+        for (let i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) this.__drawHelper__(obj.group[i]);
     },
     Graph: function(obj) {
         this.canvas.beginPath();
         let start = obj.start , end = obj.end;
-        if (start === null) {
-            start = -this.origin.x;
-        }
-        if (end === null) {
-            end = this.canvasWidth - this.origin.x;
-        }
+        if (start === null) start = -this.origin.x;
+        if (end === null) end = this.canvasWidth - this.origin.x;
+
         const points = [];
-        for (let i = start; i <= end; i = 0|i+1) {
-            points[points.length] = new Unitary.Point(i, obj.f(i / obj.scale) * obj.scale);
-        }
+        for (let i = start; i <= end; i = 0|i+1) points[points.length] = new Unitary.Point(i, obj.f(i / obj.scale) * obj.scale);
+
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
         for (let i = 0, _i = points.length; i < _i; i = 0|i+1) {
             this.canvas.lineTo(this.X(points[i].x), this.Y(points[i].y));
@@ -279,27 +261,30 @@ Canvas.drawFunction = {
         const controlPoints = obj.controlPoints;
         let P = controlPoints;
         let nextP = [];
-        const points = [controlPoints[0]];
+        const points = obj.points || [controlPoints[0]];
+        let pointsLength = 1;
         const step = obj.step;
 
-        for (let t = 0; t < 1; t += step) {
-            P = controlPoints.concat();
-            for (let i = 0, _i = controlPoints.length - 1; i < _i; i++) {
-                for (let j = 0, _j = P.length - 1; j < _j; j++) {
-                    nextP[j] = new Unitary.Point(P[j + 1].x * t + P[j].x * (1 - t), P[j + 1].y * t + P[j].y * (1 - t));
+        if (!obj.points) {
+            console.log('cache created');
+            for (let t = 0; t < 1; t += step) {
+                P = controlPoints.concat();
+                for (let i = 0, _i = controlPoints.length - 1; i < _i; i = 0|i+1) {
+                    for (let j = 0, _j = P.length - 1; j < _j; j = 0|j+1)
+                        nextP[j] = new Unitary.Point(P[j + 1].x * t + P[j].x * (1 - t), P[j + 1].y * t + P[j].y * (1 - t));
+                    P = nextP;
+                    nextP = [];
                 }
-                P = nextP;
-                nextP = [];
+                points[pointsLength] = P[0];
+                pointsLength = 0 | pointsLength + 1;
             }
-            points.push(P[0]);
+            points[pointsLength] = controlPoints[controlPoints.length - 1];
         }
-        points.push(controlPoints[controlPoints.length - 1]);
+        obj.points = points;
 
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-        for (let i = 0, _i = points.length; i < _i; i = 0|i+1) {
+        for (let i = 0, _i = points.length; i < _i; i = 0|i+1)
             this.canvas.lineTo(this.X(points[i].x), this.Y(points[i].y));
-            this.canvas.moveTo(this.X(points[i].x), this.Y(points[i].y));
-        }
         this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
         this.canvas.closePath();
         this.canvas.stroke();
@@ -307,10 +292,10 @@ Canvas.drawFunction = {
 }
 Canvas.preload = (...args) => {
     const promises = [];
-    for (let i = 0, _i = args.length; i < _i; i++) {
+    for (let i = 0, _i = args.length; i < _i; i = 0|i+1) {
         const src = args[i];
         if (!__imageCaches[src]) {
-            promises.push(new Promise((resolve, reject) => {
+            promises[promises.length] = new Promise((resolve, reject) => {
                 const image = new Image();
                 image.src = src;
                 image.addEventListener('load', () => {
@@ -319,7 +304,7 @@ Canvas.preload = (...args) => {
                 });
                 image.addEventListener('error', reject);
                 __imageCaches[src] = image;
-            }).catch(errorCatcher));
+            }).catch(errorCatcher);
         }
     }
     return Promise.all(promises).catch(errorCatcher);
@@ -327,9 +312,9 @@ Canvas.preload = (...args) => {
 function PolygonDrawFunction(obj) {
     this.canvas.beginPath();
     this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    for (let i = 0, _i = obj.points.length; i < _i; i = 0|i+1) {
+    for (let i = 0, _i = obj.points.length; i < _i; i = 0|i+1)
         this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
-    }
+
     this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     this.canvas.closePath();
     this.canvas.stroke();
