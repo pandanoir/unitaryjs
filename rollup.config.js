@@ -7,7 +7,7 @@ export default {
     format: 'umd',
     plugins: [
         npm({ jsnext: true }), // npmモジュールを`node_modules`から読み込む
-        commonjs() // CommonJSモジュールをES6に変換
-        // babel() // ES5に変換
+        commonjs(), // CommonJSモジュールをES6に変換
+        babel() // ES5に変換
     ]
 }

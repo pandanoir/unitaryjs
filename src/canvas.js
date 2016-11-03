@@ -254,7 +254,7 @@ Canvas.drawFunction = {
     },
     Graph: function(obj) {
         this.canvas.beginPath();
-        const start = obj.start , end = obj.end;
+        let start = obj.start , end = obj.end;
         if (start === null) {
             start = -this.origin.x;
         }
