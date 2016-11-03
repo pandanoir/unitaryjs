@@ -40,8 +40,5 @@
   "bugs": {
     "url": "https://github.com/pandanoir/unitaryjs/issues"
   },
-  "homepage": "https://github.com/pandanoir/unitaryjs",
-  "engines" : {
-      "node" : "6.8.1"
-  }
+  "homepage": "https://github.com/pandanoir/unitaryjs"
 }
