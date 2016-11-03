@@ -131,7 +131,7 @@ export class BaseVector extends UnitaryObject {
     component: number[];
     constructor(component: number[]) ;
     constructor(...component: number[]) ;
-    constructor(x: any, ...y: number[]) { 
+    constructor(x: any, ...y: number[]) {
         super();
         if (arguments.length === 1 && Object.prototype.toString.call(arguments[0]) === '[object Array]') {
             this.component = new Array(arguments[0].length);
@@ -290,7 +290,7 @@ export class Vector3D extends BaseVector{
     }
 }
 
-export class Line extends UnitaryObject{
+export class Line extends UnitaryObject {
     points: Point[];
     a: number;
     b: number;
@@ -374,7 +374,7 @@ export class Line extends UnitaryObject{
         return 'Line';
     }
 }
-export class Segment extends UnitaryObject{
+export class Segment extends UnitaryObject {
     points: Point[];
     length: number;
     constructor(A: Point, B: Point) {
@@ -438,7 +438,7 @@ export class Segment extends UnitaryObject{
     }
 }
 
-export class Circle extends UnitaryObject{
+export class Circle extends UnitaryObject {
     center: Point;
     Origin: Point;
     r: number;
@@ -482,7 +482,7 @@ export class Circle extends UnitaryObject{
         return 'Circle';
     }
 }
-export class CircularSector extends UnitaryObject{
+export class CircularSector extends UnitaryObject {
     center: Point;
     Origin: Point;
     radius: number;
@@ -530,7 +530,7 @@ export class CircularSector extends UnitaryObject{
     }
 }
 
-export class Polygon extends UnitaryObject{
+export class Polygon extends UnitaryObject {
     points: Point[];
     constructor(...points: Point[]);
     constructor(points: Point[]);
@@ -744,7 +744,7 @@ export class Rect extends Polygon{
         return 'Rect';
     }
 }
-export class Text extends UnitaryObject{
+export class Text extends UnitaryObject {
     P: Point;
     string: string;
     text: string;
@@ -796,7 +796,7 @@ export class Text extends UnitaryObject{
         return 'Text';
     }
 }
-export class Image extends UnitaryObject{
+export class Image extends UnitaryObject {
     src: string;
     startPoint: Point;
     dx: number;
@@ -874,7 +874,7 @@ export class Group extends UnitaryObject {
         super();
         var args = [];
         for (var i = 0, _i = arguments.length; i < _i; i++) args[i] = arguments[i];
-        
+
         if (Object.prototype.toString.call(args[0]) === '[object Array]') this.group = args[0];
         else this.group = args;
     }
@@ -895,7 +895,7 @@ export class Group extends UnitaryObject {
         return 'Group';
     }
 }
-export class Graph extends UnitaryObject{
+export class Graph extends UnitaryObject {
     f: Function;
     scale: number;
     start: number;
@@ -921,6 +921,35 @@ export class Graph extends UnitaryObject{
     }
     name(): string {
         return 'Graph';
+    }
+}
+export class BezierCurve extends UnitaryObject {
+    controlPoints: Point[];
+    step: number;
+    constructor(...points: Point[]);
+    constructor(points: Point[]);
+    constructor() {
+        super();
+        var args = [];
+        for (var i = 0, _i = arguments.length; i < _i; i++) args[i] = arguments[i];
+
+        if (Object.prototype.toString.call(args[0]) === '[object Array]') this.controlPoints = args[0];
+        else this.controlPoints= args;
+        this.step= 0.05;
+    }
+    setStep(step: number): BezierCurve {
+        this.step = step;
+        return this;
+    }
+    move(dx: number, dy: number): any {
+        var newBezier = this.controlPoints.concat();
+        for (var i = 0, _i = newBezier.length; i < _i; i++) {
+            newBezier[i] = newBezier[i].move(dx, dy);
+        }
+        return new BezierCurve(newBezier).setStep(this.step);
+    }
+    name(): string {
+        return 'BezierCurve';
     }
 }
 export var XAxis = new Line(new Point(0, 0), new Point(1, 0));
