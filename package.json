@@ -5,7 +5,7 @@
   "main": "./dist/unitary.js",
   "scripts": {
     "test": "mocha -R spec",
-    "build": "rollup -c"
+    "build": "rollup src/unitary.js -c -o dist/unitary.js --name Unitary && rollup src/canvas.js -c -o dist/canvas.js --name Canvas"
   },
   "repository": {
     "type": "git",

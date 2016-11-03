@@ -4,10 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import babel    from 'rollup-plugin-babel'
 
 export default {
-    entry: 'src/unitary.js',
-    dest: 'dist/unitary.js',
     format: 'umd',
-    moduleName: 'Unitary',
     plugins: [
         npm({ jsnext: true }), // npmモジュールを`node_modules`から読み込む
         commonjs() // CommonJSモジュールをES6に変換
