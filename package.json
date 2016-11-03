@@ -4,7 +4,8 @@
   "description": "Canvas Library",
   "main": "./dist/unitary.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-polyfill": "^6.6.1",
+    "babel-preset-es2015-rollup": "^1.2.0",
     "browserify": "^11.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",
@@ -26,6 +28,11 @@
     "gulp-replace": "^0.5.4",
     "gulp-tsc": "^1.1.4",
     "mocha": "*",
+    "rollup": "^0.36.3",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-json": "^2.0.2",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "author": "Naoto Ikuno <moon_in_france@yahoo.co.jp>",

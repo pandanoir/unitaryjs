@@ -26,6 +26,15 @@ describe('Unitary', function() {
     log(distance(A, C) === 2.23606797749979);
     log(distance(B, C) === 6.4031242374328485);
 
+    describe('BezierCurve', function() {
+        it('name', function() {
+            assert.equal(new BezierCurve().name(), 'BezierCurve');
+        });
+        it('setStep', function() {
+            var bezier = new BezierCurve().setStep(1000);
+            assert.equal(bezier.step, 1000);
+        });
+    });
     describe('Circle', function() {
         it('moveTo', function() {
             assert.ok(new Circle(A, 3).moveTo(0, 0).equals(new Circle(new Point(0, 0), 3)));
