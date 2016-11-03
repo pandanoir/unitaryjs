@@ -14,7 +14,7 @@ export default class Group extends UnitaryObject {
     }
     move(dx, dy) {
         const newGroup = this.group.concat();
-        for (let i = 0, _i = newGroup.length; i < _i; i++) {
+        for (let i = 0, _i = newGroup.length; i < _i; i = 0|i+1) {
             if (newGroup[i].move) newGroup[i] = newGroup[i].move(dx, dy);
         }
         return new Group(newGroup);

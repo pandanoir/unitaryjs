@@ -16,14 +16,14 @@ export default class Polygon extends UnitaryObject {
     }
     move(dx, dy) {
         const points = [];
-        for (let i = 0, len = this.points.length; i < len; i++) {
+        for (let i = 0, len = this.points.length; i < len; i = 0|i+1) {
             points[i] = this.points[i].move(dx, dy);
         }
         return new Polygon(points).setStyle(this.style);
     }
     rotate(rad, center) {
         const points = [];
-        for (let i = 0, len = this.points.length; i < len; i++) {
+        for (let i = 0, len = this.points.length; i < len; i = 0|i+1) {
             points[i] = this.points[i].rotate(rad, center);
         }
         return new Polygon(points).setStyle(this.style);
@@ -32,7 +32,7 @@ export default class Polygon extends UnitaryObject {
         let a, b, cos, v;
         let before_v = this.points[this.points.length - 1];
         let rad = 0;
-        for (let i = 0, len = this.points.length; i < len; i++) {
+        for (let i = 0, len = this.points.length; i < len; i = 0|i+1) {
             v = this.points[i];
             a = new Vector(v).substract(new Vector(P));
             b = new Vector(before_v).substract(new Vector(P));

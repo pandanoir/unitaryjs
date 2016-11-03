@@ -236,7 +236,7 @@ Canvas.drawFunction = {
         } else if (obj.dx === null) this.canvas.drawImage(image);
     },
     Group: function(obj) {
-        for (let i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) this.__drawHelper__(obj.group[i]);
+        for (let i = 0, _i = obj.group.length; i < _i; i = 0|i+1) this.__drawHelper__(obj.group[i]);
     },
     Graph: function(obj) {
         this.canvas.beginPath();

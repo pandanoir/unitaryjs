@@ -13,7 +13,7 @@ export default class BezierCurve extends UnitaryObject {
     }
     move(dx, dy) {
         const newBezier = this.controlPoints.concat();
-        for (let i = 0, _i = newBezier.length; i < _i; i++) {
+        for (let i = 0, _i = newBezier.length; i < _i; i = 0|i+1) {
             newBezier[i] = newBezier[i].move(dx, dy);
         }
         return new BezierCurve(newBezier).setStep(this.step);

@@ -347,7 +347,7 @@ var BezierCurve = function (_UnitaryObject) {
         key: 'move',
         value: function move(dx, dy) {
             var newBezier = this.controlPoints.concat();
-            for (var i = 0, _i = newBezier.length; i < _i; i++) {
+            for (var i = 0, _i = newBezier.length; i < _i; i = 0 | i + 1) {
                 newBezier[i] = newBezier[i].move(dx, dy);
             }
             return new BezierCurve(newBezier).setStep(this.step);
@@ -773,7 +773,7 @@ var Group = function (_UnitaryObject) {
         key: 'move',
         value: function move(dx, dy) {
             var newGroup = this.group.concat();
-            for (var i = 0, _i = newGroup.length; i < _i; i++) {
+            for (var i = 0, _i = newGroup.length; i < _i; i = 0 | i + 1) {
                 if (newGroup[i].move) newGroup[i] = newGroup[i].move(dx, dy);
             }
             return new Group(newGroup);
@@ -1079,7 +1079,7 @@ var Polygon = function (_UnitaryObject) {
         key: 'move',
         value: function move(dx, dy) {
             var points = [];
-            for (var i = 0, len = this.points.length; i < len; i++) {
+            for (var i = 0, len = this.points.length; i < len; i = 0 | i + 1) {
                 points[i] = this.points[i].move(dx, dy);
             }
             return new Polygon(points).setStyle(this.style);
@@ -1088,7 +1088,7 @@ var Polygon = function (_UnitaryObject) {
         key: 'rotate',
         value: function rotate(rad, center) {
             var points = [];
-            for (var i = 0, len = this.points.length; i < len; i++) {
+            for (var i = 0, len = this.points.length; i < len; i = 0 | i + 1) {
                 points[i] = this.points[i].rotate(rad, center);
             }
             return new Polygon(points).setStyle(this.style);
@@ -1102,7 +1102,7 @@ var Polygon = function (_UnitaryObject) {
                 v = void 0;
             var before_v = this.points[this.points.length - 1];
             var rad = 0;
-            for (var i = 0, len = this.points.length; i < len; i++) {
+            for (var i = 0, len = this.points.length; i < len; i = 0 | i + 1) {
                 v = this.points[i];
                 a = new Vector(v).substract(new Vector(P));
                 b = new Vector(before_v).substract(new Vector(P));
