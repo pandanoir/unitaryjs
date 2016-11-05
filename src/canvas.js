@@ -43,18 +43,11 @@ class Canvas {
         });
     }
     X(x) {
-        const res = x + this.origin.x;
-        // if (this.mode === 'normal') {
-        //     return res;
-        // }
-        return Math.round(res);
+        return Math.round(x + this.origin.x);
     }
     Y(y) {
-        let res = this.canvasHeight - (y + this.origin.y);
-        if (this.mode === 'normal') {
-            res = y + this.origin.y;
-        }
-        return Math.round(res);
+        if (this.mode === 'normal') return Math.round(y + this.origin.y);
+        else return Math.round(this.canvasHeight - (y + this.origin.y));
     }
     draw() {
         const promises = [];
@@ -115,7 +108,7 @@ class Canvas {
         Canvas.drawFunction[name].call(this, obj);
     }
     toDataURL() {
-        return document.getElementById(this.id).toDataURL();
+        return this.element.toDataURL();
     }
 };
 function eventTrigger(e) {

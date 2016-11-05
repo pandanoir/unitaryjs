@@ -279,25 +279,17 @@ var Canvas = function () {
     }, {
         key: 'X',
         value: function X(x) {
-            var res = x + this.origin.x;
-            // if (this.mode === 'normal') {
-            //     return res;
-            // }
-            return Math.round(res);
+            return Math.round(x + this.origin.x);
         }
     }, {
         key: 'Y',
         value: function Y(y) {
-            var res = this.canvasHeight - (y + this.origin.y);
-            if (this.mode === 'normal') {
-                res = y + this.origin.y;
-            }
-            return Math.round(res);
+            if (this.mode === 'normal') return Math.round(y + this.origin.y);else return Math.round(this.canvasHeight - (y + this.origin.y));
         }
     }, {
         key: 'draw',
         value: function draw() {
-            var _this3 = this;
+            var _this4 = this;
 
             var promises = [];
             var load = function load(src, obj) {
@@ -338,9 +330,9 @@ var Canvas = function () {
             };
             loadImage(this.objects);
             return Promise.all(promises.concat(this.ready)).then(function () {
-                for (var i = 0, _i = _this3.objects.length; i < _i; i = 0 | i + 1) {
-                    var obj = _this3.objects[i];
-                    _this3.__drawHelper__(obj);
+                for (var i = 0, _i = _this4.objects.length; i < _i; i = 0 | i + 1) {
+                    var obj = _this4.objects[i];
+                    _this4.__drawHelper__(obj);
                 }
             }).catch(errorCatcher);
         }
@@ -361,7 +353,7 @@ var Canvas = function () {
     }, {
         key: 'toDataURL',
         value: function toDataURL() {
-            return document.getElementById(this.id).toDataURL();
+            return this.element.toDataURL();
         }
     }]);
     return Canvas;
