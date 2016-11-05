@@ -1467,6 +1467,8 @@ var Text_ = function (_UnitaryObject) {
     return Text_;
 }(UnitaryObject);
 
+var version = "0.0.6";
+
 function distance(A, B) {
     var res = void 0;
     if (A instanceof Point && B instanceof Point) {
@@ -1485,7 +1487,7 @@ function distance(A, B) {
     }
 }
 
-var main = {
+var main$$1 = {
     distance: distance,
     UnitaryObject: UnitaryObject,
     BaseVector: BaseVector,
@@ -1507,9 +1509,9 @@ var main = {
     Vector: Vector,
     XAxis: new Line(new Point(0, 0), new Point(1, 0)),
     YAxis: new Line(new Point(0, 0), new Point(0, 1)),
-    VERSION: '0.0.6'
+    VERSION: version
 };
 
-return main;
+return main$$1;
 
 })));

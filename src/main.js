@@ -16,6 +16,7 @@ import Segment from './segment.js';
 import Text_ from './text.js';
 import Triangle from './triangle.js';
 import {BaseVector, Vector, Vector3D} from './vector.js';
+import {version} from '../package.json';
 
 function distance(A, B) {
     let res;
@@ -57,5 +58,5 @@ export default {
     Vector: Vector,
     XAxis: new Line(new Point(0, 0), new Point(1, 0)),
     YAxis: new Line(new Point(0, 0), new Point(0, 1)),
-    VERSION: '0.0.6'
+    VERSION: version
 };
