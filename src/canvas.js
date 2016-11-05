@@ -38,7 +38,9 @@ class Canvas {
         this.objects = [];
     }
     clear() {
-        this.canvas.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this.ready.then(() => {
+            this.canvas.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        });
     }
     X(x) {
         const res = x + this.origin.x;

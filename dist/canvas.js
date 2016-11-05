@@ -270,7 +270,11 @@ var Canvas = function () {
     }, {
         key: 'clear',
         value: function clear() {
-            this.canvas.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+            var _this3 = this;
+
+            this.ready.then(function () {
+                _this3.canvas.clearRect(0, 0, _this3.canvasWidth, _this3.canvasHeight);
+            });
         }
     }, {
         key: 'X',
