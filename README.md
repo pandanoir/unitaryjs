@@ -71,6 +71,7 @@ download [./dist/unitary.js](./dist/unitary.js) and load it.
 
 ## Classes
 
+* BezierCurve
 * Circle
 * Graph
 * Group
