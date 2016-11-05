@@ -9,7 +9,6 @@ class Canvas {
             this.ready = new Promise(resolve => {
                 window.addEventListener('load', () => {
                     resolve();
-                    console.log('loaded');
                 });
             });
         } else {

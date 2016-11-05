@@ -230,7 +230,6 @@ var Canvas = function () {
             this.ready = new Promise(function (resolve) {
                 window.addEventListener('load', function () {
                     resolve();
-                    console.log('loaded');
                 });
             });
         } else {
