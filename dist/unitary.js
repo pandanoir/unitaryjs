@@ -615,10 +615,16 @@ var Circle = function (_UnitaryObject) {
     }, {
         key: 'getEquation',
         value: function getEquation() {
+            var sign = function sign(n) {
+                return n > 0 ? '+' : '-';
+            };
+            var abs = function abs(n) {
+                return n > 0 ? n : -n;
+            };
             var res = '(x';
-            if (this.center.x > 0) res += '-' + this.center.x;else if (this.center.x < 0) res += '+' + -this.center.x; // + abs(this.center.x)
+            if (this.center.x !== 0) res += sign(-this.center.x) + abs(this.center.x);
             res += ')^2+(y';
-            if (this.center.y > 0) res += '-' + this.center.y;else if (this.center.y < 0) res += '+' + -this.center.y; // + abs(this.center.x)
+            if (this.center.y !== 0) res += sign(-this.center.y) + abs(this.center.y);
             res += ')^2=' + this.r + '^2';
             return res;
         }

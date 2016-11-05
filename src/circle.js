@@ -16,12 +16,12 @@ export default class Circle extends UnitaryObject {
         return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
     }
     getEquation() {
+        const sign = n => n > 0 ? '+' : '-';
+        const abs = n => n > 0 ? n : -n;
         let res = '(x';
-        if (this.center.x > 0) res += '-' + this.center.x;
-        else if (this.center.x < 0) res += '+' + (-this.center.x); // + abs(this.center.x)
+        if (this.center.x !== 0) res += sign(-this.center.x) + abs(this.center.x);
         res += ')^2+(y';
-        if (this.center.y > 0) res += '-' + this.center.y;
-        else if (this.center.y < 0) res += '+' + (-this.center.y); // + abs(this.center.x)
+        if (this.center.y !== 0) res += sign(-this.center.y) + abs(this.center.y);
         res += ')^2=' + this.r + '^2';
         return res;
     }
