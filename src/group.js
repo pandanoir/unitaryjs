@@ -3,7 +3,7 @@ import UnitaryObject from './unitaryobjcet.js';
 export default class Group extends UnitaryObject {
     constructor(...args) {
         super();
-        if (Object.prototype.toString.call(args[0]) === '[object Array]') this.group = args[0];
+        if (Array.isArray(args[0])) this.group = args[0];
         else this.group = args;
     }
     has(P) {

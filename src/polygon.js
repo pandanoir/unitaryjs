@@ -4,8 +4,8 @@ import {Vector} from './vector.js';
 export default class Polygon extends UnitaryObject {
     constructor(...args) {
         super();
-        const points = 1 <= args.length ? Array.prototype.slice.call(args, 0) : [];
-        if (Object.prototype.toString.call(points[0]) === '[object Array]') {
+        const points = 1 <= args.length ? args : [];
+        if (Array.isArray(points[0])) {
             this.points = points[0];
         } else {
             this.points = points;

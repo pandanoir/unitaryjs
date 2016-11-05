@@ -332,7 +332,7 @@ var BezierCurve = function (_UnitaryObject) {
             args[_key] = arguments[_key];
         }
 
-        if (Object.prototype.toString.call(args[0]) === '[object Array]') _this.controlPoints = args[0];else _this.controlPoints = args;
+        if (Array.isArray(args[0])) _this.controlPoints = args[0];else _this.controlPoints = args;
         _this.step = 0.05;
         return _this;
     }
@@ -373,7 +373,7 @@ var BaseVector = function (_UnitaryObject) {
             args[_key] = arguments[_key];
         }
 
-        if (args.length === 1 && Object.prototype.toString.call(args[0]) === '[object Array]') {
+        if (args.length === 1 && Array.isArray(args[0])) {
             _this.component = new Array(args[0].length);
             for (var i = 0, _i = args[0].length; i < _i; i = 0 | i + 1) {
                 _this.component[i] = args[0][i];
@@ -757,7 +757,7 @@ var Group = function (_UnitaryObject) {
             args[_key] = arguments[_key];
         }
 
-        if (Object.prototype.toString.call(args[0]) === '[object Array]') _this.group = args[0];else _this.group = args;
+        if (Array.isArray(args[0])) _this.group = args[0];else _this.group = args;
         return _this;
     }
 
@@ -1061,8 +1061,8 @@ var Polygon = function (_UnitaryObject) {
             args[_key] = arguments[_key];
         }
 
-        var points = 1 <= args.length ? Array.prototype.slice.call(args, 0) : [];
-        if (Object.prototype.toString.call(points[0]) === '[object Array]') {
+        var points = 1 <= args.length ? args : [];
+        if (Array.isArray(points[0])) {
             _this.points = points[0];
         } else {
             _this.points = points;

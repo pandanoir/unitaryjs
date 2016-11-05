@@ -3,7 +3,7 @@ import UnitaryObject from './unitaryobjcet.js';
 export default class BezierCurve extends UnitaryObject {
     constructor(...args) {
         super();
-        if (Object.prototype.toString.call(args[0]) === '[object Array]') this.controlPoints = args[0];
+        if (Array.isArray(args[0])) this.controlPoints = args[0];
         else this.controlPoints= args;
         this.step= 0.05;
     }

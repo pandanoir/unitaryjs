@@ -3,7 +3,7 @@ import UnitaryObject from './unitaryobjcet.js';
 class BaseVector extends UnitaryObject {
     constructor(...args) {
         super();
-        if (args.length === 1 && Object.prototype.toString.call(args[0]) === '[object Array]') {
+        if (args.length === 1 && Array.isArray(args[0])) {
             this.component = new Array(args[0].length);
             for (let i = 0, _i = args[0].length; i < _i; i = 0|i+1) {
                 this.component[i] = args[0][i];
