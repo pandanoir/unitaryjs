@@ -930,12 +930,12 @@ var Image_ = function (_UnitaryObject) {
     return Image_;
 }(UnitaryObject);
 
-function gcd(m, n) {
+var gcd = function gcd(m, n) {
     if (m < n) return gcd(n, m);
     if (m < 0) return gcd(-m, n);
     if (n < 0) return gcd(m, -n);
     return n === 0 ? m : gcd(n, m % n);
-}
+};
 
 var Line = function (_UnitaryObject) {
     inherits(Line, _UnitaryObject);
@@ -1475,7 +1475,7 @@ var Text_ = function (_UnitaryObject) {
 
 var version = "0.0.6";
 
-function distance(A, B) {
+var distance = function distance(A, B) {
     var res = void 0;
     if (A instanceof Point && B instanceof Point) {
         return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
@@ -1491,7 +1491,7 @@ function distance(A, B) {
     if (A instanceof Line && B instanceof Point) {
         return distance(B, A);
     }
-}
+};
 
 var main$$1 = {
     distance: distance,

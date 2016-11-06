@@ -1,7 +1,7 @@
 import UnitaryObject from './unitaryobjcet.js';
 import Point from './point.js';
 
-function gcd(m, n) {
+const gcd = (m, n) => {
     if (m < n) return gcd(n, m);
     if (m < 0) return gcd(-m, n);
     if (n < 0) return gcd(m, -n);

@@ -1,24 +1,24 @@
 "use strict";
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './classes/unitaryobjcet.js';
 
-import BezierCurve from './beziercurve.js';
-import Circle from './circle.js';
-import CircularSector from './circularsector.js';
-import Graph from './graph.js';
-import Group from './group.js';
-import Image_ from './image.js';
-import Line from './line.js';
-import Point from './point.js';
-import Polygon from './polygon.js';
-import Quadrilateral from './quadrilateral.js';
-import Rect from './rect.js';
-import Segment from './segment.js';
-import Text_ from './text.js';
-import Triangle from './triangle.js';
-import {BaseVector, Vector, Vector3D} from './vector.js';
+import BezierCurve from './classes/beziercurve.js';
+import Circle from './classes/circle.js';
+import CircularSector from './classes/circularsector.js';
+import Graph from './classes/graph.js';
+import Group from './classes/group.js';
+import Image_ from './classes/image.js';
+import Line from './classes/line.js';
+import Point from './classes/point.js';
+import Polygon from './classes/polygon.js';
+import Quadrilateral from './classes/quadrilateral.js';
+import Rect from './classes/rect.js';
+import Segment from './classes/segment.js';
+import Text_ from './classes/text.js';
+import Triangle from './classes/triangle.js';
+import {BaseVector, Vector, Vector3D} from './classes/vector.js';
 import {version} from '../package.json';
 
-function distance(A, B) {
+const distance = (A, B) => {
     let res;
     if (A instanceof Point && B instanceof Point) {
         return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
