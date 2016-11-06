@@ -56,6 +56,9 @@ export default class Line extends UnitaryObject {
     }
     toString() { return this.getEquation(); }
     inspect() { return this.getEquation(); }
+    getNormalVector() {
+        return new Vector(this.a, this.b);
+    }
     getIntersection(CD) {
         if (this.a === CD.a && this.b === CD.b) {
             return false;
