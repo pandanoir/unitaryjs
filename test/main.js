@@ -78,6 +78,10 @@ describe('Unitary', () => {
         });
     });
     describe('Line', () => {
+        const line1a = new Line(new Point(0, 0), new Point(1, 0)), line1b = new Line(new Point(0, 10), new Point(1, 10)); // parallel to X axis.
+        const line2a = new Line(new Point(0, 0), new Point(0, 1)), line2b = new Line(new Point(10, 0), new Point(10, 1)); // parallel to Y axis.
+        const line3a = new Line(new Point(0, 0), new Point(1, 1)), line3b = new Line(new Point(0, 10), new Point(1, 11)); // y = x
+        const lines = [line1a, line1b, line2a, line2b, line3a, line3b];
         it('move', () => {
             assert.ok(new Line(A, B).move(31, 31).equals(new Line(A.move(31, 31), B.move(31, 31))));
         });
@@ -107,6 +111,7 @@ describe('Unitary', () => {
             assert.equal(new Line(new Point(-1, 0), new Point(-1, 1)).getEquation(), 'x+1=0');
             assert.equal(new Line(new Point(0, -1), new Point(1, -1)).getEquation(), 'y+1=0');
         });
+            assert.ok(!line1a.isParallelTo(line2b));
         it('name', () => {
             assert.equal(new Line(new Point(-66, 76), new Point(135, -20)).name(), 'Line');
         });

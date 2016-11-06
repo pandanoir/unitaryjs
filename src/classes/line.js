@@ -62,5 +62,17 @@ export default class Line extends UnitaryObject {
         }
         return this.a === CD.a && this.b === CD.b && this.c === CD.c;
     }
+    isParallelTo(CD) {
+        if (this.equals(CD)) {
+            return false;
+        }
+        return this.a * CD.b === this.b * CD.a;
+    }
+    isPerpendicularTo(CD) {
+        if (this.equals(CD)) {
+            return false;
+        }
+        return this.a * CD.a + this.b * CD.b === 0;
+    }
     name() { return 'Line'; }
 }
