@@ -1,4 +1,5 @@
 import UnitaryObject from './unitaryobjcet.js';
+import {Vector} from './vector.js';
 
 export default class Point extends UnitaryObject {
     constructor(x, y) {
@@ -24,6 +25,9 @@ export default class Point extends UnitaryObject {
             return false;
         }
         return this.x === B.x && this.y === B.y;
+    }
+    toVector() {
+        return new Vector(this.x, this.y);
     }
     name() { return 'Point'; }
 }

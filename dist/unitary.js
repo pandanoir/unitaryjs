@@ -1,7 +1,7 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.Unitary = factory());
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.Unitary = factory());
 }(this, (function () { 'use strict';
 
 var asyncGenerator = function () {
@@ -361,6 +361,68 @@ var BezierCurve = function (_UnitaryObject) {
     return BezierCurve;
 }(UnitaryObject);
 
+var Point = function (_UnitaryObject) {
+    inherits(Point, _UnitaryObject);
+
+    function Point(x, y) {
+        classCallCheck(this, Point);
+
+        var _this = possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this));
+
+        _this.x = x;
+        _this.y = y;
+        return _this;
+    }
+
+    createClass(Point, [{
+        key: 'moveTo',
+        value: function moveTo(x, y) {
+            return new Point(x, y).setStyle(this.style);
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            return new Point(this.x + dx, this.y + dy).setStyle(this.style);
+        }
+    }, {
+        key: 'rotate',
+        value: function rotate(rad, center) {
+            var x = Math.cos(rad) * (this.x - center.x) - Math.sin(rad) * (this.y - center.y) + center.x;
+            var y = Math.sin(rad) * (this.y - center.y) + Math.cos(rad) * (this.y - center.y) + center.y;
+            return new Point(x, y);
+        }
+    }, {
+        key: 'toString',
+        value: function toString() {
+            return '(' + this.x + ', ' + this.y + ')';
+        }
+    }, {
+        key: 'inspect',
+        value: function inspect() {
+            return '(' + this.x + ', ' + this.y + ')';
+        }
+    }, {
+        key: 'equals',
+        value: function equals(B) {
+            if (!get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'equals', this).call(this, B)) {
+                return false;
+            }
+            return this.x === B.x && this.y === B.y;
+        }
+    }, {
+        key: 'toVector',
+        value: function toVector() {
+            return new Vector(this.x, this.y);
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Point';
+        }
+    }]);
+    return Point;
+}(UnitaryObject);
+
 var BaseVector = function (_UnitaryObject) {
     inherits(BaseVector, _UnitaryObject);
 
@@ -433,6 +495,11 @@ var BaseVector = function (_UnitaryObject) {
                 res += this.component[i] * this.component[i];
             }
             return Math.sqrt(res);
+        }
+    }, {
+        key: 'normalize',
+        value: function normalize() {
+            return this.multiple(1 / this.abs());
         }
     }, {
         key: 'equals',
@@ -516,6 +583,11 @@ var Vector = function (_BaseVector) {
             return this.x === B.x && this.y === B.y;
         }
     }, {
+        key: 'toPoint',
+        value: function toPoint() {
+            return new Point(this.x, this.y);
+        }
+    }, {
         key: 'move',
         value: function move(dx, dy) {
             return new Vector(this.x + dx, this.y + dy);
@@ -587,6 +659,16 @@ var Vector3D = function (_BaseVector2) {
     return Vector3D;
 }(BaseVector);
 
+var sign = function sign(n) {
+  return n >= 0 ? '+' : '-';
+};
+var abs$1 = function abs$1(n) {
+  return n > 0 ? n : -n;
+};
+var isInteger = function isInteger(n) {
+  return (0 | n) === n;
+};
+
 var Circle = function (_UnitaryObject) {
     inherits(Circle, _UnitaryObject);
 
@@ -615,16 +697,10 @@ var Circle = function (_UnitaryObject) {
     }, {
         key: 'getEquation',
         value: function getEquation() {
-            var sign = function sign(n) {
-                return n > 0 ? '+' : '-';
-            };
-            var abs = function abs(n) {
-                return n > 0 ? n : -n;
-            };
             var res = '(x';
-            if (this.center.x !== 0) res += sign(-this.center.x) + abs(this.center.x);
+            if (this.center.x !== 0) res += sign(-this.center.x) + abs$1(this.center.x);
             res += ')^2+(y';
-            if (this.center.y !== 0) res += sign(-this.center.y) + abs(this.center.y);
+            if (this.center.y !== 0) res += sign(-this.center.y) + abs$1(this.center.y);
             res += ')^2=' + this.r + '^2';
             return res;
         }
@@ -793,63 +869,6 @@ var Group = function (_UnitaryObject) {
     return Group;
 }(UnitaryObject);
 
-var Point = function (_UnitaryObject) {
-    inherits(Point, _UnitaryObject);
-
-    function Point(x, y) {
-        classCallCheck(this, Point);
-
-        var _this = possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this));
-
-        _this.x = x;
-        _this.y = y;
-        return _this;
-    }
-
-    createClass(Point, [{
-        key: 'moveTo',
-        value: function moveTo(x, y) {
-            return new Point(x, y).setStyle(this.style);
-        }
-    }, {
-        key: 'move',
-        value: function move(dx, dy) {
-            return new Point(this.x + dx, this.y + dy).setStyle(this.style);
-        }
-    }, {
-        key: 'rotate',
-        value: function rotate(rad, center) {
-            var x = Math.cos(rad) * (this.x - center.x) - Math.sin(rad) * (this.y - center.y) + center.x;
-            var y = Math.sin(rad) * (this.y - center.y) + Math.cos(rad) * (this.y - center.y) + center.y;
-            return new Point(x, y);
-        }
-    }, {
-        key: 'toString',
-        value: function toString() {
-            return '(' + this.x + ', ' + this.y + ')';
-        }
-    }, {
-        key: 'inspect',
-        value: function inspect() {
-            return '(' + this.x + ', ' + this.y + ')';
-        }
-    }, {
-        key: 'equals',
-        value: function equals(B) {
-            if (!get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'equals', this).call(this, B)) {
-                return false;
-            }
-            return this.x === B.x && this.y === B.y;
-        }
-    }, {
-        key: 'name',
-        value: function name() {
-            return 'Point';
-        }
-    }]);
-    return Point;
-}(UnitaryObject);
-
 var Image_ = function (_UnitaryObject) {
     inherits(Image_, _UnitaryObject);
 
@@ -953,10 +972,17 @@ var Line = function (_UnitaryObject) {
         _this.a = B.y - A.y;
         _this.b = A.x - B.x;
         _this.c = A.x * (A.y - B.y) - A.y * (A.x - B.x);
-        var g = gcd(gcd(_this.a, _this.b), _this.c);
-        _this.a /= g;
-        _this.b /= g;
-        _this.c /= g;
+        if (isInteger(_this.a) && isInteger(_this.b) && isInteger(_this.c)) {
+            var g = gcd(gcd(_this.a, _this.b), _this.c);
+            _this.a /= g;
+            _this.b /= g;
+            _this.c /= g;
+        }
+        if (_this.a < 0) {
+            _this.a *= -1;
+            _this.b *= -1;
+            _this.c *= -1;
+        }
         if (_this.a === 0) {
             _this.c /= _this.b;
             _this.b = 1;
@@ -965,6 +991,7 @@ var Line = function (_UnitaryObject) {
             _this.c /= _this.a;
             _this.a = 1;
         }
+        // a > 0 || a == 0 && b > 0
         return _this;
     }
 
@@ -976,47 +1003,18 @@ var Line = function (_UnitaryObject) {
     }, {
         key: 'getEquation',
         value: function getEquation() {
-            var res = void 0;
-            res = '';
             var a = this.a;
             var b = this.b;
             var c = this.c;
-            if (this.a < 0 || this.a === 0 && this.b < 0) {
-                // to output x+y+1=0 instead of -x-y-1=0
-                a *= -1;
-                b *= -1;
-                c *= -1;
-            }
-            if (a > 0 && a !== 1) {
-                res += '+' + a + 'x';
-            }
-            if (a === 1) {
-                res += '+x';
-            }
-            // if (a < 0 && a !== -1) { res += '-' + -a + 'x'; }
-            // if (a === -1) { res += '-x'; }
-            if (b > 0 && b !== 1) {
-                res += '+' + b + 'y';
-            }
-            if (b === 1) {
-                res += '+y';
-            }
-            if (b < 0 && b !== -1) {
-                res += '-' + -b + 'y';
-            }
-            if (b === -1) {
-                res += '-y';
-            }
-            if (c > 0) {
-                res += '+' + c;
-            }
-            if (c < 0) {
-                res += '-' + -c;
-            }
-            if (res.charAt(0) === '+') {
-                res = res.slice(1);
-            }
-            return res + '=0';
+            var n = function n(_n) {
+                return abs$1(_n) === 1 ? '' : abs$1(_n);
+            };
+
+            var res = '';
+            if (a !== 0) res += sign(a) + n(a) + 'x';
+            if (b !== 0) res += sign(b) + n(b) + 'y';
+            if (c !== 0) res += sign(c) + abs$1(c);
+            return res.slice(1) + '=0';
         }
     }, {
         key: 'toString',
@@ -1027,6 +1025,11 @@ var Line = function (_UnitaryObject) {
         key: 'inspect',
         value: function inspect() {
             return this.getEquation();
+        }
+    }, {
+        key: 'getNormalVector',
+        value: function getNormalVector() {
+            return new Vector(this.a, this.b);
         }
     }, {
         key: 'getIntersection',
@@ -1044,7 +1047,27 @@ var Line = function (_UnitaryObject) {
             if (!get(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'equals', this).call(this, CD)) {
                 return false;
             }
-            return this.a === CD.a && this.b === CD.b && this.c === CD.c;
+            var ratio1 = this.a * CD.b === this.b * CD.a; // a:b = a':b'
+            var ratio2 = this.b * CD.c === this.c * CD.b; // b:c = b':c'
+            var ratio3 = this.a * CD.c === this.c * CD.a; // a:c = a':c'
+            // ratio1 && ratio2 equals a:b:c = a':b':c'
+            return ratio1 && ratio2 && ratio3;
+        }
+    }, {
+        key: 'isParallelTo',
+        value: function isParallelTo(CD) {
+            if (this.equals(CD)) {
+                return false;
+            }
+            return this.a * CD.b === this.b * CD.a;
+        }
+    }, {
+        key: 'isPerpendicularTo',
+        value: function isPerpendicularTo(CD) {
+            if (this.equals(CD)) {
+                return false;
+            }
+            return this.a * CD.a + this.b * CD.b === 0;
         }
     }, {
         key: 'name',
@@ -1054,6 +1077,14 @@ var Line = function (_UnitaryObject) {
     }]);
     return Line;
 }(UnitaryObject);
+
+Line.fromVector = function (_a, _d) {
+    var a = _a,
+        d = _d;
+    if (_a.name() === 'Point') a = _a.toVector();
+    if (_d.name() === 'Point') d = _d.toVector();
+    return new Line(a, a.add(d));
+};
 
 var Polygon = function (_UnitaryObject) {
     inherits(Polygon, _UnitaryObject);

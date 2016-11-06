@@ -1,4 +1,5 @@
 import UnitaryObject from './unitaryobjcet.js';
+import Point from './point.js';
 
 class BaseVector extends UnitaryObject {
     constructor(...args) {
@@ -100,6 +101,9 @@ class Vector extends BaseVector{
             return false;
         }
         return this.x === B.x && this.y === B.y;
+    }
+    toPoint() {
+        return new Point(this.x, this.y);
     }
     move(dx, dy) { return new Vector(this.x + dx, this.y + dy); }
     name() { return 'Vector'; }

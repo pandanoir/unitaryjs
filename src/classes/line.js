@@ -1,6 +1,6 @@
 import UnitaryObject from './unitaryobjcet.js';
 import Point from './point.js';
-import Vector from './vector.js';
+import {Vector} from './vector.js';
 import {sign, abs, isInteger} from '../utility.js';
 
 const gcd = (m, n) => {
@@ -92,3 +92,9 @@ export default class Line extends UnitaryObject {
     }
     name() { return 'Line'; }
 }
+Line.fromVector = function(_a, _d) {
+    let a = _a, d = _d;
+    if (_a.name() === 'Point') a = _a.toVector();
+    if (_d.name() === 'Point') d = _d.toVector();
+    return new Line(a, a.add(d));
+};

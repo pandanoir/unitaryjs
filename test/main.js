@@ -174,6 +174,9 @@ describe('Unitary', () => {
         it('name', () => {
             assert.equal(new Line(new Point(-66, 76), new Point(135, -20)).name(), 'Line');
         });
+        it('Line.fromVector', () => {
+            assert.ok(Line.fromVector(new Point(1, 1), new Point(1, 2)).equals(new Line(new Point(1, 1), new Point(2, 3))));
+        })
     });
     describe('Point', () => {
         it('moveTo', () => {
