@@ -1,5 +1,6 @@
 import UnitaryObject from './unitaryobjcet.js';
 import {Vector} from './vector.js';
+import {abs, sign} from '../utility.js';
 
 export default class Circle extends UnitaryObject {
     constructor(center, radius) {
@@ -16,8 +17,6 @@ export default class Circle extends UnitaryObject {
         return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
     }
     getEquation() {
-        const sign = n => n > 0 ? '+' : '-';
-        const abs = n => n > 0 ? n : -n;
         let res = '(x';
         if (this.center.x !== 0) res += sign(-this.center.x) + abs(this.center.x);
         res += ')^2+(y';

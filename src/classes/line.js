@@ -1,5 +1,6 @@
 import UnitaryObject from './unitaryobjcet.js';
 import Point from './point.js';
+import {sign, abs, isInteger} from '../utility.js';
 
 const gcd = (m, n) => {
     if (m < n) return gcd(n, m);
@@ -34,29 +35,16 @@ export default class Line extends UnitaryObject {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
     getEquation() {
-        let res;
-        res = '';
-        let a = this.a;
-        let b = this.b;
-        let c = this.c;
-        if (this.a < 0 || this.a === 0 && this.b < 0) {
-            // to output x+y+1=0 instead of -x-y-1=0
-            a *= -1;
-            b *= -1;
-            c *= -1;
-        }
-        if (a > 0 && a !== 1) { res += '+' + a + 'x'; }
-        if (a === 1) { res += '+x'; }
-        // if (a < 0 && a !== -1) { res += '-' + -a + 'x'; }
-        // if (a === -1) { res += '-x'; }
-        if (b > 0 && b !== 1) { res += '+' + b + 'y'; }
-        if (b === 1) { res += '+y'; }
-        if (b < 0 && b !== -1) { res += '-' + -b + 'y'; }
-        if (b === -1) { res += '-y'; }
-        if (c > 0) { res += '+' + c; }
-        if (c < 0) { res += '-' + -c; }
-        if (res.charAt(0) === '+') { res = res.slice(1); }
-        return res + '=0';
+        const a = this.a;
+        const b = this.b;
+        const c = this.c;
+        const n = _n => abs(_n) === 1 ? '' : abs(_n);
+
+        let res = '';
+        if (a !== 0) res += sign(a) + n(a) + 'x';
+        if (b !== 0) res += sign(b) + n(b) + 'y';
+        if (c !== 0) res += sign(c) + abs(c);
+        return res.slice(1) + '=0';
     }
     toString() { return this.getEquation(); }
     inspect() { return this.getEquation(); }
