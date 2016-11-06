@@ -23,23 +23,21 @@ Demo: [Demo](http://pandanoir.web.fc2.com/unitaryjs/sample.html)
     <script src="./unitary.js"></script>
     <script src="./canvas.js"></script>
     <script>
-    window.addEventListener('load', function(){
-      for (var key in Unitary) {
-        window[key] = Unitary[key];
-      }
-      var A = new Point(30,30),
-          B = new Point(90,90),
-          C = new Point(90,40),
-          ABC = new Triangle(A, B, C),
-          circumcircleABC = ABC.getCircumcircle(),
-          incircleABC = ABC.getIncircle(),
-          canvas = new Canvas('canvas');
+    for (const key of Object.keys(Unitary)) {
+      window[key] = Unitary[key];
+    }
+    const A = new Point(30,30),
+        B = new Point(90,90),
+        C = new Point(90,40),
+        ABC = new Triangle(A, B, C),
+        circumcircleABC = ABC.getCircumcircle(),
+        incircleABC = ABC.getIncircle(),
+        canvas = new Canvas('canvas');
 
-      canvas.add(ABC);
-      canvas.add(circumcircleABC);
-      canvas.add(incircleABC);
-      canvas.draw();
-    });
+    canvas.add(ABC);
+    canvas.add(circumcircleABC);
+    canvas.add(incircleABC);
+    canvas.draw();
     </script>
   </head>
   <body>
@@ -57,7 +55,7 @@ npm install unitaryjs
 and require unitaryjs.
 
 ```js
-var Unitary = require('unitaryjs');
+const Unitary = require('unitaryjs');
 Unitary.Vector(1, 1);
 ```
 
