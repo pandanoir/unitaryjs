@@ -18,10 +18,17 @@ export default class Line extends UnitaryObject {
         this.a = B.y - A.y;
         this.b = A.x - B.x;
         this.c = A.x * (A.y - B.y) - A.y * (A.x - B.x);
-        const g = gcd(gcd(this.a, this.b), this.c);
-        this.a /= g;
-        this.b /= g;
-        this.c /= g;
+        if (isInteger(this.a) && isInteger(this.b) && isInteger(this.c)) {
+            const g = gcd(gcd(this.a, this.b), this.c);
+            this.a /= g;
+            this.b /= g;
+            this.c /= g;
+        }
+        if (this.a < 0) {
+            this.a *= -1;
+            this.b *= -1;
+            this.c *= -1;
+        }
         if (this.a === 0) {
             this.c /= this.b;
             this.b = 1;
@@ -30,6 +37,7 @@ export default class Line extends UnitaryObject {
             this.c /= this.a;
             this.a = 1;
         }
+        // a > 0 || a == 0 && b > 0
     }
     move(dx, dy) {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
@@ -60,7 +68,11 @@ export default class Line extends UnitaryObject {
         if (!super.equals(CD)) {
             return false;
         }
-        return this.a === CD.a && this.b === CD.b && this.c === CD.c;
+        const ratio1 = this.a * CD.b === this.b * CD.a; // a:b = a':b'
+        const ratio2 = this.b * CD.c === this.c * CD.b; // b:c = b':c'
+        const ratio3 = this.a * CD.c === this.c * CD.a; // a:c = a':c'
+        // ratio1 && ratio2 equals a:b:c = a':b':c'
+        return ratio1 && ratio2 && ratio3;
     }
     isParallelTo(CD) {
         if (this.equals(CD)) {

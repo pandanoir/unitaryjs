@@ -99,7 +99,27 @@ describe('Unitary', () => {
             assert.ok(new Line(new Point(0, 0), new Point(10, 10)).getIntersection(new Line(new Point(0, 20), new Point(1,19))).equals(new Point(10, 10)));
         });
         it('equals', () => {
-            assert.ok(new Line(new Point(-66, 76), new Point(135, -20)).equals(new Line(new Point(1, 44), new Point(68, 12))));
+            assert.ok(lines[0].equals(lines[0]));
+            assert.ok(!lines[0].equals(lines[1]));
+            assert.ok(!lines[0].equals(lines[2]));
+            assert.ok(!lines[0].equals(lines[3]));
+            assert.ok(!lines[0].equals(lines[4]));
+            assert.ok(!lines[0].equals(lines[5]));
+            assert.ok(lines[1].equals(lines[1]));
+            assert.ok(!lines[1].equals(lines[2]));
+            assert.ok(!lines[1].equals(lines[3]));
+            assert.ok(!lines[1].equals(lines[4]));
+            assert.ok(!lines[1].equals(lines[5]));
+            assert.ok(lines[2].equals(lines[2]));
+            assert.ok(!lines[2].equals(lines[3]));
+            assert.ok(!lines[2].equals(lines[4]));
+            assert.ok(!lines[2].equals(lines[5]));
+            assert.ok(lines[3].equals(lines[3]));
+            assert.ok(!lines[3].equals(lines[4]));
+            assert.ok(!lines[3].equals(lines[5]));
+            assert.ok(lines[4].equals(lines[4]));
+            assert.ok(!lines[4].equals(lines[5]));
+            assert.ok(lines[5].equals(lines[5]));
         });
         it('getEquation', () => {
             assert.equal(new Line(new Point(1, 0), new Point(0, 1)).getEquation(), 'x+y-1=0');
@@ -111,7 +131,46 @@ describe('Unitary', () => {
             assert.equal(new Line(new Point(-1, 0), new Point(-1, 1)).getEquation(), 'x+1=0');
             assert.equal(new Line(new Point(0, -1), new Point(1, -1)).getEquation(), 'y+1=0');
         });
+        it('isParallelTo', () => {
+            assert.ok(line1a.isParallelTo(line1b));
+            assert.ok(line2a.isParallelTo(line2b));
+            assert.ok(line3a.isParallelTo(line3b));
+
+            assert.ok(!line1a.isParallelTo(line2a));
             assert.ok(!line1a.isParallelTo(line2b));
+            assert.ok(!line1a.isParallelTo(line3a));
+            assert.ok(!line1a.isParallelTo(line3b));
+
+            assert.ok(!line2a.isParallelTo(line1a));
+            assert.ok(!line2a.isParallelTo(line1b));
+            assert.ok(!line2a.isParallelTo(line3a));
+            assert.ok(!line2a.isParallelTo(line3b));
+
+            assert.ok(!line3a.isParallelTo(line1a));
+            assert.ok(!line3a.isParallelTo(line1b));
+            assert.ok(!line3a.isParallelTo(line2a));
+            assert.ok(!line3a.isParallelTo(line2b));
+        });
+        it('isPerpendicularTo', () => {
+            const line1a = new Line(new Point(0, 0), new Point(1, 0)), line1b = new Line(new Point(0, 10), new Point(1, 10));
+            const line2a = new Line(new Point(0, 0), new Point(0, 1)), line2b = new Line(new Point(10, 0), new Point(10, 1));
+            const line3a = new Line(new Point(0, 0), new Point(1, 1)), line3b = new Line(new Point(0, 10), new Point(1, 11));
+
+            assert.ok(line1a.isPerpendicularTo(line2a));
+            assert.ok(line1a.isPerpendicularTo(line2b));
+            assert.ok(line1b.isPerpendicularTo(line2a));
+            assert.ok(line1b.isPerpendicularTo(line2b));
+
+            assert.ok(!line1a.isPerpendicularTo(line1b));
+            assert.ok(!line2a.isPerpendicularTo(line2b));
+            assert.ok(!line3a.isPerpendicularTo(line3b));
+
+            assert.ok(!line3a.isPerpendicularTo(line1a));
+            assert.ok(!line3a.isPerpendicularTo(line1b));
+            assert.ok(!line3a.isPerpendicularTo(line2a));
+            assert.ok(!line3a.isPerpendicularTo(line2b));
+
+        });
         it('name', () => {
             assert.equal(new Line(new Point(-66, 76), new Point(135, -20)).name(), 'Line');
         });
