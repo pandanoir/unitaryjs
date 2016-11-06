@@ -4,6 +4,157 @@
   (global.Canvas = factory());
 }(this, (function () { 'use strict';
 
+var BezierCurvePainter = function (obj) {
+    this.canvas.beginPath();
+    var controlPoints = obj.controlPoints;
+    var P = controlPoints;
+    var nextP = [];
+    var points = obj.points || [controlPoints[0]];
+    var pointsLength = 1;
+    var step = obj.step;
+
+    if (!obj.points) {
+        console.log('cache created');
+        for (var t = 0; t < 1; t += step) {
+            P = controlPoints.concat();
+            for (var i = 0, _i = controlPoints.length - 1; i < _i; i = 0 | i + 1) {
+                for (var j = 0, _j = P.length - 1; j < _j; j = 0 | j + 1) {
+                    nextP[j] = new Unitary.Point(P[j + 1].x * t + P[j].x * (1 - t), P[j + 1].y * t + P[j].y * (1 - t));
+                }P = nextP;
+                nextP = [];
+            }
+            points[pointsLength] = P[0];
+            pointsLength = 0 | pointsLength + 1;
+        }
+        points[pointsLength] = controlPoints[controlPoints.length - 1];
+    }
+    obj.points = points;
+
+    this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+    for (var _i2 = 0, _i3 = points.length; _i2 < _i3; _i2 = 0 | _i2 + 1) {
+        this.canvas.lineTo(this.X(points[_i2].x), this.Y(points[_i2].y));
+    }this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+    this.canvas.closePath();
+    this.canvas.stroke();
+};
+
+var CirclePainter = function (obj) {
+    var O = obj.center,
+        r = obj.r;
+    this.canvas.beginPath();
+    this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
+    this.canvas.closePath();
+    this.canvas.stroke();
+    if (obj.style.fillColor !== null) this.canvas.fill();
+};
+
+var CircularSectorPainter = function (obj) {
+    var center = obj.center,
+        r = obj.r,
+        startAngle = obj.startAngle,
+        endAngle = obj.endAngle;
+    this.canvas.beginPath();
+    this.canvas.moveTo(this.X(center.x), this.Y(center.y));
+    this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, false);
+    this.canvas.lineTo(this.X(center.x), this.Y(center.y));
+    this.canvas.closePath();
+    this.canvas.stroke();
+    if (obj.style.fillColor !== null) this.canvas.fill();
+};
+
+var GraphPainter = function (obj) {
+    this.canvas.beginPath();
+    var start = obj.start,
+        end = obj.end;
+    if (start === null) start = -this.origin.x;
+    if (end === null) end = this.canvasWidth - this.origin.x;
+
+    var points = [];
+    for (var i = start; i <= end; i = 0 | i + 1) {
+        points[points.length] = new Unitary.Point(i, obj.f(i / obj.scale) * obj.scale);
+    }this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+    for (var _i2 = 0, _i = points.length; _i2 < _i; _i2 = 0 | _i2 + 1) {
+        this.canvas.lineTo(this.X(points[_i2].x), this.Y(points[_i2].y));
+        this.canvas.moveTo(this.X(points[_i2].x), this.Y(points[_i2].y));
+    }
+    this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+    this.canvas.closePath();
+    this.canvas.stroke();
+};
+
+var GroupPainter = function (obj) {
+    for (var i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) {
+        this.__drawHelper__(obj.group[i]);
+    }
+};
+
+var ImagePainter = function (obj) {
+    var image = obj.__image__;
+    if (obj.dx !== null && obj.sx !== null) this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);else if (obj.dx !== null && obj.sx === null && obj.dw !== null) this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);else if (obj.dx !== null && obj.dw === null) {
+        // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
+        // 対偶をとり obj.dw === nullならばobj.sx === null
+        this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
+    } else if (obj.dx === null) this.canvas.drawImage(image);
+};
+
+var LinePainter = function (obj) {
+    this.canvas.beginPath();
+    if (obj.b === 0) {
+        this.canvas.moveTo(this.X(-obj.c), 0);
+        this.canvas.lineTo(this.X(-obj.c), this.canvasHeight);
+    } else {
+        this.canvas.moveTo(0, this.Y(-(obj.c / obj.b)));
+        this.canvas.lineTo(this.canvasWidth, this.Y(-(obj.a * this.canvasWidth + obj.c) / obj.b));
+    }
+    this.canvas.closePath();
+    this.canvas.stroke();
+};
+
+var PointPainter = function (obj) {
+    this.canvas.fillRect(this.X(obj.x), this.Y(obj.y), 1, 1);
+};
+
+var RectPainter = function (obj) {
+    var x = this.X(obj.points[0].x);
+    var y = this.Y(obj.points[0].y);
+    var w = obj.points[1].x - obj.points[0].x;
+    var h = obj.points[1].y - obj.points[0].y;
+    if (this.mode !== 'normal') {
+        h = -(obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
+    }
+    if (obj.style.fillColor !== null) this.canvas.fillRect(x, y, w, h); // 上でそれぞれX()、Y()適用済み
+    else this.canvas.strokeRect(x, y, w, h);
+};
+
+var SegmentPainter = function (obj) {
+    this.canvas.beginPath();
+    this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    this.canvas.lineTo(this.X(obj.points[1].x), this.Y(obj.points[1].y));
+    this.canvas.closePath();
+    this.canvas.stroke();
+};
+
+var TextPainter = function (obj) {
+    this.canvas.textAlign = obj.style.align;
+    this.canvas.textBaseline = obj.style.baseline;
+    var x = obj.P.x;
+    var y = obj.P.y;
+    var maxWidth = obj.style.maxWidth;
+    var defaultFont = void 0;
+    if (obj.style.font !== null) {
+        defaultFont = this.canvas.font;
+        this.canvas.font = obj.style.font;
+    }
+    if (maxWidth === null) {
+        if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
+        this.canvas.fillText(obj.text, this.X(x), this.Y(y));
+    } else {
+        if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, this.X(x), this.Y(y), maxWidth);
+        this.canvas.fillText(obj.text, this.X(x), this.Y(y), maxWidth);
+    }
+    if (obj.style.font !== null) this.canvas.font = defaultFont;
+};
+
 var asyncGenerator = function () {
   function AwaitValue(value) {
     this.value = value;
@@ -218,7 +369,6 @@ var __imageCaches = [];
 var errorCatcher = function errorCatcher(e) {
     console.log(e);
 };
-
 var Canvas = function () {
     function Canvas(id) {
         var _this = this;
@@ -348,7 +498,7 @@ var Canvas = function () {
             if (obj.style && obj.style.strokeColor !== null) {
                 this.canvas.strokeStyle = obj.style.strokeColor;
             }
-            Canvas.drawFunction[name].call(this, obj);
+            Canvas.painter[name].call(this, obj);
         }
     }, {
         key: 'toDataURL',
@@ -389,151 +539,34 @@ Unitary.UnitaryObject.prototype.trigger = function (name, e) {
     }
     return this;
 };
-Canvas.drawFunction = {
-    Segment: function Segment(obj) {
-        this.canvas.beginPath();
-        this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-        this.canvas.lineTo(this.X(obj.points[1].x), this.Y(obj.points[1].y));
-        this.canvas.closePath();
-        this.canvas.stroke();
-    },
-    Line: function Line(obj) {
-        this.canvas.beginPath();
-        if (obj.b === 0) {
-            this.canvas.moveTo(this.X(-obj.c), 0);
-            this.canvas.lineTo(this.X(-obj.c), this.canvasHeight);
-        } else {
-            this.canvas.moveTo(0, this.Y(-(obj.c / obj.b)));
-            this.canvas.lineTo(this.canvasWidth, this.Y(-(obj.a * this.canvasWidth + obj.c) / obj.b));
-        }
-        this.canvas.closePath();
-        this.canvas.stroke();
-    },
-    Circle: function Circle(obj) {
-        var O = obj.center,
-            r = obj.r;
-        this.canvas.beginPath();
-        this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, false);
-        this.canvas.closePath();
-        this.canvas.stroke();
-        if (obj.style.fillColor !== null) this.canvas.fill();
-    },
-    CircularSector: function CircularSector(obj) {
-        var center = obj.center,
-            r = obj.r,
-            startAngle = obj.startAngle,
-            endAngle = obj.endAngle;
-        this.canvas.beginPath();
-        this.canvas.moveTo(this.X(center.x), this.Y(center.y));
-        this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, false);
-        this.canvas.lineTo(this.X(center.x), this.Y(center.y));
-        this.canvas.closePath();
-        this.canvas.stroke();
-        if (obj.style.fillColor !== null) this.canvas.fill();
-    },
-    Polygon: PolygonDrawFunction,
-    Quadrilateral: PolygonDrawFunction,
-    Triangle: PolygonDrawFunction,
-    Rect: function Rect(obj) {
-        var x = this.X(obj.points[0].x);
-        var y = this.Y(obj.points[0].y);
-        var w = obj.points[1].x - obj.points[0].x;
-        var h = obj.points[1].y - obj.points[0].y;
-        if (this.mode !== 'normal') {
-            h = -(obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
-        }
-        if (obj.style.fillColor !== null) this.canvas.fillRect(x, y, w, h); // 上でそれぞれX()、Y()適用済み
-        else this.canvas.strokeRect(x, y, w, h);
-    },
-    Text: function Text(obj) {
-        this.canvas.textAlign = obj.style.align;
-        this.canvas.textBaseline = obj.style.baseline;
-        var x = obj.P.x;
-        var y = obj.P.y;
-        var maxWidth = obj.style.maxWidth;
-        var defaultFont = void 0;
-        if (obj.style.font !== null) {
-            defaultFont = this.canvas.font;
-            this.canvas.font = obj.style.font;
-        }
-        if (maxWidth === null) {
-            if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
-            this.canvas.fillText(obj.text, this.X(x), this.Y(y));
-        } else {
-            if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, this.X(x), this.Y(y), maxWidth);
-            this.canvas.fillText(obj.text, this.X(x), this.Y(y), maxWidth);
-        }
-        if (obj.style.font !== null) this.canvas.font = defaultFont;
-    },
-    Point: function Point(obj) {
-        this.canvas.fillRect(this.X(obj.x), this.Y(obj.y), 1, 1);
-    },
-    Image: function Image(obj) {
-        var image = obj.__image__;
-        if (obj.dx !== null && obj.sx !== null) this.canvas.drawImage(image, obj.sx, obj.sy, obj.sw, obj.sh, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);else if (obj.dx !== null && obj.sx === null && obj.dw !== null) this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy), obj.dw, obj.dh);else if (obj.dx !== null && obj.dw === null) {
-            // obj.sx !== null ならば必ず obj.dw !== nullとなるから、
-            // 対偶をとり obj.dw === nullならばobj.sx === null
-            this.canvas.drawImage(image, this.X(obj.dx), this.Y(obj.dy));
-        } else if (obj.dx === null) this.canvas.drawImage(image);
-    },
-    Group: function Group(obj) {
-        for (var i = 0, _i = obj.group.length; i < _i; i = 0 | i + 1) {
-            this.__drawHelper__(obj.group[i]);
-        }
-    },
-    Graph: function Graph(obj) {
-        this.canvas.beginPath();
-        var start = obj.start,
-            end = obj.end;
-        if (start === null) start = -this.origin.x;
-        if (end === null) end = this.canvasWidth - this.origin.x;
+Canvas.painter = {};
 
-        var points = [];
-        for (var i = start; i <= end; i = 0 | i + 1) {
-            points[points.length] = new Unitary.Point(i, obj.f(i / obj.scale) * obj.scale);
-        }this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-        for (var _i2 = 0, _i = points.length; _i2 < _i; _i2 = 0 | _i2 + 1) {
-            this.canvas.lineTo(this.X(points[_i2].x), this.Y(points[_i2].y));
-            this.canvas.moveTo(this.X(points[_i2].x), this.Y(points[_i2].y));
-        }
-        this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-        this.canvas.closePath();
-        this.canvas.stroke();
-    },
-    BezierCurve: function BezierCurve(obj) {
-        this.canvas.beginPath();
-        var controlPoints = obj.controlPoints;
-        var P = controlPoints;
-        var nextP = [];
-        var points = obj.points || [controlPoints[0]];
-        var pointsLength = 1;
-        var step = obj.step;
+Canvas.painter.BezierCurve = BezierCurvePainter;
+Canvas.painter.Circle = CirclePainter;
+Canvas.painter.CircularSector = CircularSectorPainter;
+Canvas.painter.Graph = GraphPainter;
+Canvas.painter.Group = GroupPainter;
+Canvas.painter.Image = ImagePainter;
+Canvas.painter.Line = LinePainter;
+Canvas.painter.Point = PointPainter;
+Canvas.painter.Rect = RectPainter;
+Canvas.painter.Segment = SegmentPainter;
+Canvas.painter.Text = TextPainter;
 
-        if (!obj.points) {
-            console.log('cache created');
-            for (var t = 0; t < 1; t += step) {
-                P = controlPoints.concat();
-                for (var i = 0, _i = controlPoints.length - 1; i < _i; i = 0 | i + 1) {
-                    for (var j = 0, _j = P.length - 1; j < _j; j = 0 | j + 1) {
-                        nextP[j] = new Unitary.Point(P[j + 1].x * t + P[j].x * (1 - t), P[j + 1].y * t + P[j].y * (1 - t));
-                    }P = nextP;
-                    nextP = [];
-                }
-                points[pointsLength] = P[0];
-                pointsLength = 0 | pointsLength + 1;
-            }
-            points[pointsLength] = controlPoints[controlPoints.length - 1];
-        }
-        obj.points = points;
+Canvas.painter.Polygon = PolygonDrawFunction;
+Canvas.painter.Quadrilateral = PolygonDrawFunction;
+Canvas.painter.Triangle = PolygonDrawFunction;
 
-        this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-        for (var _i3 = 0, _i4 = points.length; _i3 < _i4; _i3 = 0 | _i3 + 1) {
-            this.canvas.lineTo(this.X(points[_i3].x), this.Y(points[_i3].y));
-        }this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-        this.canvas.closePath();
-        this.canvas.stroke();
-    }
-};
+function PolygonDrawFunction(obj) {
+    this.canvas.beginPath();
+    this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    for (var i = 0, _i = obj.points.length; i < _i; i = 0 | i + 1) {
+        this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
+    }this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
+    this.canvas.closePath();
+    this.canvas.stroke();
+    if (obj.style.fillColor !== null) this.canvas.fill();
+}
 Canvas.preload = function () {
     var _arguments = arguments;
 
@@ -560,16 +593,6 @@ Canvas.preload = function () {
     }
     return Promise.all(promises).catch(errorCatcher);
 };
-function PolygonDrawFunction(obj) {
-    this.canvas.beginPath();
-    this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    for (var i = 0, _i = obj.points.length; i < _i; i = 0 | i + 1) {
-        this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
-    }this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    this.canvas.closePath();
-    this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
-}
 
 return Canvas;
 
