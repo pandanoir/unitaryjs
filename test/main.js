@@ -287,6 +287,10 @@ describe('Unitary', () => {
         it('equals', () => {
             assert.ok(new Vector(B.x - A.x, B.y - A.y).equals(new Vector(-3, -3)));
         });
+        it('normalize', () => {
+            assert.ok(new Vector(3, 0).normalize().equals(new Vector(1, 0)));
+            assert.ok(new Vector(3, 3).normalize().abs() === 1);
+        });
         it('move', () => {
             assert.ok(new Vector(48, 84).move(7, 79).equals(new Vector(55, 163)));
         });

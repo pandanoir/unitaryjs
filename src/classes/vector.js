@@ -52,6 +52,9 @@ class BaseVector extends UnitaryObject {
         }
         return Math.sqrt(res);
     }
+    normalize() {
+        return this.multiple(1 / this.abs());
+    }
     equals(B) {
         if (this.component.length !== B.component.length) {
             return false;
