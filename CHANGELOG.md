@@ -1,3 +1,28 @@
+# 0.0.7
+From this version, dist/unitary.browser.js is an alias of dist/unitary.js. You should load dist/unitary.js in browser.
+
+## Features
+
+* creating Canvas instance, you doesn't need to wait window's load event.
+* add .move() method to Group.
+* add BezierCurve class.
+* add Line.fromVector() function
+* add toVector() method to Point.
+* add toPoint() method to Vector.
+* add getNormalVector() method to Line.
+* add normalize() method to BaseVector.
+* add isParalelTo() method to Line.
+* add isPerpendcularTo() method to Line.
+* change the line painting algorithm to more efficient one.
+
+## Bug Fixes
+
+* intersects() method of Segment sometimes has returned a wrong value.
+
+## Breaking Changes
+
+* simplify properties a, b and c of Line class. This change may cause changing a, b and c of your existing Line instance.
+
 # 0.0.6
 UnitaryJS now controls events! You can handle objects, such as triangle, circle or rect, as DOM Elements! Your game's parts are no longer &lt;div&gt; or &lt;span&gt;! It's objects drawn in canvas!
 
