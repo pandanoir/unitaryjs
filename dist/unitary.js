@@ -1511,7 +1511,7 @@ var Text_ = function (_UnitaryObject) {
     return Text_;
 }(UnitaryObject);
 
-var version = "0.0.6";
+var version = "0.0.7";
 
 var distance = function distance(A, B) {
     var res = void 0;
