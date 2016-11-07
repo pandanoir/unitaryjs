@@ -1034,11 +1034,18 @@ var Line = function (_UnitaryObject) {
     }, {
         key: 'getIntersection',
         value: function getIntersection(CD) {
-            if (this.a === CD.a && this.b === CD.b) {
+            if (this.a * CD.b === CD.a * this.b) {
                 return false;
             }
-            var y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b);
-            var x = -1 * (this.b * y + this.c) / this.a;
+            var y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b); // this.a * CD.b - CD.a * this.b !== 0
+            var x = void 0;
+            if (this.a === 0) {
+                // if this.a === 0 && CD.a === 0, this.b and CD.b are 1.
+                // So CD.a !== 0.
+                x = -1 * (CD.b * y + CD.c) / CD.a;
+            } else {
+                x = -1 * (this.b * y + this.c) / this.a;
+            }
             return new Point(x, y);
         }
     }, {
@@ -1206,7 +1213,7 @@ var Segment = function (_UnitaryObject) {
             if (intersection === false) {
                 return false;
             }
-            if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x) {
+            if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x && (CD instanceof Line || CD.points[0].x <= intersection.x && intersection.x <= CD.points[1].x)) {
                 return true;
             }
             return false;

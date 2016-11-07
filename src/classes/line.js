@@ -61,11 +61,18 @@ export default class Line extends UnitaryObject {
         return new Vector(this.a, this.b);
     }
     getIntersection(CD) {
-        if (this.a === CD.a && this.b === CD.b) {
+        if (this.a * CD.b === CD.a * this.b) {
             return false;
         }
-        const y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b);
-        const x = -1 * (this.b * y + this.c) / this.a;
+        const y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b); // this.a * CD.b - CD.a * this.b !== 0
+        let x;
+        if (this.a === 0) {
+            // if this.a === 0 && CD.a === 0, this.b and CD.b are 1.
+            // So CD.a !== 0.
+            x = -1 * (CD.b * y + CD.c) / CD.a;
+        } else {
+            x = -1 * (this.b * y + this.c) / this.a;
+        }
         return new Point(x, y);
     }
     equals(CD) {

@@ -36,7 +36,8 @@ export default class Segment extends UnitaryObject {
         if (intersection === false) {
             return false;
         }
-        if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x) {
+        if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x &&
+            (CD instanceof Line || CD.points[0].x <= intersection.x && intersection.x <= CD.points[1].x)) {
             return true;
         }
         return false;
