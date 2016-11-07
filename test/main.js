@@ -240,8 +240,34 @@ describe('Unitary', () => {
             assert.equal(SegAB.has(D), true);
         });
         it('intersects', () => {
+            const A = new Point(10, 10), B = new Point(10, 50), C = new Point(30, 30), D = new Point(100, 10);
+            const AB = new Segment(A, B);
+            const AC = new Segment(A, C);
+            const AD = new Segment(A, D);
+            const BC = new Segment(B, C);
+            const BD = new Segment(B, D);
+            const CD = new Segment(C, D);
             assert.equal(new Segment(new Point(48,84), new Point(86,65)).intersects(new Segment(new Point(64,48), new Point(29,43))), false);
             assert.equal(new Segment(new Point(48,84), new Point(64,48)).intersects(new Segment(new Point(86,65), new Point(29,43))), true);
+            assert.ok(AB.intersects(AC));
+            assert.ok(AB.intersects(AD));
+            assert.ok(AB.intersects(BC));
+            assert.ok(AB.intersects(BD));
+            assert.ok(!AB.intersects(CD));
+
+            assert.ok(AC.intersects(AD));
+            assert.ok(AC.intersects(BC));
+            assert.ok(!AC.intersects(BD));
+            assert.ok(AC.intersects(CD));
+
+            assert.ok(!AD.intersects(BC));
+            assert.ok(AD.intersects(BD));
+            assert.ok(AD.intersects(CD));
+
+            assert.ok(BC.intersects(BD));
+            assert.ok(BC.intersects(CD));
+
+            assert.ok(BD.intersects(CD));
         });
         it('toLine', () => {
             assert.equal(new Segment(new Point(48,84), new Point(86,65)).toLine().toString(), 'x+2y-216=0');

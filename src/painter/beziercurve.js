@@ -8,7 +8,6 @@ export default function(obj) {
     const step = obj.step;
 
     if (!obj.points) {
-        console.log('cache created');
         for (let t = 0; t < 1; t += step) {
             P = controlPoints.concat();
             for (let i = 0, _i = controlPoints.length - 1; i < _i; i = 0|i+1) {

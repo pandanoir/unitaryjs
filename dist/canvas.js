@@ -14,7 +14,6 @@ var BezierCurvePainter = function (obj) {
     var step = obj.step;
 
     if (!obj.points) {
-        console.log('cache created');
         for (var t = 0; t < 1; t += step) {
             P = controlPoints.concat();
             for (var i = 0, _i = controlPoints.length - 1; i < _i; i = 0 | i + 1) {
@@ -98,16 +97,49 @@ var ImagePainter = function (obj) {
 };
 
 var LinePainter = function (obj) {
-    this.canvas.beginPath();
-    if (obj.b === 0) {
-        this.canvas.moveTo(this.X(-obj.c), 0);
-        this.canvas.lineTo(this.X(-obj.c), this.canvasHeight);
-    } else {
-        this.canvas.moveTo(0, this.Y(-(obj.c / obj.b)));
-        this.canvas.lineTo(this.canvasWidth, this.Y(-(obj.a * this.canvasWidth + obj.c) / obj.b));
+    var leftBorder = new Unitary.Segment(new Unitary.Point(0, 0), new Unitary.Point(0, this.canvasHeight));
+    var rightBorder = new Unitary.Segment(new Unitary.Point(this.canvasWidth, 0), new Unitary.Point(this.canvasWidth, this.canvasHeight));
+    var topBorder = new Unitary.Segment(new Unitary.Point(0, 0), new Unitary.Point(this.canvasWidth, 0));
+    var bottomBorder = new Unitary.Segment(new Unitary.Point(0, this.canvasHeight), new Unitary.Point(this.canvasWidth, this.canvasHeight));
+
+    var leftEndPoint = null,
+        rightEndPoint = null;
+    if (leftBorder.intersects(obj)) leftEndPoint = leftBorder.toLine().getIntersection(obj);
+    if (rightBorder.intersects(obj)) rightEndPoint = rightBorder.toLine().getIntersection(obj);
+
+    if (topBorder.intersects(obj) && bottomBorder.intersects(obj)) {
+        var inter1 = topBorder.toLine().getIntersection(obj);
+        var inter2 = bottomBorder.toLine().getIntersection(obj);
+        if (inter1.x > inter2.x) {
+            leftEndPoint = inter1;
+            rightEndPoint = inter2;
+        } else {
+            leftEndPoint = inter2;
+            rightEndPoint = inter1;
+        }
+    } else if (topBorder.intersects(obj) && !bottomBorder.intersects(obj)) {
+        var inter = topBorder.toLine().getIntersection(obj);
+        if (leftEndPoint == null) {
+            leftEndPoint = inter;
+        } else {
+            rightEndPoint = inter;
+        }
+    } else if (!topBorder.intersects(obj) && bottomBorder.intersects(obj)) {
+        var _inter = bottomBorder.toLine().getIntersection(obj);
+        if (rightEndPoint == null) {
+            rightEndPoint = _inter;
+        } else {
+            leftEndPoint = _inter;
+        }
     }
-    this.canvas.closePath();
-    this.canvas.stroke();
+
+    if (leftEndPoint != null && rightEndPoint != null) {
+        this.canvas.beginPath();
+        this.canvas.moveTo(this.X(leftEndPoint.x), this.Y(leftEndPoint.y));
+        this.canvas.lineTo(this.X(rightEndPoint.x), this.Y(rightEndPoint.y));
+        this.canvas.closePath();
+        this.canvas.stroke();
+    }
 };
 
 var PointPainter = function (obj) {
