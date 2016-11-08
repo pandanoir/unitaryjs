@@ -19,7 +19,7 @@ export default class Segment extends UnitaryObject {
         const B = this.points[1];
         if (A.x <= P.x && P.x <= B.x) {
             if (A.y <= B.y && (A.y <= P.y && P.y <= B.y) || A.y >= B.y && (A.y >= P.y && P.y >= B.y)) {
-                if ((A.y - B.y) / (A.x - B.x) * P.x === P.y) {
+                if (this.toLine().has(P)) {
                     return true;
                 }
             }
@@ -36,11 +36,7 @@ export default class Segment extends UnitaryObject {
         if (intersection === false) {
             return false;
         }
-        if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x &&
-            (CD instanceof Line || CD.points[0].x <= intersection.x && intersection.x <= CD.points[1].x)) {
-            return true;
-        }
-        return false;
+        return this.has(intersection) && CD.has(intersection);
     }
     toLine() { return new Line(this.points[0], this.points[1]); }
     equals(CD) {

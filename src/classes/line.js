@@ -43,6 +43,9 @@ export default class Line extends UnitaryObject {
     move(dx, dy) {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
+    has(P) {
+        return this.a * P.x + this.b * P.y + this.c === 0;
+    }
     getEquation() {
         const a = this.a;
         const b = this.b;

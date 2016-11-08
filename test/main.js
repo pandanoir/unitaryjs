@@ -234,10 +234,36 @@ describe('Unitary', () => {
             assert.ok(SegAB.move(31,19).equals(new Segment(A.move(31, 19), B.move(31, 19))));
         });
         it('has', () => {
+            const seg = new Segment(new Point(0, 0), new Point(100, 100)); // y = x
+            const segParallelToXaxis = new Segment(new Point(0, 0), new Point(100, 0));
+            const segParallelToYaxis = new Segment(new Point(0, 0), new Point(0, 100));
+
             assert.equal(SegAB.has(A), true);
             assert.equal(SegAB.has(B), true);
             assert.equal(SegAB.has(C), false);
             assert.equal(SegAB.has(D), true);
+
+            assert.ok(seg.has(new Point(0, 0)));
+            assert.ok(!seg.has(new Point(100, 0)));
+            assert.ok(!seg.has(new Point(50, 0)));
+            assert.ok(!seg.has(new Point(-50, 0)));
+            assert.ok(!seg.has(new Point(0, 100)));
+            assert.ok(seg.has(new Point(100, 100)));
+            assert.ok(seg.has(new Point(50, 50)));
+
+            assert.ok(segParallelToXaxis.has(new Point(0, 0)));
+            assert.ok(segParallelToXaxis.has(new Point(100, 0)));
+            assert.ok(segParallelToXaxis.has(new Point(50, 0)));
+            assert.ok(!segParallelToXaxis.has(new Point(-50, 0)));
+            assert.ok(!segParallelToXaxis.has(new Point(0, 100)));
+            assert.ok(!segParallelToXaxis.has(new Point(100, 100)));
+
+            assert.ok(segParallelToYaxis.has(new Point(0, 0)));
+            assert.ok(segParallelToYaxis.has(new Point(0, 100)));
+            assert.ok(segParallelToYaxis.has(new Point(0, 50)));
+            assert.ok(!segParallelToYaxis.has(new Point(0, -50)));
+            assert.ok(!segParallelToYaxis.has(new Point(100, 0)));
+            assert.ok(!segParallelToYaxis.has(new Point(100, 100)));
         });
         it('intersects', () => {
             const A = new Point(10, 10), B = new Point(10, 50), C = new Point(30, 30), D = new Point(100, 10);
@@ -249,6 +275,7 @@ describe('Unitary', () => {
             const CD = new Segment(C, D);
             assert.equal(new Segment(new Point(48,84), new Point(86,65)).intersects(new Segment(new Point(64,48), new Point(29,43))), false);
             assert.equal(new Segment(new Point(48,84), new Point(64,48)).intersects(new Segment(new Point(86,65), new Point(29,43))), true);
+
             assert.ok(AB.intersects(AC));
             assert.ok(AB.intersects(AD));
             assert.ok(AB.intersects(BC));

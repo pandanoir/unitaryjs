@@ -1001,6 +1001,11 @@ var Line = function (_UnitaryObject) {
             return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
         }
     }, {
+        key: 'has',
+        value: function has(P) {
+            return this.a * P.x + this.b * P.y + this.c === 0;
+        }
+    }, {
         key: 'getEquation',
         value: function getEquation() {
             var a = this.a;
@@ -1194,7 +1199,7 @@ var Segment = function (_UnitaryObject) {
             var B = this.points[1];
             if (A.x <= P.x && P.x <= B.x) {
                 if (A.y <= B.y && A.y <= P.y && P.y <= B.y || A.y >= B.y && A.y >= P.y && P.y >= B.y) {
-                    if ((A.y - B.y) / (A.x - B.x) * P.x === P.y) {
+                    if (this.toLine().has(P)) {
                         return true;
                     }
                 }
@@ -1213,10 +1218,7 @@ var Segment = function (_UnitaryObject) {
             if (intersection === false) {
                 return false;
             }
-            if (this.points[0].x <= intersection.x && intersection.x <= this.points[1].x && (CD instanceof Line || CD.points[0].x <= intersection.x && intersection.x <= CD.points[1].x)) {
-                return true;
-            }
-            return false;
+            return this.has(intersection) && CD.has(intersection);
         }
     }, {
         key: 'toLine',
