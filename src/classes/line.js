@@ -1,14 +1,8 @@
 import UnitaryObject from './unitaryobjcet.js';
 import Point from './point.js';
 import {Vector} from './vector.js';
-import {sign, abs, isInteger} from '../utility.js';
+import {sign, abs, isInteger, gcd, nearlyEqualsZero} from '../utility.js';
 
-const gcd = (m, n) => {
-    if (m < n) return gcd(n, m);
-    if (m < 0) return gcd(-m, n);
-    if (n < 0) return gcd(m, -n);
-    return n === 0 ? m : gcd(n, m % n);
-}
 export default class Line extends UnitaryObject {
     constructor(A, B) {
         if (A.equals(B)) {
@@ -44,7 +38,7 @@ export default class Line extends UnitaryObject {
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
     has(P) {
-        return this.a * P.x + this.b * P.y + this.c === 0;
+        return nearlyEqualsZero(this.a * P.x + this.b * P.y + this.c);
     }
     getEquation() {
         const a = this.a;
@@ -64,7 +58,7 @@ export default class Line extends UnitaryObject {
         return new Vector(this.a, this.b);
     }
     getIntersection(CD) {
-        if (this.a * CD.b === CD.a * this.b) {
+        if (nearlyEqualsZero(this.a * CD.b - CD.a * this.b)) {
             return false;
         }
         const y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b); // this.a * CD.b - CD.a * this.b !== 0
@@ -82,9 +76,9 @@ export default class Line extends UnitaryObject {
         if (!super.equals(CD)) {
             return false;
         }
-        const ratio1 = this.a * CD.b === this.b * CD.a; // a:b = a':b'
-        const ratio2 = this.b * CD.c === this.c * CD.b; // b:c = b':c'
-        const ratio3 = this.a * CD.c === this.c * CD.a; // a:c = a':c'
+        const ratio1 = nearlyEqualsZero(this.a * CD.b - this.b * CD.a); // a:b = a':b'
+        const ratio2 = nearlyEqualsZero(this.b * CD.c - this.c * CD.b); // b:c = b':c'
+        const ratio3 = nearlyEqualsZero(this.a * CD.c - this.c * CD.a); // a:c = a':c'
         // ratio1 && ratio2 equals a:b:c = a':b':c'
         return ratio1 && ratio2 && ratio3;
     }
@@ -92,13 +86,13 @@ export default class Line extends UnitaryObject {
         if (this.equals(CD)) {
             return false;
         }
-        return this.a * CD.b === this.b * CD.a;
+        return nearlyEqualsZero(this.a * CD.b - this.b * CD.a);
     }
     isPerpendicularTo(CD) {
         if (this.equals(CD)) {
             return false;
         }
-        return this.a * CD.a + this.b * CD.b === 0;
+        return nearlyEqualsZero(this.a * CD.a + this.b * CD.b);
     }
     name() { return 'Line'; }
 }

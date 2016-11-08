@@ -1,7 +1,7 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Unitary = factory());
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.Unitary = factory());
 }(this, (function () { 'use strict';
 
 var asyncGenerator = function () {
@@ -660,13 +660,22 @@ var Vector3D = function (_BaseVector2) {
 }(BaseVector);
 
 var sign = function sign(n) {
-  return n >= 0 ? '+' : '-';
+    return n >= 0 ? '+' : '-';
 };
 var abs$1 = function abs$1(n) {
-  return n > 0 ? n : -n;
+    return n > 0 ? n : -n;
 };
 var isInteger = function isInteger(n) {
-  return (0 | n) === n;
+    return (0 | n) === n;
+};
+var gcd = function gcd(m, n) {
+    if (m < n) return gcd(n, m);
+    if (m < 0) return gcd(-m, n);
+    if (n < 0) return gcd(m, -n);
+    return n === 0 ? m : gcd(n, m % n);
+};
+var nearlyEqualsZero = function nearlyEqualsZero(n) {
+    return (0 | n * 10000) / 10000 === 0;
 };
 
 var Circle = function (_UnitaryObject) {
@@ -949,13 +958,6 @@ var Image_ = function (_UnitaryObject) {
     return Image_;
 }(UnitaryObject);
 
-var gcd = function gcd(m, n) {
-    if (m < n) return gcd(n, m);
-    if (m < 0) return gcd(-m, n);
-    if (n < 0) return gcd(m, -n);
-    return n === 0 ? m : gcd(n, m % n);
-};
-
 var Line = function (_UnitaryObject) {
     inherits(Line, _UnitaryObject);
 
@@ -1003,7 +1005,7 @@ var Line = function (_UnitaryObject) {
     }, {
         key: 'has',
         value: function has(P) {
-            return this.a * P.x + this.b * P.y + this.c === 0;
+            return nearlyEqualsZero(this.a * P.x + this.b * P.y + this.c);
         }
     }, {
         key: 'getEquation',
@@ -1039,7 +1041,7 @@ var Line = function (_UnitaryObject) {
     }, {
         key: 'getIntersection',
         value: function getIntersection(CD) {
-            if (this.a * CD.b === CD.a * this.b) {
+            if (nearlyEqualsZero(this.a * CD.b - CD.a * this.b)) {
                 return false;
             }
             var y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b); // this.a * CD.b - CD.a * this.b !== 0
@@ -1059,9 +1061,9 @@ var Line = function (_UnitaryObject) {
             if (!get(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'equals', this).call(this, CD)) {
                 return false;
             }
-            var ratio1 = this.a * CD.b === this.b * CD.a; // a:b = a':b'
-            var ratio2 = this.b * CD.c === this.c * CD.b; // b:c = b':c'
-            var ratio3 = this.a * CD.c === this.c * CD.a; // a:c = a':c'
+            var ratio1 = nearlyEqualsZero(this.a * CD.b - this.b * CD.a); // a:b = a':b'
+            var ratio2 = nearlyEqualsZero(this.b * CD.c - this.c * CD.b); // b:c = b':c'
+            var ratio3 = nearlyEqualsZero(this.a * CD.c - this.c * CD.a); // a:c = a':c'
             // ratio1 && ratio2 equals a:b:c = a':b':c'
             return ratio1 && ratio2 && ratio3;
         }
@@ -1071,7 +1073,7 @@ var Line = function (_UnitaryObject) {
             if (this.equals(CD)) {
                 return false;
             }
-            return this.a * CD.b === this.b * CD.a;
+            return nearlyEqualsZero(this.a * CD.b - this.b * CD.a);
         }
     }, {
         key: 'isPerpendicularTo',
@@ -1079,7 +1081,7 @@ var Line = function (_UnitaryObject) {
             if (this.equals(CD)) {
                 return false;
             }
-            return this.a * CD.a + this.b * CD.b === 0;
+            return nearlyEqualsZero(this.a * CD.a + this.b * CD.b);
         }
     }, {
         key: 'name',
@@ -1159,7 +1161,7 @@ var Polygon = function (_UnitaryObject) {
                 rad += Math.acos(cos);
                 before_v = v;
             }
-            return Math.round(rad / (2 * Math.PI) * 360) === 360;
+            return nearlyEqualsZero(rad / (2 * Math.PI) * 360 - 360);
         }
     }, {
         key: 'name',

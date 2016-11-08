@@ -1,5 +1,6 @@
 import UnitaryObject from './unitaryobjcet.js';
 import {Vector} from './vector.js';
+import {nearlyEqualsZero} from '../utility.js';
 
 export default class Polygon extends UnitaryObject {
     constructor(...args) {
@@ -40,7 +41,7 @@ export default class Polygon extends UnitaryObject {
             rad += Math.acos(cos);
             before_v = v;
         }
-        return Math.round(rad / (2 * Math.PI) * 360) === 360;
+        return nearlyEqualsZero(rad / (2 * Math.PI) * 360 - 360);
     }
     name() { return 'Polygon'; }
 }
