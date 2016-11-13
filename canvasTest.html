@@ -41,6 +41,8 @@
         console.log('click');
       }));
       circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
+      circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
+console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30));
 
       graphCanvas.add(new Unitary.Graph(function(x) {return x * x;}, 30));
       graphCanvas.add(new Unitary.Graph(function(x) {return Math.log(x);}, 30));

@@ -690,18 +690,19 @@ var Circle = function (_UnitaryObject) {
         _this.Origin = center;
         _this.r = radius;
         _this.radius = radius;
+        _this.anticlockwise = false;
         return _this;
     }
 
     createClass(Circle, [{
         key: 'moveTo',
         value: function moveTo(x, y) {
-            return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style);
+            return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
         }
     }, {
         key: 'move',
         value: function move(dx, dy) {
-            return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
+            return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
         }
     }, {
         key: 'getEquation',
@@ -727,6 +728,13 @@ var Circle = function (_UnitaryObject) {
             return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
         }
     }, {
+        key: 'setAnticlockwise',
+        value: function setAnticlockwise(anticlockwise) {
+            var newCircle = new Circle(this.centerx, y, this.r).setStyle(this.style);
+            newCircle.anticlockwise = anticlockwise;
+            return newCircle;
+        }
+    }, {
         key: 'name',
         value: function name() {
             return 'Circle';
@@ -750,23 +758,24 @@ var CircularSector = function (_UnitaryObject) {
         _this.r = radius;
         _this.endAngle = endAngle;
         _this.startAngle = startAngle;
+        _this.anticlockwise = false;
         return _this;
     }
 
     createClass(CircularSector, [{
         key: 'moveTo',
         value: function moveTo(x, y) {
-            return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+            return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style).setAnticlockwise(this.anticlockwise);
         }
     }, {
         key: 'move',
         value: function move(dx, dy) {
-            return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+            return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style).setAnticlockwise(this.anticlockwise);
         }
     }, {
         key: 'rotate',
         value: function rotate(rad) {
-            return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style);
+            return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style).setAnticlockwise(this.anticlockwise);
         }
     }, {
         key: 'equals',
@@ -784,6 +793,13 @@ var CircularSector = function (_UnitaryObject) {
         value: function has(P) {
             var theta = Math.atan2(P.y, P.x);
             return new Vector(P).substract(new Vector(this.center)).abs() <= this.r && this.startAngle <= theta && theta <= this.endAngle;
+        }
+    }, {
+        key: 'setAnticlockwise',
+        value: function setAnticlockwise(anticlockwise) {
+            var newCircularSector = new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
+            newCircularSector.anticlockwise = anticlockwise;
+            return newCircularSector;
         }
     }, {
         key: 'name',

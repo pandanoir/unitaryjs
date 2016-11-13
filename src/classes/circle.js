@@ -9,12 +9,13 @@ export default class Circle extends UnitaryObject {
         this.Origin = center;
         this.r = radius;
         this.radius = radius;
+        this.anticlockwise = false;
     }
     moveTo(x, y) {
-        return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style);
+        return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     move(dx, dy) {
-        return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style);
+        return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     getEquation() {
         let res = '(x';
@@ -32,6 +33,11 @@ export default class Circle extends UnitaryObject {
     }
     has(P) {
         return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
+    }
+    setAnticlockwise(anticlockwise) {
+        const newCircle = new Circle(this.centerx, y, this.r).setStyle(this.style);
+        newCircle.anticlockwise = anticlockwise;
+        return newCircle;
     }
     name() { return 'Circle'; }
 }

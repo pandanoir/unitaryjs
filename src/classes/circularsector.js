@@ -10,15 +10,16 @@ export default class CircularSector extends UnitaryObject {
         this.r = radius;
         this.endAngle = endAngle;
         this.startAngle = startAngle;
+        this.anticlockwise = false;
     }
     moveTo(x, y) {
-        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     move(dx, dy) {
-        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style);
+        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     rotate(rad) {
-        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style);
+        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     equals(C) {
         const angleCompare = (A, B) => (A - B) % (2 * Math.PI) === 0;
@@ -32,6 +33,11 @@ export default class CircularSector extends UnitaryObject {
         return new Vector(P).substract(new Vector(this.center)).abs() <= this.r &&
             this.startAngle <= theta &&
             theta <= this.endAngle;
+    }
+    setAnticlockwise(anticlockwise) {
+        const newCircularSector =  new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
+        newCircularSector.anticlockwise = anticlockwise;
+        return newCircularSector;
     }
     name() { return 'CircularSector'; }
 }
