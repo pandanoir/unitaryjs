@@ -730,7 +730,7 @@ var Circle = function (_UnitaryObject) {
     }, {
         key: 'setAnticlockwise',
         value: function setAnticlockwise(anticlockwise) {
-            var newCircle = new Circle(this.centerx, y, this.r).setStyle(this.style);
+            var newCircle = new Circle(this.center, this.r).setStyle(this.style);
             newCircle.anticlockwise = anticlockwise;
             return newCircle;
         }

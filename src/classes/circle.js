@@ -35,7 +35,7 @@ export default class Circle extends UnitaryObject {
         return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
     }
     setAnticlockwise(anticlockwise) {
-        const newCircle = new Circle(this.centerx, y, this.r).setStyle(this.style);
+        const newCircle = new Circle(this.center, this.r).setStyle(this.style);
         newCircle.anticlockwise = anticlockwise;
         return newCircle;
     }
