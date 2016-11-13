@@ -38,10 +38,10 @@ var BezierCurvePainter = function (obj) {
 };
 
 var CirclePainter = function (obj) {
-    var O = obj.center,
+    var center = obj.center,
         r = obj.r;
     this.canvas.beginPath();
-    this.canvas.arc(this.X(O.x), this.Y(O.y), r, 0, 2 * Math.PI, obj.anticlockwise);
+    this.canvas.arc(this.X(center.x), this.Y(center.y), r, 0, 2 * Math.PI, obj.anticlockwise);
     this.canvas.closePath();
     this.canvas.stroke();
     if (obj.style.fillColor !== null) this.canvas.fill();
@@ -59,6 +59,25 @@ var CircularSectorPainter = function (obj) {
     this.canvas.closePath();
     this.canvas.stroke();
     if (obj.style.fillColor !== null) this.canvas.fill();
+};
+
+var DoughnutPainter = function (obj) {
+    var center = obj.center,
+        innerRadius = obj.innerRadius,
+        outerRadius = obj.outerRadius;
+    this.canvas.beginPath();
+    this.canvas.arc(this.X(center.x), this.Y(center.y), outerRadius, 0, 2 * Math.PI, false);
+    this.canvas.stroke();
+
+    this.canvas.beginPath();
+    this.canvas.arc(this.X(center.x), this.Y(center.y), innerRadius, 0, 2 * Math.PI, true);
+    this.canvas.stroke();
+    if (obj.style.fillColor !== null) {
+        this.canvas.beginPath();
+        this.canvas.arc(this.X(center.x), this.Y(center.y), outerRadius, 0, 2 * Math.PI, false);
+        this.canvas.arc(this.X(center.x), this.Y(center.y), innerRadius, 0, 2 * Math.PI, true);
+        this.canvas.fill();
+    }
 };
 
 var GraphPainter = function (obj) {
@@ -576,6 +595,7 @@ Canvas.painter = {};
 Canvas.painter.BezierCurve = BezierCurvePainter;
 Canvas.painter.Circle = CirclePainter;
 Canvas.painter.CircularSector = CircularSectorPainter;
+Canvas.painter.Doughnut = DoughnutPainter;
 Canvas.painter.Graph = GraphPainter;
 Canvas.painter.Group = GroupPainter;
 Canvas.painter.Image = ImagePainter;

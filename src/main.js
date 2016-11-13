@@ -4,6 +4,7 @@ import UnitaryObject from './classes/unitaryobjcet.js';
 import BezierCurve from './classes/beziercurve.js';
 import Circle from './classes/circle.js';
 import CircularSector from './classes/circularsector.js';
+import Doughnut from './classes/doughnut.js';
 import Graph from './classes/graph.js';
 import Group from './classes/group.js';
 import Image_ from './classes/image.js';
@@ -43,6 +44,8 @@ export default {
     BezierCurve: BezierCurve,
     Circle: Circle,
     CircularSector: CircularSector,
+    Doughnut: Doughnut,
+    Donut: Doughnut,
     Graph: Graph,
     Group: Group,
     Image: Image_,

@@ -6,7 +6,8 @@
     <script src="./dist/unitary.js"></script> <!-- ライブラリ本体 -->
     <script src="./dist/canvas.js"></script>
     <script>
-      var Circle = Unitary.Circle,
+      const Circle = Unitary.Circle,
+          Donut = Unitary.Donut,
           Graph = Unitary.Graph,
           Image_ = Unitary.Image,
           Line = Unitary.Line,
@@ -17,113 +18,118 @@
           Text_ = Unitary.Text,
           Triangle = Unitary.Triangle;
 
-      var circleCanvas = new Canvas('circle'),
-          circularSectorCanvas = new Canvas('circularSector'),
-          graphCanvas = new Canvas('graph'),
-          groupCanvas = new Canvas('group'),
-          imageCanvas = new Canvas('image'),
-          imageCanvas2 = new Canvas('image2'),
-          lineCanvas = new Canvas('line'),
-          pointCanvas = new Canvas('point'),
-          polygonCanvas = new Canvas('polygon'),
-          polygonCanvas2 = new Canvas('polygon2'),
-          quadrilateralCanvas = new Canvas('quadrilateral'),
-          rectCanvas = new Canvas('rect'),
-          segmentCanvas = new Canvas('segment'),
-          textCanvas = new Canvas('text'),
-          triangleCanvas = new Canvas('triangle');
+      const canvases = new Map([
+        ['circle', new Canvas('circle')],
+        ['circularSector', new Canvas('circularSector')],
+        ['donut', new Canvas('donut')],
+        ['graph', new Canvas('graph')],
+        ['group', new Canvas('group')],
+        ['image', new Canvas('image')],
+        ['image2', new Canvas('image2')],
+        ['line', new Canvas('line')],
+        ['point', new Canvas('point')],
+        ['polygon', new Canvas('polygon')],
+        ['polygon2', new Canvas('polygon2')],
+        ['quadrilateral', new Canvas('quadrilateral')],
+        ['rect', new Canvas('rect')],
+        ['segment', new Canvas('segment')],
+        ['text', new Canvas('text')],
+        ['triangle', new Canvas('triangle')]
+      ]);
 
-      circleCanvas.add(new Unitary.Circle(new Point(30, 30), 30));
-      circleCanvas.add(new Unitary.Circle(new Point(60, 90), 20).setFillColor('red'));
+      canvases.get('circle').add(new Unitary.Circle(new Point(30, 30), 30));
+      canvases.get('circle').add(new Unitary.Circle(new Point(60, 90), 20).setFillColor('red'));
 
-      circularSectorCanvas.listen('click');
-      circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', function() {
-        console.log('click');
-      }));
-      circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
-      circularSectorCanvas.add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
+      canvases.get('circularSector').listen('click');
+      canvases.get('circularSector').add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', () => console.log('click')));
+      canvases.get('circularSector').add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
+      canvases.get('circularSector').add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
 console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30));
 
-      graphCanvas.add(new Unitary.Graph(function(x) {return x * x;}, 30));
-      graphCanvas.add(new Unitary.Graph(function(x) {return Math.log(x);}, 30));
-      graphCanvas.add(new Unitary.Text('1', new Point(27, 6)));
-      graphCanvas.add(new Unitary.Rect(new Point(30, 0), new Point(29, 5)).setStrokeColor('transparent').setFillColor('#000'));
-      graphCanvas.add(new Unitary.Text('1', new Point(6, 26)));
-      graphCanvas.add(new Unitary.Rect(new Point(0, 30), new Point(5, 29)).setStrokeColor('transparent').setFillColor('#000'));
+      canvases.get('donut').add(new Donut(new Point(50, 50), 30, 40));
+      canvases.get('donut').add(new Donut(new Point(50, 50), 30, 40).moveX(40, 0).setFillColor('red'));
+      canvases.get('donut').add(new Donut(new Point(50, 50), 30, 40).moveX(20, 0).setFillColor('blue'));
 
-      var starTriangle = new Triangle(new Point(0, 0), new Point(30, 0), new Point(15, 15 * Math.sqrt(3)));
-      var star = new Unitary.Group(starTriangle.move(30, 30), starTriangle.move(30, 30).rotate(Math.PI));
-      var images = new Unitary.Group([
+      canvases.get('graph').add(new Unitary.Graph(x => x * x, 30));
+      canvases.get('graph').add(new Unitary.Graph(x => Math.log(x), 30));
+      canvases.get('graph').add(new Unitary.Text('1', new Point(27, 6)));
+      canvases.get('graph').add(new Unitary.Rect(new Point(30, 0), new Point(29, 5)).setStrokeColor('transparent').setFillColor('#000'));
+      canvases.get('graph').add(new Unitary.Text('1', new Point(6, 26)));
+      canvases.get('graph').add(new Unitary.Rect(new Point(0, 30), new Point(5, 29)).setStrokeColor('transparent').setFillColor('#000'));
+
+      const starTriangle = new Triangle(new Point(0, 0), new Point(30, 0), new Point(15, 15 * Math.sqrt(3)));
+      const star = new Unitary.Group(starTriangle.move(30, 30), starTriangle.move(30, 30).rotate(Math.PI));
+      const images = new Unitary.Group([
           new Unitary.Image('logo.png', new Point(0, 180)),
           new Unitary.Image('logo.png', new Point(20, 160))
         ]);
-      groupCanvas.add(star);
-      groupCanvas.add(images);
+      canvases.get('group').add(star);
+      canvases.get('group').add(images);
 
 
-      var logoImage = new Unitary.Image('logo.png', new Point(0, 0)),
+      const logoImage = new Unitary.Image('logo.png', new Point(0, 0)),
           logoText = new Unitary.Text('Logo', new Point(0, 0)).setFillColor('#fff').setFont('50px bold').setBaseline('top'),
           logoTextBackground = new Unitary.Rect(new Point(0, 0),new Point(100, 60)).setFillColor('#c00');
 
-      imageCanvas.mode = 'normal';
-      imageCanvas.add(logoImage);
-      imageCanvas.add(logoTextBackground);
-      imageCanvas.add(logoText);
+      canvases.get('image').mode = 'normal';
+      canvases.get('image').add(logoImage);
+      canvases.get('image').add(logoTextBackground);
+      canvases.get('image').add(logoText);
 
-      imageCanvas2.mode = 'normal';
-      imageCanvas2.add(logoTextBackground);
-      imageCanvas2.add(logoText);
-      imageCanvas2.add(logoImage);
+      canvases.get('image2').mode = 'normal';
+      canvases.get('image2').add(logoTextBackground);
+      canvases.get('image2').add(logoText);
+      canvases.get('image2').add(logoImage);
 
-      lineCanvas.add(new Line(new Point(0, 0), new Point(30, 30)));
-      lineCanvas.add(new Line(new Point(0, 50), new Point(10, 50)));
-      lineCanvas.add(new Line(new Point(50, 50), new Point(50, 0)));
-      lineCanvas.add(new Line(new Point(30, 50), new Point(50, 30)));
+      canvases.get('line').add(new Line(new Point(0, 0), new Point(30, 30)));
+      canvases.get('line').add(new Line(new Point(0, 50), new Point(10, 50)));
+      canvases.get('line').add(new Line(new Point(50, 50), new Point(50, 0)));
+      canvases.get('line').add(new Line(new Point(30, 50), new Point(50, 30)));
 
-      pointCanvas.add(new Line(new Point(30, 30), new Point(50, 50)));
-      pointCanvas.add(new Point(30, 30).setFillColor('#f00'));
-      pointCanvas.add(new Point(50, 30).setFillColor('#f00'));
+      canvases.get('point').add(new Line(new Point(30, 30), new Point(50, 50)));
+      canvases.get('point').add(new Point(30, 30).setFillColor('#f00'));
+      canvases.get('point').add(new Point(50, 30).setFillColor('#f00'));
 
-      polygonCanvas.listen('click');
-      polygonCanvas.add(new Unitary.Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', function() {
-        polygonCanvas.clear();
-        polygonCanvas.objects[0] = polygonCanvas.objects[0].setFillColor('black');
-        polygonCanvas.draw();
-        setTimeout(function() {
-          polygonCanvas.clear();
-          polygonCanvas.objects[0] = polygonCanvas.objects[0].setFillColor('white');
-          polygonCanvas.draw();
+      canvases.get('polygon').listen('click');
+      canvases.get('polygon').add(new Unitary.Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', () => {
+        canvases.get('polygon').clear();
+        canvases.get('polygon').objects[0] = canvases.get('polygon').objects[0].setFillColor('black');
+        canvases.get('polygon').draw();
+        setTimeout(() => {
+          canvases.get('polygon').clear();
+          canvases.get('polygon').objects[0] = canvases.get('polygon').objects[0].setFillColor('white');
+          canvases.get('polygon').draw();
         }, 100);
       }))
 
-      polygonCanvas2.add(new Unitary.Polygon(new Point(10, 10), new Point(30, 30), new Point(100, 10), new Point(50, 0), new Point(10, 50)))
+      canvases.get('polygon2').add(new Unitary.Polygon(new Point(10, 10), new Point(30, 30), new Point(100, 10), new Point(50, 0), new Point(10, 50)))
 
-      var quadrilateral = new Unitary.Quadrilateral(new Point(70, 19), new Point(40, 50), new Point(70, 90), new Point(120, 50));
+      const quadrilateral = new Unitary.Quadrilateral(new Point(70, 19), new Point(40, 50), new Point(70, 90), new Point(120, 50));
 
 
-      quadrilateralCanvas.add(new Unitary.Quadrilateral(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10)));
-      quadrilateralCanvas.add(quadrilateral);
-      quadrilateralCanvas.add(quadrilateral.move(30, 0));
-      quadrilateralCanvas.add(quadrilateral.move(0, 50));
+      canvases.get('quadrilateral').add(new Unitary.Quadrilateral(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10)));
+      canvases.get('quadrilateral').add(quadrilateral);
+      canvases.get('quadrilateral').add(quadrilateral.move(30, 0));
+      canvases.get('quadrilateral').add(quadrilateral.move(0, 50));
 
-      rectCanvas.add(new Unitary.Rect(new Point(10, 10), new Point(100, 40)));
-      rectCanvas.add(new Unitary.Rect(new Point(20, 50), new Point(110, 80)).setFillColor('#000'));
-      rectCanvas.add(new Unitary.Rect(new Point(110, 80), new Point(20, 50)).setFillColor('#000'));
+      canvases.get('rect').add(new Unitary.Rect(new Point(10, 10), new Point(100, 40)));
+      canvases.get('rect').add(new Unitary.Rect(new Point(20, 50), new Point(110, 80)).setFillColor('#000'));
+      canvases.get('rect').add(new Unitary.Rect(new Point(110, 80), new Point(20, 50)).setFillColor('#000'));
 
-      segmentCanvas.add(new Line(new Point(0, 0), new Point(30, 30)));
-      segmentCanvas.add(new Line(new Point(0, 50), new Point(10, 50)));
-      segmentCanvas.add(new Line(new Point(50, 50), new Point(50, 0)));
-      segmentCanvas.add(new Line(new Point(30, 50), new Point(50, 30)));
+      canvases.get('segment').add(new Line(new Point(0, 0), new Point(30, 30)));
+      canvases.get('segment').add(new Line(new Point(0, 50), new Point(10, 50)));
+      canvases.get('segment').add(new Line(new Point(50, 50), new Point(50, 0)));
+      canvases.get('segment').add(new Line(new Point(30, 50), new Point(50, 30)));
 
-      segmentCanvas.add(new Unitary.Segment(new Point(0, 0), new Point(30, 30)).setStrokeColor('#f00'));
-      segmentCanvas.add(new Unitary.Segment(new Point(0, 50), new Point(10, 50)).setStrokeColor('#f00'));
-      segmentCanvas.add(new Unitary.Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
-      segmentCanvas.add(new Unitary.Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Unitary.Segment(new Point(0, 0), new Point(30, 30)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Unitary.Segment(new Point(0, 50), new Point(10, 50)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Unitary.Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Unitary.Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
 
-      textCanvas.ready.then(function() {
-        var size = textCanvas.canvas.measureText('あ').width;
-        textCanvas.mode = 'normal';
-        var wagahaiText = '吾輩は猫である。名前はまだ無い。\n' +
+      canvases.get('text').ready.then(() => {
+        const size = canvases.get('text').canvas.measureText('あ').width;
+        canvases.get('text').mode = 'normal';
+        const wagahaiText = '吾輩は猫である。名前はまだ無い。\n' +
             'どこで生れたかとんと見当がつかぬ。\n' +
             '何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。\n' +
             '吾輩はここで始めて人間というものを見た。\n' +
@@ -131,35 +137,23 @@ console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).s
             'この書生というのは時々我々を捕えて煮て食うという話である。\n' +
             'しかしその当時は何という考もなかったから別段恐しいとも思わなかった。\n' +
             'ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。';
-        var splitWagahai = wagahaiText.split('\n');
-        for (var i = 0, _i = splitWagahai.length; i < _i; i++) {
-            textCanvas.add(new Unitary.Text(splitWagahai[i], new Point(0, size * i)).setBaseline('top'));
+        const splitWagahai = wagahaiText.split('\n');
+        for (let i = 0, _i = splitWagahai.length; i < _i; i++) {
+            canvases.get('text').add(new Unitary.Text(splitWagahai[i], new Point(0, size * i)).setBaseline('top'));
         }
-        textCanvas.draw();
+        canvases.get('text').draw();
       });
 
 
-      var triangle = new Unitary.Triangle(new Point(10, 10), new Point(100, 40), new Point(50, 60));
-      triangleCanvas.add(triangle);
-      triangleCanvas.add(triangle.getCircumcircle());
-      triangleCanvas.add(triangle.getIncircle());
-      triangleCanvas.add(triangle.move(40, 60).setFillColor('#f90'));
+      const triangle = new Unitary.Triangle(new Point(10, 10), new Point(100, 40), new Point(50, 60));
+      canvases.get('triangle').add(triangle);
+      canvases.get('triangle').add(triangle.getCircumcircle());
+      canvases.get('triangle').add(triangle.getIncircle());
+      canvases.get('triangle').add(triangle.move(40, 60).setFillColor('#f90'));
 
-      circleCanvas.draw();
-      circularSectorCanvas.draw();
-      graphCanvas.draw();
-      groupCanvas.draw();
-      imageCanvas.draw();
-      imageCanvas2.draw();
-      lineCanvas.draw();
-      pointCanvas.draw();
-      polygonCanvas.draw();
-      polygonCanvas2.draw();
-      quadrilateralCanvas.draw();
-      rectCanvas.draw();
-      segmentCanvas.draw();
-      textCanvas.draw();
-      triangleCanvas.draw();
+      for (const canvas of canvases.values()) {
+        canvas.draw();
+      }
     </script>
     <style>
       canvas {
@@ -170,6 +164,7 @@ console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).s
   <body>
     <canvas id="circle" width="200" height="200"></canvas>
     <canvas id="circularSector" width="200" height="200"></canvas>
+    <canvas id="donut" width="200" height="200"></canvas>
     <canvas id="graph" width="200" height="200"></canvas>
     <canvas id="group" width="200" height="200"></canvas>
     <canvas id="image" width="200" height="200"></canvas>

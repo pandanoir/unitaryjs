@@ -810,6 +810,54 @@ var CircularSector = function (_UnitaryObject) {
     return CircularSector;
 }(UnitaryObject);
 
+var Doughnut = function (_UnitaryObject) {
+    inherits(Doughnut, _UnitaryObject);
+
+    function Doughnut(center, innerRadius, outerRadius) {
+        classCallCheck(this, Doughnut);
+
+        var _this = possibleConstructorReturn(this, (Doughnut.__proto__ || Object.getPrototypeOf(Doughnut)).call(this));
+
+        _this.center = center;
+        _this.Origin = center;
+        _this.innerRadius = innerRadius;
+        _this.outerRadius = outerRadius;
+        return _this;
+    }
+
+    createClass(Doughnut, [{
+        key: 'moveTo',
+        value: function moveTo(x, y) {
+            return new Doughnut(this.center.moveTo(x, y), this.innerRadius, this.outerRadius).setStyle(this.style);
+        }
+    }, {
+        key: 'move',
+        value: function move(dx, dy) {
+            return new Doughnut(this.center.move(dx, dy), this.innerRadius, this.outerRadius).setStyle(this.style);
+        }
+    }, {
+        key: 'equals',
+        value: function equals(C) {
+            if (!get(Doughnut.prototype.__proto__ || Object.getPrototypeOf(Doughnut.prototype), 'equals', this).call(this, C)) {
+                return false;
+            }
+            return this.center.equals(C.center) && this.innerRadius === C.innerRadius && this.outerRadius === C.outerRadius;
+        }
+    }, {
+        key: 'has',
+        value: function has(P) {
+            var distance = new Vector(P).substract(new Vector(this.center)).abs();
+            return this.innerRadius <= distance && distance <= this.outerRadius;
+        }
+    }, {
+        key: 'name',
+        value: function name() {
+            return 'Doughnut';
+        }
+    }]);
+    return Doughnut;
+}(UnitaryObject);
+
 var Graph = function (_UnitaryObject) {
     inherits(Graph, _UnitaryObject);
 
@@ -1558,6 +1606,8 @@ var main$$1 = {
     BezierCurve: BezierCurve,
     Circle: Circle,
     CircularSector: CircularSector,
+    Doughnut: Doughnut,
+    Donut: Doughnut,
     Graph: Graph,
     Group: Group,
     Image: Image_,
