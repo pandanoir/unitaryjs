@@ -6,19 +6,24 @@
     <script src="./dist/unitary.js"></script> <!-- ライブラリ本体 -->
     <script src="./dist/canvas.js"></script>
     <script>
-      const Circle = Unitary.Circle,
+      const BezierCurve = Unitary.BezierCurve,
+          Circle = Unitary.Circle,
+          CircularSector = Unitary.CircularSector,
           Donut = Unitary.Donut,
           Graph = Unitary.Graph,
+          Group = Unitary.Group,
           Image_ = Unitary.Image,
           Line = Unitary.Line,
           Point = Unitary.Point,
           Polygon = Unitary.Polygon,
+          Quadrilateral = Unitary.Quadrilateral,
           Rect = Unitary.Rect,
           Segment = Unitary.Segment,
           Text_ = Unitary.Text,
           Triangle = Unitary.Triangle;
 
       const canvases = new Map([
+        ['bezier', new Canvas('bezier')],
         ['circle', new Canvas('circle')],
         ['circularSector', new Canvas('circularSector')],
         ['donut', new Canvas('donut')],
@@ -37,39 +42,42 @@
         ['triangle', new Canvas('triangle')]
       ]);
 
-      canvases.get('circle').add(new Unitary.Circle(new Point(30, 30), 30));
-      canvases.get('circle').add(new Unitary.Circle(new Point(60, 90), 20).setFillColor('red'));
+      canvases.get('bezier').add(new BezierCurve(new Point(10, 10), new Point(30, 90), new Point(70, 90), new Point(90, 10)));
+      canvases.get('bezier').add(new BezierCurve(new Point(10, 10), new Point(50, 90), new Point(90, 10)));
+      canvases.get('bezier').add(new BezierCurve(new Point(10, 10), new Point(10, 90), new Point(50, 90), new Point(90, 90), new Point(90, 180)));
+
+      canvases.get('circle').add(new Circle(new Point(30, 30), 30));
+      canvases.get('circle').add(new Circle(new Point(60, 90), 20).setFillColor('red'));
 
       canvases.get('circularSector').listen('click');
-      canvases.get('circularSector').add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', () => console.log('click')));
-      canvases.get('circularSector').add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
-      canvases.get('circularSector').add(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
-console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30));
+      canvases.get('circularSector').add(new CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', () => console.log('click')));
+      canvases.get('circularSector').add(new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
+      canvases.get('circularSector').add(new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
 
       canvases.get('donut').add(new Donut(new Point(50, 50), 30, 40));
       canvases.get('donut').add(new Donut(new Point(50, 50), 30, 40).moveX(40, 0).setFillColor('red'));
       canvases.get('donut').add(new Donut(new Point(50, 50), 30, 40).moveX(20, 0).setFillColor('blue'));
 
-      canvases.get('graph').add(new Unitary.Graph(x => x * x, 30));
-      canvases.get('graph').add(new Unitary.Graph(x => Math.log(x), 30));
-      canvases.get('graph').add(new Unitary.Text('1', new Point(27, 6)));
-      canvases.get('graph').add(new Unitary.Rect(new Point(30, 0), new Point(29, 5)).setStrokeColor('transparent').setFillColor('#000'));
-      canvases.get('graph').add(new Unitary.Text('1', new Point(6, 26)));
-      canvases.get('graph').add(new Unitary.Rect(new Point(0, 30), new Point(5, 29)).setStrokeColor('transparent').setFillColor('#000'));
+      canvases.get('graph').add(new Graph(x => x * x, 30));
+      canvases.get('graph').add(new Graph(x => Math.log(x), 30));
+      canvases.get('graph').add(new Text_('1', new Point(27, 6)));
+      canvases.get('graph').add(new Rect(new Point(30, 0), new Point(29, 5)).setStrokeColor('transparent').setFillColor('#000'));
+      canvases.get('graph').add(new Text_('1', new Point(6, 26)));
+      canvases.get('graph').add(new Rect(new Point(0, 30), new Point(5, 29)).setStrokeColor('transparent').setFillColor('#000'));
 
       const starTriangle = new Triangle(new Point(0, 0), new Point(30, 0), new Point(15, 15 * Math.sqrt(3)));
-      const star = new Unitary.Group(starTriangle.move(30, 30), starTriangle.move(30, 30).rotate(Math.PI));
-      const images = new Unitary.Group([
-          new Unitary.Image('logo.png', new Point(0, 180)),
-          new Unitary.Image('logo.png', new Point(20, 160))
+      const star = new Group(starTriangle.move(30, 30), starTriangle.move(30, 30).rotate(Math.PI));
+      const images = new Group([
+          new Image_('logo.png', new Point(0, 180)),
+          new Image_('logo.png', new Point(20, 160))
         ]);
       canvases.get('group').add(star);
       canvases.get('group').add(images);
 
 
-      const logoImage = new Unitary.Image('logo.png', new Point(0, 0)),
-          logoText = new Unitary.Text('Logo', new Point(0, 0)).setFillColor('#fff').setFont('50px bold').setBaseline('top'),
-          logoTextBackground = new Unitary.Rect(new Point(0, 0),new Point(100, 60)).setFillColor('#c00');
+      const logoImage = new Image_('logo.png', new Point(0, 0)),
+          logoText = new Text_('Logo', new Point(0, 0)).setFillColor('#fff').setFont('50px bold').setBaseline('top'),
+          logoTextBackground = new Rect(new Point(0, 0),new Point(140, 60)).setFillColor('#c00');
 
       canvases.get('image').mode = 'normal';
       canvases.get('image').add(logoImage);
@@ -82,16 +90,16 @@ console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).s
       canvases.get('image2').add(logoImage);
 
       canvases.get('line').add(new Line(new Point(0, 0), new Point(30, 30)));
-      canvases.get('line').add(new Line(new Point(0, 50), new Point(10, 50)));
-      canvases.get('line').add(new Line(new Point(50, 50), new Point(50, 0)));
-      canvases.get('line').add(new Line(new Point(30, 50), new Point(50, 30)));
+      canvases.get('line').add(new Line(new Point(0, 50), new Point(10, 50)).setStrokeColor('green'));
+      canvases.get('line').add(new Line(new Point(50, 50), new Point(50, 0)).setStrokeColor('blue'));
+      canvases.get('line').add(new Line(new Point(30, 50), new Point(50, 30)).setStrokeColor('red'));
 
       canvases.get('point').add(new Line(new Point(30, 30), new Point(50, 50)));
       canvases.get('point').add(new Point(30, 30).setFillColor('#f00'));
       canvases.get('point').add(new Point(50, 30).setFillColor('#f00'));
 
       canvases.get('polygon').listen('click');
-      canvases.get('polygon').add(new Unitary.Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', () => {
+      canvases.get('polygon').add(new Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', () => {
         canvases.get('polygon').clear();
         canvases.get('polygon').objects[0] = canvases.get('polygon').objects[0].setFillColor('black');
         canvases.get('polygon').draw();
@@ -102,29 +110,28 @@ console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).s
         }, 100);
       }))
 
-      canvases.get('polygon2').add(new Unitary.Polygon(new Point(10, 10), new Point(30, 30), new Point(100, 10), new Point(50, 0), new Point(10, 50)))
+      canvases.get('polygon2').add(new Polygon(new Point(10, 10), new Point(30, 30), new Point(100, 10), new Point(50, 0), new Point(10, 50)))
 
-      const quadrilateral = new Unitary.Quadrilateral(new Point(70, 19), new Point(40, 50), new Point(70, 90), new Point(120, 50));
+      const quadrilateral = new Quadrilateral(new Point(70, 19), new Point(40, 50), new Point(70, 90), new Point(120, 50));
 
 
-      canvases.get('quadrilateral').add(new Unitary.Quadrilateral(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10)));
+      canvases.get('quadrilateral').add(new Quadrilateral(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10)));
       canvases.get('quadrilateral').add(quadrilateral);
       canvases.get('quadrilateral').add(quadrilateral.move(30, 0));
       canvases.get('quadrilateral').add(quadrilateral.move(0, 50));
 
-      canvases.get('rect').add(new Unitary.Rect(new Point(10, 10), new Point(100, 40)));
-      canvases.get('rect').add(new Unitary.Rect(new Point(20, 50), new Point(110, 80)).setFillColor('#000'));
-      canvases.get('rect').add(new Unitary.Rect(new Point(110, 80), new Point(20, 50)).setFillColor('#000'));
+      canvases.get('rect').add(new Rect(new Point(10, 10), new Point(100, 40)));
+      canvases.get('rect').add(new Rect(new Point(20, 50), new Point(110, 80)).setFillColor('#000'));
 
       canvases.get('segment').add(new Line(new Point(0, 0), new Point(30, 30)));
       canvases.get('segment').add(new Line(new Point(0, 50), new Point(10, 50)));
       canvases.get('segment').add(new Line(new Point(50, 50), new Point(50, 0)));
       canvases.get('segment').add(new Line(new Point(30, 50), new Point(50, 30)));
 
-      canvases.get('segment').add(new Unitary.Segment(new Point(0, 0), new Point(30, 30)).setStrokeColor('#f00'));
-      canvases.get('segment').add(new Unitary.Segment(new Point(0, 50), new Point(10, 50)).setStrokeColor('#f00'));
-      canvases.get('segment').add(new Unitary.Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
-      canvases.get('segment').add(new Unitary.Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Segment(new Point(0, 0), new Point(30, 30)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Segment(new Point(0, 50), new Point(10, 50)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
+      canvases.get('segment').add(new Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
 
       canvases.get('text').ready.then(() => {
         const size = canvases.get('text').canvas.measureText('あ').width;
@@ -139,13 +146,13 @@ console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).s
             'ただ彼の掌に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。';
         const splitWagahai = wagahaiText.split('\n');
         for (let i = 0, _i = splitWagahai.length; i < _i; i++) {
-            canvases.get('text').add(new Unitary.Text(splitWagahai[i], new Point(0, size * i)).setBaseline('top'));
+            canvases.get('text').add(new Text_(splitWagahai[i], new Point(0, size * i)).setBaseline('top'));
         }
         canvases.get('text').draw();
       });
 
 
-      const triangle = new Unitary.Triangle(new Point(10, 10), new Point(100, 40), new Point(50, 60));
+      const triangle = new Triangle(new Point(10, 10), new Point(100, 40), new Point(50, 60));
       canvases.get('triangle').add(triangle);
       canvases.get('triangle').add(triangle.getCircumcircle());
       canvases.get('triangle').add(triangle.getIncircle());
@@ -162,6 +169,7 @@ console.log(new Unitary.CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).s
     </style>
   </head>
   <body>
+    <canvas id="bezier" width="200" height="200"></canvas>
     <canvas id="circle" width="200" height="200"></canvas>
     <canvas id="circularSector" width="200" height="200"></canvas>
     <canvas id="donut" width="200" height="200"></canvas>
