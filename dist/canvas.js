@@ -5,6 +5,8 @@
 }(this, (function () { 'use strict';
 
 var BezierCurvePainter = function (obj) {
+    var _this = this;
+
     this.canvas.beginPath();
     var controlPoints = obj.controlPoints;
     var P = controlPoints;
@@ -13,28 +15,39 @@ var BezierCurvePainter = function (obj) {
     var pointsLength = 1;
     var step = obj.step;
 
-    if (!obj.points) {
-        for (var t = 0; t < 1; t += step) {
-            P = controlPoints.concat();
-            for (var i = 0, _i = controlPoints.length - 1; i < _i; i = 0 | i + 1) {
-                for (var j = 0, _j = P.length - 1; j < _j; j = 0 | j + 1) {
-                    nextP[j] = new Unitary.Point(P[j + 1].x * t + P[j].x * (1 - t), P[j + 1].y * t + P[j].y * (1 - t));
-                }P = nextP;
-                nextP = [];
-            }
-            points[pointsLength] = P[0];
-            pointsLength = 0 | pointsLength + 1;
-        }
-        points[pointsLength] = controlPoints[controlPoints.length - 1];
-    }
-    obj.points = points;
+    if (controlPoints.length <= 1) {
+        // do nothing
+    } else if (2 <= controlPoints.length && controlPoints.length <= 4) {
+        var cp = controlPoints.map(function (p) {
+            return { x: _this.X(p.x), y: _this.Y(p.y) };
+        });
+        this.canvas.moveTo(cp[0].x, cp[0].y);
 
-    this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-    for (var _i2 = 0, _i3 = points.length; _i2 < _i3; _i2 = 0 | _i2 + 1) {
-        this.canvas.lineTo(this.X(points[_i2].x), this.Y(points[_i2].y));
-    }this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
-    this.canvas.closePath();
-    this.canvas.stroke();
+        if (cp.length === 2) this.canvas.lineTo(cp[1].x, cp[1].y);else if (cp.length === 3) this.canvas.quadraticCurveTo(cp[1].x, cp[1].y, cp[2].x, cp[2].y);else if (cp.length === 4) this.canvas.bezierCurveTo(cp[1].x, cp[1].y, cp[2].x, cp[2].y, cp[3].x, cp[3].y);
+
+        this.canvas.stroke();
+    } else {
+        if (!obj.points) {
+            for (var t = 0; t < 1; t += step) {
+                P = controlPoints.concat();
+                for (var i = 0, _i = controlPoints.length - 1; i < _i; i = 0 | i + 1) {
+                    for (var j = 0, _j = P.length - 1; j < _j; j = 0 | j + 1) {
+                        nextP[j] = new Unitary.Point(P[j + 1].x * t + P[j].x * (1 - t), P[j + 1].y * t + P[j].y * (1 - t));
+                    }P = nextP;
+                    nextP = [];
+                }
+                points[pointsLength] = P[0];
+                pointsLength = 0 | pointsLength + 1;
+            }
+            points[pointsLength] = controlPoints[controlPoints.length - 1];
+        }
+        obj.points = points;
+
+        this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
+        for (var _i2 = 0, _i3 = points.length; _i2 < _i3; _i2 = 0 | _i2 + 1) {
+            this.canvas.lineTo(this.X(points[_i2].x), this.Y(points[_i2].y));
+        }this.canvas.stroke();
+    }
 };
 
 var CirclePainter = function (obj) {
