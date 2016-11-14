@@ -71,6 +71,8 @@ download [./dist/unitary.js](./dist/unitary.js) and load it.
 
 * BezierCurve
 * Circle
+* CircularSector
+* Doughnut
 * Graph
 * Group
 * Image
