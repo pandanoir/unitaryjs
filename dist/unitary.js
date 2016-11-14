@@ -333,7 +333,15 @@ var BezierCurve = function (_UnitaryObject) {
         }
 
         if (Array.isArray(args[0])) _this.controlPoints = args[0];else _this.controlPoints = args;
-        _this.step = 0.05;
+        if (_this.controlPoints.length > 4) {
+            var distance = 0;
+            for (var i = 0, _i = _this.controlPoints.length - 1; i < _i; i++) {
+                var x = _this.controlPoints[i + 1].x - _this.controlPoints[i].x;
+                var y = _this.controlPoints[i + 1].y - _this.controlPoints[i].y;
+                distance += Math.sqrt(x * x + y * y);
+            }
+            _this.step = 1 / distance;
+        }
         return _this;
     }
 
