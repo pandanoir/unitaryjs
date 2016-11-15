@@ -23,9 +23,7 @@ Demo: [Demo](http://pandanoir.web.fc2.com/unitaryjs/sample.html)
     <script src="./unitary.js"></script>
     <script src="./canvas.js"></script>
     <script>
-    for (const key of Object.keys(Unitary)) {
-      window[key] = Unitary[key];
-    }
+    const {Point, Triangle} = Unitary;
     const A = new Point(30,30),
         B = new Point(90,90),
         C = new Point(90,40),
