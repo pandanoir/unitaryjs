@@ -3,108 +3,99 @@
   <head>
     <meta charset="UTF-8">
     <title>Demo</title>
-    <script src="./dist/unitary.browser.js"></script> <!-- ライブラリ本体 -->
+    <script src="./dist/unitary.js"></script> <!-- ライブラリ本体 -->
     <script src="./dist/canvas.js"></script>
     <script>
-    window.addEventListener('load', function(){
-      var Circle = Unitary.Circle,
-          Graph = Unitary.Graph,
-          Image_ = Unitary.Image,
-          Line = Unitary.Line,
-          Point = Unitary.Point,
-          Polygon = Unitary.Polygon,
-          Rect = Unitary.Rect,
-          Segment = Unitary.Segment,
-          Text_ = Unitary.Text,
-          Triangle = Unitary.Triangle;
+    const {Circle, Graph, Group, Image: Image_, Line, Point, Polygon, Rect, Segment, Text: Text_, Triangle} = Unitary;
 
-      var A = new Point(30,30),
-          B = new Point(90,90),
-          AB = new Line(A, B),
-          SegAB = new Segment(A, B),
-          circleC = new Circle(A, 30),
-          C = new Point(90,40),
-          D = new Point(60,20),
-          ABC = new Triangle(A, B, C),
-          ABCD = new Polygon(A, B, C, D),
-          rectAB = new Rect(A, B),
-          circumcircleABC = ABC.getCircumcircle(),
-          incircleABC = ABC.getIncircle();
-      var circleCanvas = new Canvas('circle'),
-          lineCanvas = new Canvas('line'),
-          segmentCanvas = new Canvas('segment'),
-          polygonCanvas = new Canvas('polygon'),
-          triangleCanvas = new Canvas('triangle'),
-          rectCanvas = new Canvas('rect'),
-          pentagonCanvas = new Canvas('pentagon'),
-          logoCanvas = new Canvas('logo'),
-          graphCanvas = new Canvas('graph'),
-          starCanvas = new Canvas('star');
+    const A = new Point(30,30),
+        B = new Point(90,90),
+        AB = new Line(A, B),
+        SegAB = new Segment(A, B),
+        circleC = new Circle(A, 30),
+        C = new Point(90,40),
+        D = new Point(60,20),
+        ABC = new Triangle(A, B, C),
+        ABCD = new Polygon(A, B, C, D),
+        rectAB = new Rect(A, B),
+        circumcircleABC = ABC.getCircumcircle(),
+        incircleABC = ABC.getIncircle();
+    const canvas = {};
+    for (const val of ['circle', 'line', 'segment', 'polygon', 'triangle', 'rect', 'pentagon', 'logo', 'graph', 'star']) {
+      canvas[val] = new Canvas(val);
+    }
 
-      circleCanvas.add(circleC);
-      circleCanvas.add(circleC.Origin);
-      circleCanvas.add(new Text_('O', circleC.Origin));
+    canvas.circle.add(circleC);
+    canvas.circle.add(circleC.Origin);
+    canvas.circle.add(new Text_('O', circleC.Origin));
 
-      var group = new Unitary.Group(AB, new Line(new Point(20, 0), new Point(20,20)), new Line(new Point(0, 20), new Point(20,20)));
-      // lineCanvas.add(AB);
-      // lineCanvas.add(new Line(new Point(20, 0), new Point(20,20)));
-      // lineCanvas.add(new Line(new Point(0, 20), new Point(20,20)));
-      lineCanvas.add(group);
+    const group = new Unitary.Group(AB, new Line(new Point(20, 0), new Point(20,20)), new Line(new Point(0, 20), new Point(20,20)));
+    // canvas.line.add(AB);
+    // canvas.line.add(new Line(new Point(20, 0), new Point(20,20)));
+    // canvas.line.add(new Line(new Point(0, 20), new Point(20,20)));
+    canvas.line.add(group);
 
-      segmentCanvas.add(SegAB);
+    canvas.segment.add(SegAB);
 
-      polygonCanvas.add(ABCD);
+    canvas.polygon.add(ABCD);
 
-      triangleCanvas.add(circumcircleABC.setFillColor('#BB7C00'));
-      triangleCanvas.add(ABC.setFillColor('#E89B00'));
-      triangleCanvas.add(incircleABC.setFillColor('#FFA900'));
+    canvas.triangle.add(circumcircleABC.setFillColor('#BB7C00'));
+    canvas.triangle.add(ABC.setFillColor('#E89B00'));
+    canvas.triangle.add(incircleABC.setFillColor('#FFA900'));
 
-      rectCanvas.add(rectAB);
+    canvas.rect.add(rectAB);
 
-      pentagonCanvas.add(
-        new Polygon(
-          new Point(Math.cos(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30),
-          new Point(Math.cos(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30),
-          new Point(Math.cos(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30),
-          new Point(Math.cos(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30),
-          new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
-      ).setFillColor('#ccc')
-      );
+    canvas.pentagon.add(
+      new Polygon(
+        new Point(Math.cos(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (1/5) + Math.PI / 2) * 30 + 30),
+        new Point(Math.cos(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (2/5) + Math.PI / 2) * 30 + 30),
+        new Point(Math.cos(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (3/5) + Math.PI / 2) * 30 + 30),
+        new Point(Math.cos(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (4/5) + Math.PI / 2) * 30 + 30),
+        new Point(Math.cos(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30, Math.sin(2 * Math.PI * (5/5) + Math.PI / 2) * 30 + 30)
+    ).setFillColor('#ccc')
+    );
 
-      logoCanvas.mode = 'normal';
-      logoCanvas.add(new Image_('./logo.png', new Point(0, 0)));
+    canvas.logo.mode = 'normal';
+    canvas.logo.add(new Image_('./logo.png', new Point(0, 0)));
 
-      var scale = 20;
-      graphCanvas.origin = new Point(100, 10);
-      graphCanvas.add(Unitary.XAxis);
-      graphCanvas.add(Unitary.YAxis);
-      graphCanvas.add(new Line(new Point(1 * scale, 0), new Point(1 * scale, 1 * scale)).setStrokeColor('#ddd'));
-      graphCanvas.add(new Line(new Point(0, 1 * scale), new Point(1 * scale, 1 * scale)).setStrokeColor('#ddd'));
-      graphCanvas.add(new Graph(function(x) {return x * x}, 20));
-      graphCanvas.add(new Text_('1', new Point(1 * scale,4)).setAlign('center'));
-      graphCanvas.add(new Text_('5', new Point(5 * scale,4)));
-      graphCanvas.add(new Text_('1', new Point(0,1 * scale)));
+    const scale = 20;
+    canvas.graph.origin = new Point(100, 10);
+    canvas.graph.add(Unitary.XAxis);
+    canvas.graph.add(Unitary.YAxis);
+    // canvas.graph.add(new Line(new Point(1 * scale, 0), new Point(1 * scale, 1 * scale)).setStrokeColor('#ddd'));
+    // canvas.graph.add(new Line(new Point(0, 1 * scale), new Point(1 * scale, 1 * scale)).setStrokeColor('#ddd'));
+    canvas.graph.add(new Graph(function(x) {return x * x}, 20));
+    canvas.graph.add(new Text_('1', new Point(1 * scale,4)).setAlign('center'));
+    canvas.graph.add(new Text_('5', new Point(5 * scale,4)));
+    canvas.graph.add(new Text_('1', new Point(0,1 * scale)));
 
-      var r = 30;
-      var star = new Triangle(
-        new Point(Math.cos(1 / 2 * Math.PI) * r, Math.sin(1 / 2 * Math.PI) * r),
-        new Point(Math.cos(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r),
-        new Point(Math.cos(1 / 2 * Math.PI + 4 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 4 / 3 * Math.PI) * r)
-      ).move(100, 100);
-      starCanvas.add(star);
-      starCanvas.add(star.rotate(Math.PI));
+    const r = 30;
+    const star = new Triangle(
+      new Point(Math.cos(1 / 2 * Math.PI) * r, Math.sin(1 / 2 * Math.PI) * r),
+      new Point(Math.cos(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r),
+      new Point(Math.cos(1 / 2 * Math.PI + 4 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 4 / 3 * Math.PI) * r)
+    ).move(100, 100);
+    const theta = 2 * Math.PI / 5;
+    const star2 = new Polygon(
+      new Point(r * Math.cos(theta * 0 + Math.PI / 2), r * Math.sin(theta * 0 + Math.PI / 2)),
+      new Point(-6.735419648693782, 9.270509831248422),
+      new Point(r * Math.cos(theta * 1 + Math.PI / 2), r * Math.sin(theta * 1 + Math.PI / 2)),
+      new Point(-10.898137920080416, -3.541019662496846),
+      new Point(r * Math.cos(theta * 2 + Math.PI / 2), r * Math.sin(theta * 2 + Math.PI / 2)),
+      new Point(-1.0168459891700829e-14, -11.458980337503155),
+      new Point(r * Math.cos(theta * 3 + Math.PI / 2), r * Math.sin(theta * 3 + Math.PI / 2)),
+      new Point(10.89813792008041, -3.541019662496853),
+      new Point(r * Math.cos(theta * 4 + Math.PI / 2), r * Math.sin(theta * 4 + Math.PI / 2)),
+      new Point(6.735419648693782, 9.270509831248422)
+    ).move(40, 40).setFillColor('yellow');
 
-      circleCanvas.draw();
-      lineCanvas.draw();
-      segmentCanvas.draw();
-      polygonCanvas.draw();
-      triangleCanvas.draw();
-      rectCanvas.draw();
-      pentagonCanvas.draw();
-      logoCanvas.draw();
-      graphCanvas.draw();
-      starCanvas.draw();
-    });
+    canvas.star.add(star);
+    canvas.star.add(star2);
+    canvas.star.add(star.rotate(Math.PI));
+
+    for (const c of Object.values(canvas)) {
+      c.draw();
+    }
     </script>
     <style>
       canvas {
