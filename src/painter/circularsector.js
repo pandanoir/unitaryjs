@@ -8,5 +8,5 @@ export default function(obj) {
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, obj.anticlockwise);
     this.canvas.closePath();
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillStyle !== null) this.canvas.fill();
 };

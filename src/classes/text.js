@@ -9,7 +9,7 @@ export default class Text_ extends UnitaryObject {
         this.strokesOutline = false;
         this.style.align = align;
         this.style.maxWidth = maxWidth;
-        this.style.fillColor = '#000';
+        this.style.fillStyle = '#000';
         this.style.outlineColor = '#000';
         this.style.baseline = 'alphabetic';
         this.style.font = null;

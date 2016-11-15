@@ -112,11 +112,11 @@ class Canvas {
         const name = obj.name();
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
-        if (obj.style && obj.style.fillColor !== null) {
-            this.canvas.fillStyle = obj.style.fillColor;
+        if (obj.style && obj.style.fillStyle !== null) {
+            this.canvas.fillStyle = obj.style.fillStyle;
         }
-        if (obj.style && obj.style.strokeColor !== null) {
-            this.canvas.strokeStyle = obj.style.strokeColor;
+        if (obj.style && obj.style.strokeStyle !== null) {
+            this.canvas.strokeStyle = obj.style.strokeStyle;
         }
         Canvas.painter[name].call(this, obj);
     }
@@ -178,7 +178,7 @@ function PolygonDrawFunction(obj) {
 
     this.canvas.closePath();
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillStyle !== null) this.canvas.fill();
 };
 Canvas.preload = (...args) => {
     const promises = [];

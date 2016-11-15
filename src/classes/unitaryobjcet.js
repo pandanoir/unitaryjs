@@ -1,19 +1,27 @@
 export default class UnitaryObject {
     constructor() {
         this.style = {
-            fillColor: null,
-            strokeColor: null
+            fillStyle: null,
+            strokeStyle: null
         };
     }
     equals(B) {
         return this.name() === B.name();
     }
     setFillColor(color) {
-        this.style.fillColor = color;
+        this.style.fillStyle = color;
+        return this;
+    }
+    setFillStyle(color) {
+        this.style.fillStyle = color;
         return this;
     }
     setStrokeColor(color) {
-        this.style.strokeColor = color;
+        this.style.strokeStyle = color;
+        return this;
+    }
+    setStrokeStyle(color) {
+        this.style.strokeStyle = color;
         return this;
     }
     setStyle(style) {

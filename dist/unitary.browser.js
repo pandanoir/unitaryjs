@@ -239,8 +239,8 @@ var UnitaryObject = function () {
         classCallCheck(this, UnitaryObject);
 
         this.style = {
-            fillColor: null,
-            strokeColor: null
+            fillStyle: null,
+            strokeStyle: null
         };
     }
 
@@ -252,13 +252,25 @@ var UnitaryObject = function () {
     }, {
         key: 'setFillColor',
         value: function setFillColor(color) {
-            this.style.fillColor = color;
+            this.style.fillStyle = color;
+            return this;
+        }
+    }, {
+        key: 'setFillStyle',
+        value: function setFillStyle(color) {
+            this.style.fillStyle = color;
             return this;
         }
     }, {
         key: 'setStrokeColor',
         value: function setStrokeColor(color) {
-            this.style.strokeColor = color;
+            this.style.strokeStyle = color;
+            return this;
+        }
+    }, {
+        key: 'setStrokeStyle',
+        value: function setStrokeStyle(color) {
+            this.style.strokeStyle = color;
             return this;
         }
     }, {
@@ -1532,7 +1544,7 @@ var Text_ = function (_UnitaryObject) {
         _this.strokesOutline = false;
         _this.style.align = align;
         _this.style.maxWidth = maxWidth;
-        _this.style.fillColor = '#000';
+        _this.style.fillStyle = '#000';
         _this.style.outlineColor = '#000';
         _this.style.baseline = 'alphabetic';
         _this.style.font = null;

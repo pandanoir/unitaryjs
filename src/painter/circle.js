@@ -4,5 +4,5 @@ export default function(obj) {
     this.canvas.beginPath();
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, 0, 2 * Math.PI, obj.anticlockwise);
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillStyle !== null) this.canvas.fill();
 };

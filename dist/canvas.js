@@ -55,9 +55,8 @@ var CirclePainter = function (obj) {
         r = obj.r;
     this.canvas.beginPath();
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, 0, 2 * Math.PI, obj.anticlockwise);
-    this.canvas.closePath();
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillStyle !== null) this.canvas.fill();
 };
 
 var CircularSectorPainter = function (obj) {
@@ -68,10 +67,9 @@ var CircularSectorPainter = function (obj) {
     this.canvas.beginPath();
     this.canvas.moveTo(this.X(center.x), this.Y(center.y));
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, obj.anticlockwise);
-    this.canvas.lineTo(this.X(center.x), this.Y(center.y));
     this.canvas.closePath();
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillStyle !== null) this.canvas.fill();
 };
 
 var DoughnutPainter = function (obj) {
@@ -85,7 +83,8 @@ var DoughnutPainter = function (obj) {
     this.canvas.beginPath();
     this.canvas.arc(this.X(center.x), this.Y(center.y), innerRadius, 0, 2 * Math.PI, true);
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) {
+
+    if (obj.style.fillStyle !== null) {
         this.canvas.beginPath();
         this.canvas.arc(this.X(center.x), this.Y(center.y), outerRadius, 0, 2 * Math.PI, false);
         this.canvas.arc(this.X(center.x), this.Y(center.y), innerRadius, 0, 2 * Math.PI, true);
@@ -108,7 +107,6 @@ var GraphPainter = function (obj) {
         this.canvas.lineTo(this.X(points[_i2].x), this.Y(points[_i2].y));
         this.canvas.moveTo(this.X(points[_i2].x), this.Y(points[_i2].y));
     }
-    this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
     this.canvas.closePath();
     this.canvas.stroke();
 };
@@ -169,7 +167,6 @@ var LinePainter = function (obj) {
         this.canvas.beginPath();
         this.canvas.moveTo(this.X(leftEndPoint.x), this.Y(leftEndPoint.y));
         this.canvas.lineTo(this.X(rightEndPoint.x), this.Y(rightEndPoint.y));
-        this.canvas.closePath();
         this.canvas.stroke();
     }
 };
@@ -186,7 +183,7 @@ var RectPainter = function (obj) {
     if (this.mode !== 'normal') {
         h = -(obj.points[1].y - obj.points[0].y); // 左下を原点として扱っているからマイナスしないと計算があわない
     }
-    if (obj.style.fillColor !== null) this.canvas.fillRect(x, y, w, h); // 上でそれぞれX()、Y()適用済み
+    if (obj.style.fillStyle !== null) this.canvas.fillRect(x, y, w, h); // 上でそれぞれX()、Y()適用済み
     else this.canvas.strokeRect(x, y, w, h);
 };
 
@@ -194,7 +191,6 @@ var SegmentPainter = function (obj) {
     this.canvas.beginPath();
     this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     this.canvas.lineTo(this.X(obj.points[1].x), this.Y(obj.points[1].y));
-    this.canvas.closePath();
     this.canvas.stroke();
 };
 
@@ -556,11 +552,11 @@ var Canvas = function () {
             var name = obj.name();
             this.canvas.strokeStyle = '#000';
             this.canvas.fillStyle = '#000';
-            if (obj.style && obj.style.fillColor !== null) {
-                this.canvas.fillStyle = obj.style.fillColor;
+            if (obj.style && obj.style.fillStyle !== null) {
+                this.canvas.fillStyle = obj.style.fillStyle;
             }
-            if (obj.style && obj.style.strokeColor !== null) {
-                this.canvas.strokeStyle = obj.style.strokeColor;
+            if (obj.style && obj.style.strokeStyle !== null) {
+                this.canvas.strokeStyle = obj.style.strokeStyle;
             }
             Canvas.painter[name].call(this, obj);
         }
@@ -627,10 +623,9 @@ function PolygonDrawFunction(obj) {
     this.canvas.moveTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     for (var i = 0, _i = obj.points.length; i < _i; i = 0 | i + 1) {
         this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
-    }this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
-    this.canvas.closePath();
+    }this.canvas.closePath();
     this.canvas.stroke();
-    if (obj.style.fillColor !== null) this.canvas.fill();
+    if (obj.style.fillStyle !== null) this.canvas.fill();
 }
 Canvas.preload = function () {
     var _arguments = arguments;
