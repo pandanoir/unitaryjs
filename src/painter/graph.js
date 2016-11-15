@@ -12,7 +12,6 @@ export default function(obj) {
         this.canvas.lineTo(this.X(points[i].x), this.Y(points[i].y));
         this.canvas.moveTo(this.X(points[i].x), this.Y(points[i].y));
     }
-    this.canvas.moveTo(this.X(points[0].x), this.Y(points[0].y));
     this.canvas.closePath();
     this.canvas.stroke();
 };

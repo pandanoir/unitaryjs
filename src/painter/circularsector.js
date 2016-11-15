@@ -6,7 +6,6 @@ export default function(obj) {
     this.canvas.beginPath();
     this.canvas.moveTo(this.X(center.x), this.Y(center.y));
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, obj.anticlockwise);
-    this.canvas.lineTo(this.X(center.x), this.Y(center.y));
     this.canvas.closePath();
     this.canvas.stroke();
     if (obj.style.fillColor !== null) this.canvas.fill();

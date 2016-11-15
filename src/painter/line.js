@@ -38,7 +38,6 @@ export default function(obj) {
         this.canvas.beginPath();
         this.canvas.moveTo(this.X(leftEndPoint.x), this.Y(leftEndPoint.y));
         this.canvas.lineTo(this.X(rightEndPoint.x), this.Y(rightEndPoint.y));
-        this.canvas.closePath();
         this.canvas.stroke();
     }
 };

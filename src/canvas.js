@@ -176,7 +176,6 @@ function PolygonDrawFunction(obj) {
     for (let i = 0, _i = obj.points.length; i < _i; i = 0|i+1)
         this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
 
-    this.canvas.lineTo(this.X(obj.points[0].x), this.Y(obj.points[0].y));
     this.canvas.closePath();
     this.canvas.stroke();
     if (obj.style.fillColor !== null) this.canvas.fill();
