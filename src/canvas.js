@@ -19,11 +19,7 @@ class Canvas {
     constructor(id) {
         if (document.getElementById(id) === null) {
             if (document.readyState === 'complete') throw new Error('not found canvas.');
-            this.ready = new Promise(resolve => {
-                window.addEventListener('load', () => {
-                    resolve();
-                });
-            });
+            this.ready = new Promise(resolve => window.addEventListener('load', resolve));
         } else {
             this.ready = Promise.resolve();
         }
@@ -40,9 +36,7 @@ class Canvas {
         this.origin = new Unitary.Point(0, 0);
     }
     listen(type) {
-        this.ready.then(() => {
-            this.element.addEventListener(type, eventTrigger.bind(this), false)
-        });
+        this.ready.then(() => this.element.addEventListener(type, eventTrigger.bind(this), false));
     }
     add(obj) {
         this.objects[this.objects.length] = obj;
@@ -51,9 +45,7 @@ class Canvas {
         this.objects = [];
     }
     clear() {
-        this.ready.then(() => {
-            this.canvas.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-        });
+        this.ready.then(() => this.canvas.clearRect(0, 0, this.canvasWidth, this.canvasHeight));
     }
     X(x) {
         return Math.round(x + this.origin.x);
@@ -103,12 +95,12 @@ class Canvas {
         loadImage(this.objects);
         return Promise.all(promises.concat(this.ready)).then(() => {
             for (let i = 0, _i = this.objects.length; i < _i; i = 0|i+1) {
-                const obj = this.objects[i];
-                this.__drawHelper__(obj);
+                this.__drawHelper__(this.objects[i]);
             }
         }).catch(errorCatcher);
     }
     __drawHelper__(obj) {
+        // this method sets strokeStyle and fillStyle.
         const name = obj.name();
         this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
@@ -128,12 +120,13 @@ function eventTrigger(e) {
     const rect = e.target.getBoundingClientRect();
     const x = this.X(e.clientX - rect.left),
         y = this.Y(e.clientY - rect.top);
+    const P = new Unitary.Point(x, y);
 
     let stopPropagationCalled = false;
     e.stopPropagation = () => {stopPropagationCalled = true};
     for (let i = this.objects.length - 1; i >= 0; i = 0|i-1) {
         if (stopPropagationCalled) break;
-        if (this.objects[i].has && this.objects[i].has(new Unitary.Point(x, y))) {
+        if (this.objects[i].has && this.objects[i].has(P)) {
             this.objects[i].trigger(e.type, e);
         }
     }
@@ -177,8 +170,8 @@ function PolygonDrawFunction(obj) {
         this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
 
     this.canvas.closePath();
-    this.canvas.stroke();
     if (obj.style.fillStyle !== null) this.canvas.fill();
+    this.canvas.stroke();
 };
 Canvas.preload = (...args) => {
     const promises = [];

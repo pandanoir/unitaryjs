@@ -55,8 +55,8 @@ var CirclePainter = function (obj) {
         r = obj.r;
     this.canvas.beginPath();
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, 0, 2 * Math.PI, obj.anticlockwise);
-    this.canvas.stroke();
     if (obj.style.fillStyle !== null) this.canvas.fill();
+    this.canvas.stroke();
 };
 
 var CircularSectorPainter = function (obj) {
@@ -68,28 +68,30 @@ var CircularSectorPainter = function (obj) {
     this.canvas.moveTo(this.X(center.x), this.Y(center.y));
     this.canvas.arc(this.X(center.x), this.Y(center.y), r, startAngle, endAngle, obj.anticlockwise);
     this.canvas.closePath();
-    this.canvas.stroke();
     if (obj.style.fillStyle !== null) this.canvas.fill();
+    this.canvas.stroke();
 };
 
 var DoughnutPainter = function (obj) {
     var center = obj.center,
+        x = this.X(center.x),
+        y = this.Y(center.y),
         innerRadius = obj.innerRadius,
         outerRadius = obj.outerRadius;
-    this.canvas.beginPath();
-    this.canvas.arc(this.X(center.x), this.Y(center.y), outerRadius, 0, 2 * Math.PI, false);
-    this.canvas.stroke();
-
-    this.canvas.beginPath();
-    this.canvas.arc(this.X(center.x), this.Y(center.y), innerRadius, 0, 2 * Math.PI, true);
-    this.canvas.stroke();
-
     if (obj.style.fillStyle !== null) {
         this.canvas.beginPath();
-        this.canvas.arc(this.X(center.x), this.Y(center.y), outerRadius, 0, 2 * Math.PI, false);
-        this.canvas.arc(this.X(center.x), this.Y(center.y), innerRadius, 0, 2 * Math.PI, true);
+        this.canvas.arc(x, y, outerRadius, 0, 2 * Math.PI, false);
+        this.canvas.arc(x, y, innerRadius, 0, 2 * Math.PI, true);
         this.canvas.fill();
     }
+
+    this.canvas.beginPath();
+    this.canvas.arc(x, y, outerRadius, 0, 2 * Math.PI, false);
+    this.canvas.stroke();
+
+    this.canvas.beginPath();
+    this.canvas.arc(x, y, innerRadius, 0, 2 * Math.PI, true);
+    this.canvas.stroke();
 };
 
 var GraphPainter = function (obj) {
@@ -197,8 +199,8 @@ var SegmentPainter = function (obj) {
 var TextPainter = function (obj) {
     this.canvas.textAlign = obj.style.align;
     this.canvas.textBaseline = obj.style.baseline;
-    var x = obj.P.x;
-    var y = obj.P.y;
+    var x = this.X(obj.P.x);
+    var y = this.Y(obj.P.y);
     var maxWidth = obj.style.maxWidth;
     var defaultFont = void 0;
     if (obj.style.font !== null) {
@@ -206,11 +208,11 @@ var TextPainter = function (obj) {
         this.canvas.font = obj.style.font;
     }
     if (maxWidth === null) {
-        if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, this.X(x), this.Y(y));
-        this.canvas.fillText(obj.text, this.X(x), this.Y(y));
+        if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, x, y);
+        this.canvas.fillText(obj.text, x, y);
     } else {
-        if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, this.X(x), this.Y(y), maxWidth);
-        this.canvas.fillText(obj.text, this.X(x), this.Y(y), maxWidth);
+        if (obj.style.strokesOutline) this.canvas.strokeText(obj.text, x, y, maxWidth);
+        this.canvas.fillText(obj.text, x, y, maxWidth);
     }
     if (obj.style.font !== null) this.canvas.font = defaultFont;
 };
@@ -438,9 +440,7 @@ var Canvas = function () {
         if (document.getElementById(id) === null) {
             if (document.readyState === 'complete') throw new Error('not found canvas.');
             this.ready = new Promise(function (resolve) {
-                window.addEventListener('load', function () {
-                    resolve();
-                });
+                return window.addEventListener('load', resolve);
             });
         } else {
             this.ready = Promise.resolve();
@@ -464,7 +464,7 @@ var Canvas = function () {
             var _this2 = this;
 
             this.ready.then(function () {
-                _this2.element.addEventListener(type, eventTrigger.bind(_this2), false);
+                return _this2.element.addEventListener(type, eventTrigger.bind(_this2), false);
             });
         }
     }, {
@@ -483,7 +483,7 @@ var Canvas = function () {
             var _this3 = this;
 
             this.ready.then(function () {
-                _this3.canvas.clearRect(0, 0, _this3.canvasWidth, _this3.canvasHeight);
+                return _this3.canvas.clearRect(0, 0, _this3.canvasWidth, _this3.canvasHeight);
             });
         }
     }, {
@@ -541,14 +541,14 @@ var Canvas = function () {
             loadImage(this.objects);
             return Promise.all(promises.concat(this.ready)).then(function () {
                 for (var i = 0, _i = _this4.objects.length; i < _i; i = 0 | i + 1) {
-                    var obj = _this4.objects[i];
-                    _this4.__drawHelper__(obj);
+                    _this4.__drawHelper__(_this4.objects[i]);
                 }
             }).catch(errorCatcher);
         }
     }, {
         key: '__drawHelper__',
         value: function __drawHelper__(obj) {
+            // this method sets strokeStyle and fillStyle.
             var name = obj.name();
             this.canvas.strokeStyle = '#000';
             this.canvas.fillStyle = '#000';
@@ -574,6 +574,7 @@ function eventTrigger(e) {
     var rect = e.target.getBoundingClientRect();
     var x = this.X(e.clientX - rect.left),
         y = this.Y(e.clientY - rect.top);
+    var P = new Unitary.Point(x, y);
 
     var stopPropagationCalled = false;
     e.stopPropagation = function () {
@@ -581,7 +582,7 @@ function eventTrigger(e) {
     };
     for (var i = this.objects.length - 1; i >= 0; i = 0 | i - 1) {
         if (stopPropagationCalled) break;
-        if (this.objects[i].has && this.objects[i].has(new Unitary.Point(x, y))) {
+        if (this.objects[i].has && this.objects[i].has(P)) {
             this.objects[i].trigger(e.type, e);
         }
     }
@@ -624,8 +625,8 @@ function PolygonDrawFunction(obj) {
     for (var i = 0, _i = obj.points.length; i < _i; i = 0 | i + 1) {
         this.canvas.lineTo(this.X(obj.points[i].x), this.Y(obj.points[i].y));
     }this.canvas.closePath();
-    this.canvas.stroke();
     if (obj.style.fillStyle !== null) this.canvas.fill();
+    this.canvas.stroke();
 }
 Canvas.preload = function () {
     var _arguments = arguments;
