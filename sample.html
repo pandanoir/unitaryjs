@@ -70,6 +70,7 @@
     canvas.graph.add(new Text_('1', new Point(0,1 * scale)));
 
     const r = 30;
+const goldenRatio = 1 + (1 + Math.sqrt(5)) / 2;
     const star = new Triangle(
       new Point(Math.cos(1 / 2 * Math.PI) * r, Math.sin(1 / 2 * Math.PI) * r),
       new Point(Math.cos(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r, Math.sin(1 / 2 * Math.PI + 2 / 3 * Math.PI) * r),
@@ -78,15 +79,15 @@
     const theta = 2 * Math.PI / 5;
     const star2 = new Polygon(
       new Point(r * Math.cos(theta * 0 + Math.PI / 2), r * Math.sin(theta * 0 + Math.PI / 2)),
-      new Point(-6.735419648693782, 9.270509831248422),
+      new Point(r / goldenRatio * Math.cos(theta * 3 - Math.PI / 2), r / goldenRatio * Math.sin(theta * 3 - Math.PI / 2)),
       new Point(r * Math.cos(theta * 1 + Math.PI / 2), r * Math.sin(theta * 1 + Math.PI / 2)),
-      new Point(-10.898137920080416, -3.541019662496846),
+      new Point(r / goldenRatio * Math.cos(theta * 4 - Math.PI / 2), r / goldenRatio * Math.sin(theta * 4 - Math.PI / 2)),
       new Point(r * Math.cos(theta * 2 + Math.PI / 2), r * Math.sin(theta * 2 + Math.PI / 2)),
-      new Point(-1.0168459891700829e-14, -11.458980337503155),
+      new Point(r / goldenRatio * Math.cos(theta * 0 - Math.PI / 2), r / goldenRatio * Math.sin(theta * 0 - Math.PI / 2)),
       new Point(r * Math.cos(theta * 3 + Math.PI / 2), r * Math.sin(theta * 3 + Math.PI / 2)),
-      new Point(10.89813792008041, -3.541019662496853),
+      new Point(r / goldenRatio * Math.cos(theta * 1 - Math.PI / 2), r / goldenRatio * Math.sin(theta * 1 - Math.PI / 2)),
       new Point(r * Math.cos(theta * 4 + Math.PI / 2), r * Math.sin(theta * 4 + Math.PI / 2)),
-      new Point(6.735419648693782, 9.270509831248422)
+      new Point(r / goldenRatio * Math.cos(theta * 2 - Math.PI / 2), r / goldenRatio * Math.sin(theta * 2 - Math.PI / 2))
     ).move(40, 40).setFillColor('yellow');
 
     canvas.star.add(star);

@@ -83,6 +83,8 @@ class Vector extends BaseVector{
             this.x = args[0].x;
             this.y = args[0].y;
         }
+        this.r = Math.sqrt(this.x * this.x + this.y * this.y);
+        this.theta = (Math.atan2(this.y, this.x) + 2 * Math.PI) % (2 * Math.PI);
     }
     add(CD) {
         const newVector = super.add(CD);
@@ -95,6 +97,9 @@ class Vector extends BaseVector{
     multiple(k) {
         const newVector = super.multiple(k);
         return new Vector(newVector.component[0], newVector.component[1]);
+    }
+    abs() {
+        return this.r;
     }
     equals(B) {
         if (!super.equals(B)) {

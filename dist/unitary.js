@@ -573,6 +573,8 @@ var Vector = function (_BaseVector) {
             _this2.x = args[0].x;
             _this2.y = args[0].y;
         }
+        _this2.r = Math.sqrt(_this2.x * _this2.x + _this2.y * _this2.y);
+        _this2.theta = (Math.atan2(_this2.y, _this2.x) + 2 * Math.PI) % (2 * Math.PI);
         return possibleConstructorReturn(_this2);
     }
 
@@ -593,6 +595,11 @@ var Vector = function (_BaseVector) {
         value: function multiple(k) {
             var newVector = get(Vector.prototype.__proto__ || Object.getPrototypeOf(Vector.prototype), 'multiple', this).call(this, k);
             return new Vector(newVector.component[0], newVector.component[1]);
+        }
+    }, {
+        key: 'abs',
+        value: function abs() {
+            return this.r;
         }
     }, {
         key: 'equals',
