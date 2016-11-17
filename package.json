@@ -7,6 +7,13 @@
     "test": "mocha -R spec",
     "build": "rollup src/main.js -c -o dist/unitary.js --name Unitary && rollup src/canvas.js -c -o dist/canvas.js --name Canvas"
   },
+  "files": [
+    "CHANGELOG.md",
+    "LICENCE",
+    "README.md",
+    "package.json",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pandanoir/unitaryjs.git"
