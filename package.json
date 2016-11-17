@@ -4,6 +4,7 @@
   "description": "Canvas Library",
   "main": "./dist/unitary.js",
   "scripts": {
+    "pretest": "npm run build",
     "test": "mocha -R spec",
     "build": "rollup src/main.js -c -o dist/unitary.js --name Unitary && rollup src/canvas.js -c -o dist/canvas.js --name Canvas"
   },
