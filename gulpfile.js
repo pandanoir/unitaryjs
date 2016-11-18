@@ -6,7 +6,8 @@ const gzip = require('gulp-gzip');
 gulp.task('minify', () => {
     const flags = {
             compilation_level: 'SIMPLE_OPTIMIZATIONS',
-            language_in: 'ECMASCRIPT5_STRICT',
+            language_in: 'ECMASCRIPT6_STRICT',
+            language_out: 'ECMASCRIPT5_STRICT',
             warning_level: 'QUIET'
         };
     gulp.src('./dist/canvas.js')
