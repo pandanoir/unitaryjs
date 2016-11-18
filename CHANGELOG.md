@@ -1,3 +1,22 @@
+# 0.0.8
+
+## Features
+
+* add .has() to Line.
+* add setAnticlockwise() to Circle and CircularSector.
+* add Doughnut class.
+* add r and theta property to Vector.
+
+## Bug Fixes
+
+* Segment.fn.has() and Segment.fn.intersects() returned wrong value.
+
+## Breaking Changes
+
+* change default step of BezierCurve.
+* change property, fillColor and strokeColor to fillStyle and strokeStyle.
+* Canvas.draw() will fill objects before stroking them.
+
 # 0.0.7
 From this version, dist/unitary.browser.js is an alias of dist/unitary.js. You should load dist/unitary.js in browser.
 
