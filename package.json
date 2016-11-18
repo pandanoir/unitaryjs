@@ -5,7 +5,7 @@
   "main": "./dist/unitary.js",
   "scripts": {
     "preversion": "npm test",
-    "version": "npm run build && git add -A",
+    "version": "npm run build && gulp && git add -A",
     "postversion": "git push && git push --tags",
     "pretest": "npm run build",
     "test": "mocha -R spec",
@@ -28,20 +28,13 @@
     "unitaryjs"
   ],
   "devDependencies": {
-    "babel-cli": "6.18.0",
-    "babel-plugin-external-helpers": "6.18.0",
-    "babel-preset-es2015": "6.18.0",
     "gulp": "3.9.1",
-    "gulp-babel": "6.1.2",
     "gulp-closure-compiler": "0.4.0",
     "gulp-gzip": "1.2.0",
     "gulp-rename": "1.2.2",
     "mocha": "3.1.2",
     "rollup": "0.36.3",
-    "rollup-plugin-babel": "2.6.1",
-    "rollup-plugin-commonjs": "5.0.5",
-    "rollup-plugin-json": "2.0.2",
-    "rollup-plugin-node-resolve": "2.0.0"
+    "rollup-plugin-json": "2.0.2"
   },
   "author": "Naoto Ikuno <moon_in_france@yahoo.co.jp>",
   "license": "MIT",
