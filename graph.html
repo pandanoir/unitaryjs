@@ -3,16 +3,23 @@
   <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="./unitary.js"></script>
-    <script src="./canvas.js"></script>
+    <script src="./dist/unitary.js"></script>
+    <script src="./dist/canvas.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
-      $(function() {
-        var canvas = new Canvas('graph');
+      jQuery(function($) {
+        const canvas = new Canvas('graph');
         canvas.origin = new Unitary.Point(100, 20);
         canvas.draw();
-        var fx = $('#function').val();
-        var isChanged = false;
+
+        let fx = $('#function').val();
+        let isChanged = false;
+        const setFx = _fx =>
+          () => {
+            fx = _fx;
+            draw();
+          };
+
         $('#draw').on('click', draw);
         $('#scale').on('input', function() {
           console.log();
@@ -35,13 +42,13 @@
           canvas.draw();
         }
         draw();
-        $('#line').on('click', function() {fx = 'x';draw();});
-        $('#quadraticFunction').on('click', function() {fx = 'x*x';draw();});
-        $('#exponentialFunction').on('click', function() {fx = 'Math.exp(x)';draw();});
-        $('#logarithmFunction').on('click', function() {fx = 'Math.log(x)';draw();});
-        $('#sinFunction').on('click', function() {fx = 'Math.sin(x)';draw();});
-        $('#cosFunction').on('click', function() {fx = 'Math.cos(x)';draw();});
-        $('#tanFunction').on('click', function() {fx = 'Math.tan(x)';draw();});
+        $('#line').on('click', setFx('x'));
+        $('#quadraticFunction').on('click', setFx('x*x'));
+        $('#exponentialFunction').on('click', setFx('Math.exp(x)'));
+        $('#logarithmFunction').on('click', setFx('Math.log(x)'));
+        $('#sinFunction').on('click', setFx('Math.sin(x)'));
+        $('#cosFunction').on('click', setFx('Math.cos(x)'));
+        $('#tanFunction').on('click', setFx('Math.tan(x)'));
       });
     </script>
     <style>
