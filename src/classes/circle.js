@@ -32,7 +32,7 @@ export default class Circle extends UnitaryObject {
         return this.center.equals(C.center) && this.r === C.r;
     }
     has(P) {
-        return new Vector(P).substract(new Vector(this.center)).abs() <= this.r;
+        return new Vector(P).subtract(new Vector(this.center)).abs() <= this.r;
     }
     setAnticlockwise(anticlockwise) {
         const newCircle = new Circle(this.center, this.r).setStyle(this.style);

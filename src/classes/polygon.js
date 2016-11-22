@@ -35,8 +35,8 @@ export default class Polygon extends UnitaryObject {
         let rad = 0;
         for (let i = 0, len = this.points.length; i < len; i = 0|i+1) {
             v = this.points[i];
-            a = new Vector(v).substract(new Vector(P));
-            b = new Vector(before_v).substract(new Vector(P));
+            a = new Vector(v).subtract(new Vector(P));
+            b = new Vector(before_v).subtract(new Vector(P));
             cos = a.product(b) / (a.abs() * b.abs());
             rad += Math.acos(cos);
             before_v = v;

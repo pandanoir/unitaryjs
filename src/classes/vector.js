@@ -26,7 +26,7 @@ class BaseVector extends UnitaryObject {
         }
         return new BaseVector(component);
     }
-    substract(CD) {
+    subtract(CD) {
         return this.add(CD.multiple(-1));
     }
     product(CD) {
@@ -90,8 +90,8 @@ class Vector extends BaseVector{
         const newVector = super.add(CD);
         return new Vector(newVector.component[0], newVector.component[1]);
     }
-    substract(CD) {
-        const newVector = super.substract(CD);
+    subtract(CD) {
+        const newVector = super.subtract(CD);
         return new Vector(newVector.component[0], newVector.component[1]);
     }
     multiple(k) {
@@ -131,8 +131,8 @@ class Vector3D extends BaseVector{
         const newVector = super.add(CD);
         return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
     }
-    substract(CD) {
-        const newVector = super.substract(CD);
+    subtract(CD) {
+        const newVector = super.subtract(CD);
         return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
     }
     multiple(k) {

@@ -327,8 +327,8 @@ describe('Unitary', () => {
             assert.ok(new Vector(A.x - B.x, A.y - B.y).add(new Vector(C.x - D.x, C.y - D.y)).equals(new Vector(6, 7)));
             assert.ok(new Vector(3, 4).add(new Vector(-10, 7)).equals(new Vector(-7, 11)));
         });
-        it('substract', () => {
-            assert.ok(new Vector(A.x, A.y).substract(new Vector(B.x, B.y)).equals(new Vector(A.x - B.x, A.y - B.y)));
+        it('subtract', () => {
+            assert.ok(new Vector(A.x, A.y).subtract(new Vector(B.x, B.y)).equals(new Vector(A.x - B.x, A.y - B.y)));
         });
         it('product', () => {
             assert.equal(new Vector(3, 3).product(new Vector(-3, 3)), 0);
@@ -358,8 +358,8 @@ describe('Unitary', () => {
         it('add', () => {
             assert.ok(new Vector3D(96, 57, 81).add(new Vector3D(42, 74, 55)).equals(new Vector3D(138, 131, 136)));
         });
-        it('substract', () => {
-            assert.ok(new Vector3D(96, 57, 81).substract(new Vector3D(42, 74, 55)).equals(new Vector3D(54, -17, 26)));
+        it('subtract', () => {
+            assert.ok(new Vector3D(96, 57, 81).subtract(new Vector3D(42, 74, 55)).equals(new Vector3D(54, -17, 26)));
         });
         it('product', () => {
             assert.equal(new Vector3D(3, 3, 3).product(new Vector3D(-3, 3, 0)), 0);

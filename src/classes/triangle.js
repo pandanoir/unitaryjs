@@ -35,7 +35,7 @@ export default class Triangle extends Polygon{
             .add(vC.multiple(c * (a + b - c)))
             .multiple(1 / (16 * (Math.pow(S, 2))));
         const O = new Point(vO.x, vO.y);
-        const cosA = vB.substract(vA).product(vC.substract(vA)) / (AB.length * CA.length),
+        const cosA = vB.subtract(vA).product(vC.subtract(vA)) / (AB.length * CA.length),
             sinA = Math.sqrt(1 - Math.pow(cosA, 2));
         const R = BC.length / sinA / 2;
         return new Circle(O, R);
@@ -44,9 +44,9 @@ export default class Triangle extends Polygon{
         const vA = new Vector(this.points[0].x, this.points[0].y),
             vB = new Vector(this.points[1].x, this.points[1].y),
             vC = new Vector(this.points[2].x, this.points[2].y);
-        const a = vC.substract(vB).abs(),
-            b = vC.substract(vA).abs(),
-            c = vB.substract(vA).abs();
+        const a = vC.subtract(vB).abs(),
+            b = vC.subtract(vA).abs(),
+            c = vB.subtract(vA).abs();
         const vO = new Vector(0, 0).add(vA.multiple(a / (a + b + c)))
             .add(vB.multiple(b / (a + b + c)))
             .add(vC.multiple(c / (a + b + c)));

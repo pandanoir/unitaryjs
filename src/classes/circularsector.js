@@ -30,7 +30,7 @@ export default class CircularSector extends UnitaryObject {
     }
     has(P) {
         const theta = Math.atan2(P.y, P.x);
-        return new Vector(P).substract(new Vector(this.center)).abs() <= this.r &&
+        return new Vector(P).subtract(new Vector(this.center)).abs() <= this.r &&
             this.startAngle <= theta &&
             theta <= this.endAngle;
     }

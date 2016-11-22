@@ -22,7 +22,7 @@ export default class Doughnut extends UnitaryObject {
         return this.center.equals(C.center) && this.innerRadius === C.innerRadius && this.outerRadius === C.outerRadius;
     }
     has(P) {
-        const distance = new Vector(P).substract(new Vector(this.center)).abs();
+        const distance = new Vector(P).subtract(new Vector(this.center)).abs();
         return  this.innerRadius <= distance && distance <= this.outerRadius;
     }
     name() { return 'Doughnut'; }
