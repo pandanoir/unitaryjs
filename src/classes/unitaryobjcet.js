@@ -5,25 +5,11 @@ export default class UnitaryObject {
             strokeStyle: null
         };
     }
-    equals(B) {
-        return this.name() === B.name();
-    }
-    setFillColor(color) {
-        this.style.fillStyle = color;
-        return this;
-    }
-    setFillStyle(color) {
-        this.style.fillStyle = color;
-        return this;
-    }
-    setStrokeColor(color) {
-        this.style.strokeStyle = color;
-        return this;
-    }
-    setStrokeStyle(color) {
-        this.style.strokeStyle = color;
-        return this;
-    }
+    equals(B) { return this.name() === B.name(); }
+    setFillColor(color) { this.style.fillStyle = color; return this; }
+    setFillStyle(color) { this.style.fillStyle = color; return this; }
+    setStrokeColor(color) { this.style.strokeStyle = color; return this; }
+    setStrokeStyle(color) { this.style.strokeStyle = color; return this; }
     setStyle(style) {
         for (const key of Object.keys(style)) {
             this.style[key] = style[key];

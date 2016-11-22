@@ -41,16 +41,12 @@ class BaseVector extends UnitaryObject {
     }
     multiple(k) {
         const component = new Array(this.component.length);
-        for (let i = 0, _i = this.component.length; i < _i; i = 0|i+1 ) {
-            component[i] = k * this.component[i];
-        }
+        for (let i = 0, _i = this.component.length; i < _i; i = 0|i+1 ) component[i] = k * this.component[i];
         return new BaseVector(component);
     }
     abs() {
         let res = 0;
-        for (let i = 0, _i = this.component.length; i < _i; i = 0|i+1) {
-            res += this.component[i] * this.component[i];
-        }
+        for (let i = 0, _i = this.component.length; i < _i; i = 0|i+1) res += this.component[i] * this.component[i];
         return Math.sqrt(res);
     }
     normalize() {

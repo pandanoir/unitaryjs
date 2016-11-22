@@ -95,10 +95,10 @@ export default class Line extends UnitaryObject {
         return nearlyEqualsZero(this.a * CD.a + this.b * CD.b);
     }
     name() { return 'Line'; }
+    static fromVector(_a, _d) {
+        let a = _a, d = _d;
+        if (_a.name() === 'Point') a = _a.toVector();
+        if (_d.name() === 'Point') d = _d.toVector();
+        return new Line(a, a.add(d));
+    }
 }
-Line.fromVector = function(_a, _d) {
-    let a = _a, d = _d;
-    if (_a.name() === 'Point') a = _a.toVector();
-    if (_d.name() === 'Point') d = _d.toVector();
-    return new Line(a, a.add(d));
-};

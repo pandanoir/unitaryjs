@@ -115,6 +115,25 @@ class Canvas {
     toDataURL() {
         return this.element.toDataURL();
     }
+    static preload(...args) {
+        const promises = [];
+        for (let i = 0, _i = args.length; i < _i; i = 0|i+1) {
+            const src = args[i];
+            if (!__imageCaches[src]) {
+                promises[promises.length] = new Promise((resolve, reject) => {
+                    const image = new Image();
+                    image.src = src;
+                    image.addEventListener('load', () => {
+                        image.loaded = true;
+                        resolve();
+                    });
+                    image.addEventListener('error', reject);
+                    __imageCaches[src] = image;
+                }).catch(errorCatcher);
+            }
+        }
+        return Promise.all(promises).catch(errorCatcher);
+    }
 };
 function eventTrigger(e) {
     const rect = e.target.getBoundingClientRect();
@@ -172,24 +191,5 @@ function PolygonDrawFunction(obj) {
     this.canvas.closePath();
     if (obj.style.fillStyle !== null) this.canvas.fill();
     this.canvas.stroke();
-};
-Canvas.preload = (...args) => {
-    const promises = [];
-    for (let i = 0, _i = args.length; i < _i; i = 0|i+1) {
-        const src = args[i];
-        if (!__imageCaches[src]) {
-            promises[promises.length] = new Promise((resolve, reject) => {
-                const image = new Image();
-                image.src = src;
-                image.addEventListener('load', () => {
-                    image.loaded = true;
-                    resolve();
-                });
-                image.addEventListener('error', reject);
-                __imageCaches[src] = image;
-            }).catch(errorCatcher);
-        }
-    }
-    return Promise.all(promises).catch(errorCatcher);
 };
 export default Canvas;
