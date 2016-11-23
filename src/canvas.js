@@ -102,14 +102,20 @@ class Canvas {
     __drawHelper__(obj) {
         // this method sets strokeStyle and fillStyle.
         const name = obj.name();
-        this.canvas.strokeStyle = '#000';
         this.canvas.fillStyle = '#000';
+        this.canvas.strokeStyle = '#000';
         if (obj.style && obj.style.fillStyle !== null) {
             this.canvas.fillStyle = obj.style.fillStyle;
         }
         if (obj.style && obj.style.strokeStyle !== null) {
             this.canvas.strokeStyle = obj.style.strokeStyle;
         }
+        if (obj.getLineDash && this.canvas.setLineDash) this.canvas.setLineDash(obj.getLineDash());
+        if (obj.getLineCap) this.canvas.lineCap = obj.getLineCap();
+        if (obj.getLineDashOffset) this.canvas.lineDashOffset = obj.getLineDashOffset();
+        if (obj.getLineJoin) this.canvas.lineJoin = obj.getLineJoin();
+        if (obj.getLineWidth) this.canvas.lineWidth = obj.getLineWidth();
+
         Canvas.painter[name].call(this, obj);
     }
     toDataURL() {

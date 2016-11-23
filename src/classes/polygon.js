@@ -1,8 +1,8 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
 import {nearlyEqualsZero} from '../utility.js';
 
-export default class Polygon extends UnitaryObject {
+export default class Polygon extends ContouredObject {
     constructor(...args) {
         super();
         const points = 1 <= args.length ? args : [];

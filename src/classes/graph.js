@@ -1,6 +1,6 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 
-export default class Graph extends UnitaryObject {
+export default class Graph extends ContouredObject {
     constructor(f, scale) {
         super();
         this.f = f;

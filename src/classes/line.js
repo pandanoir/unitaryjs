@@ -1,15 +1,14 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 import Point from './point.js';
 import {Vector} from './vector.js';
 import {sign, abs, isInteger, gcd, nearlyEqualsZero} from '../utility.js';
 
-export default class Line extends UnitaryObject {
+export default class Line extends ContouredObject {
     constructor(A, B) {
         if (A.equals(B)) {
             throw new Error('A equals B. So AB couldn\'t construct line.');
         }
         super();
-        this.lineDash = [];
         this.points = [A, B];
         this.a = B.y - A.y;
         this.b = A.x - B.x;
@@ -72,13 +71,6 @@ export default class Line extends UnitaryObject {
             x = -1 * (this.b * y + this.c) / this.a;
         }
         return new Point(x, y);
-    }
-    getLineDash() {
-        return this.lineDash;
-    }
-    setLineDash(lineDash) {
-        this.lineDash = lineDash;
-        return this;
     }
     equals(CD) {
         if (!super.equals(CD)) {

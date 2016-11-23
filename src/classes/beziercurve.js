@@ -1,6 +1,6 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 
-export default class BezierCurve extends UnitaryObject {
+export default class BezierCurve extends ContouredObject {
     constructor(...args) {
         super();
         if (Array.isArray(args[0])) this.controlPoints = args[0];

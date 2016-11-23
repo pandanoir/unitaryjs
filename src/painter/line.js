@@ -39,7 +39,7 @@ export default function(obj) {
 
     if (leftEndPoint != null && rightEndPoint != null) {
         this.canvas.beginPath();
-        if (this.canvas.setLineDash) this.canvas.setLineDash(obj.getLineDash());
+
         this.canvas.moveTo(this.X(leftEndPoint.x), this.Y(leftEndPoint.y));
         this.canvas.lineTo(this.X(rightEndPoint.x), this.Y(rightEndPoint.y));
         this.canvas.stroke();

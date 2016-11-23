@@ -1,4 +1,3 @@
-import UnitaryObject from './unitaryobject.js';
 import Circle from './circle.js';
 import Point from './point.js';
 import Polygon from './polygon.js';

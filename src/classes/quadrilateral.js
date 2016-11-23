@@ -1,4 +1,3 @@
-import UnitaryObject from './unitaryobject.js';
 import Polygon from './polygon.js';
 import Segment from './segment.js';
 import Triangle from './triangle.js';

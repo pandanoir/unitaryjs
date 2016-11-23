@@ -1,7 +1,7 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 import Line from './line.js';
 
-export default class Segment extends UnitaryObject {
+export default class Segment extends ContouredObject {
     constructor(A, B) {
         super();
         if (A.x > B.x) {

@@ -1,8 +1,8 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
 import {abs, sign} from '../utility.js';
 
-export default class Circle extends UnitaryObject {
+export default class Circle extends ContouredObject {
     constructor(center, radius) {
         super();
         this.center = center;

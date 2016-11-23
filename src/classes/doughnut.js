@@ -1,7 +1,7 @@
-import UnitaryObject from './unitaryobject.js';
+import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
 
-export default class Doughnut extends UnitaryObject {
+export default class Doughnut extends ContouredObject {
     constructor(center, innerRadius, outerRadius) {
         super();
         this.center = center;

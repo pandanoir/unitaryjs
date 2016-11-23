@@ -1,4 +1,3 @@
-import UnitaryObject from './unitaryobject.js';
 import Polygon from './polygon.js';
 
 export default class Rect extends Polygon{
