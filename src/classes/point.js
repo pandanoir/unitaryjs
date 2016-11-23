@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 import {Vector} from './vector.js';
 
 export default class Point extends UnitaryObject {

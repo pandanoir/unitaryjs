@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 import Line from './line.js';
 
 export default class Segment extends UnitaryObject {

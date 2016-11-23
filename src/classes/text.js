@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 
 export default class Text_ extends UnitaryObject {
     constructor(str, P, align = 'left', maxWidth = null) {

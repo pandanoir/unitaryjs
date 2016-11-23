@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 
 export default class Graph extends UnitaryObject {
     constructor(f, scale) {

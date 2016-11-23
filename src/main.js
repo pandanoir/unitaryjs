@@ -1,5 +1,5 @@
 "use strict";
-import UnitaryObject from './classes/unitaryobjcet.js';
+import UnitaryObject from './classes/unitaryobject.js';
 
 import BezierCurve from './classes/beziercurve.js';
 import Circle from './classes/circle.js';

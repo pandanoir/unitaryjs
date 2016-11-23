@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 import Point from './point.js';
 
 export default class Image_ extends UnitaryObject {

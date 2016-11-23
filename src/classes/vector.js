@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 import Point from './point.js';
 
 class BaseVector extends UnitaryObject {

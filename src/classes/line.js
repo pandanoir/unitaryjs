@@ -1,4 +1,4 @@
-import UnitaryObject from './unitaryobjcet.js';
+import UnitaryObject from './unitaryobject.js';
 import Point from './point.js';
 import {Vector} from './vector.js';
 import {sign, abs, isInteger, gcd, nearlyEqualsZero} from '../utility.js';
