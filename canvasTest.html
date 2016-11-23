@@ -13,13 +13,13 @@
         canvases[name] = new Canvas(name);
       }
 
-      canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(30, 90), new Point(70, 90), new Point(90, 10)));
+      canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(30, 90), new Point(70, 90), new Point(90, 10)).setLineDash([5, 8]));
       canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(50, 90), new Point(90, 10)));
-      canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(10, 90), new Point(50, 90), new Point(90, 90), new Point(90, 180)));
+      canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(10, 90), new Point(50, 90), new Point(90, 90), new Point(90, 180)).setLineDash([5, 8]));
       // ====================
 
       canvases.circle.add(new Circle(new Point(30, 30), 30));
-      canvases.circle.add(new Circle(new Point(60, 90), 20).setFillColor('red'));
+      canvases.circle.add(new Circle(new Point(60, 90), 20).setFillColor('red').setLineDash([5, 9]));
       // ====================
 
       canvases.circularSector.listen('click');
@@ -69,7 +69,7 @@
 
       canvases.line.add(new Line(new Point(0, 0), new Point(30, 30)));
       canvases.line.add(new Line(new Point(0, 50), new Point(10, 50)).setStrokeColor('green').setLineDash([15, 5]));
-      canvases.line.add(new Line(new Point(50, 50), new Point(50, 0)).setStrokeColor('blue'));
+      canvases.line.add(new Line(new Point(50, 50), new Point(50, 0)).setStrokeColor('blue').setLineWidth(3));
       canvases.line.add(new Line(new Point(30, 50), new Point(50, 30)).setStrokeColor('red'));
       // ====================
 
@@ -150,26 +150,30 @@
     <style>
       canvas {
         border:2px solid #666;
+        display: block;
+      }
+      .c-container {
+        display: inline-block;
       }
     </style>
   </head>
   <body>
-    <canvas id="bezier" width="200" height="200"></canvas>
-    <canvas id="circle" width="200" height="200"></canvas>
-    <canvas id="circularSector" width="200" height="200"></canvas>
-    <canvas id="donut" width="200" height="200"></canvas>
-    <canvas id="graph" width="200" height="200"></canvas>
-    <canvas id="group" width="200" height="200"></canvas>
-    <canvas id="image" width="200" height="200"></canvas>
-    <canvas id="image2" width="200" height="200"></canvas>
-    <canvas id="line" width="200" height="200"></canvas>
-    <canvas id="point" width="200" height="200"></canvas>
-    <canvas id="polygon" width="200" height="200"></canvas>
-    <canvas id="polygon2" width="200" height="200"></canvas>
-    <canvas id="quadrilateral" width="200" height="200"></canvas>
-    <canvas id="rect" width="200" height="200"></canvas>
-    <canvas id="segment" width="200" height="200"></canvas>
-    <canvas id="text" width="200" height="200"></canvas>
-    <canvas id="triangle" width="200" height="200"></canvas>
+    <div class="c-container">bezier<canvas id="bezier" width="200" height="200"></canvas></div>
+    <div class="c-container">circle<canvas id="circle" width="200" height="200"></canvas></div>
+    <div class="c-container">circular sector<canvas id="circularSector" width="200" height="200"></canvas></div>
+    <div class="c-container">donut<canvas id="donut" width="200" height="200"></canvas></div>
+    <div class="c-container">graph<canvas id="graph" width="200" height="200"></canvas></div>
+    <div class="c-container">group<canvas id="group" width="200" height="200"></canvas></div>
+    <div class="c-container">image<canvas id="image" width="200" height="200"></canvas></div>
+    <div class="c-container">image2<canvas id="image2" width="200" height="200"></canvas></div>
+    <div class="c-container">line<canvas id="line" width="200" height="200"></canvas></div>
+    <div class="c-container">point<canvas id="point" width="200" height="200"></canvas></div>
+    <div class="c-container">polygon<canvas id="polygon" width="200" height="200"></canvas></div>
+    <div class="c-container">polygon2<canvas id="polygon2" width="200" height="200"></canvas></div>
+    <div class="c-container">quadrilateral<canvas id="quadrilateral" width="200" height="200"></canvas></div>
+    <div class="c-container">rect<canvas id="rect" width="200" height="200"></canvas></div>
+    <div class="c-container">segment<canvas id="segment" width="200" height="200"></canvas></div>
+    <div class="c-container">text<canvas id="text" width="200" height="200"></canvas></div>
+    <div class="c-container">triangle<canvas id="triangle" width="200" height="200"></canvas></div>
   </body>
 </html>
