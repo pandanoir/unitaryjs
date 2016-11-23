@@ -54,7 +54,7 @@ and require unitaryjs.
 
 ```js
 const Unitary = require('unitaryjs');
-Unitary.Vector(1, 1);
+new Unitary.Vector(1, 1);
 ```
 
 ## Browser
