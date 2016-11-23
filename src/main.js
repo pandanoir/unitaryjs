@@ -1,5 +1,6 @@
 "use strict";
 import UnitaryObject from './classes/unitaryobject.js';
+import ContouredObject from './classes/contouredobject.js';
 
 import BezierCurve from './classes/beziercurve.js';
 import Circle from './classes/circle.js';
@@ -19,27 +20,26 @@ import Triangle from './classes/triangle.js';
 import {BaseVector, Vector, Vector3D} from './classes/vector.js';
 import {version} from '../package.json';
 
-const distance = (A, B) => {
-    let res;
-    if (A instanceof Point && B instanceof Point) {
-        return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
-    }
-    if (A instanceof Point && B instanceof Line) {
-        res = B.a * A.x + B.b * A.y + B.c;
-        if (res < 0) {
-            res *= -1;
-        }
-        res /= Math.sqrt(B.a * B.a + B.b * B.b);
-        return res;
-    }
-    if (A instanceof Line && B instanceof Point) {
-        return distance(B, A);
-    }
-}
-
 export default {
-    distance: distance,
+    distance: (A, B) => {
+        let res;
+        if (A instanceof Point && B instanceof Point) {
+            return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
+        }
+        if (A instanceof Point && B instanceof Line) {
+            res = B.a * A.x + B.b * A.y + B.c;
+            if (res < 0) {
+                res *= -1;
+            }
+            res /= Math.sqrt(B.a * B.a + B.b * B.b);
+            return res;
+        }
+        if (A instanceof Line && B instanceof Point) {
+            return distance(B, A);
+        }
+    },
     UnitaryObject: UnitaryObject,
+    ContouredObject: ContouredObject,
     BaseVector: BaseVector,
     BezierCurve: BezierCurve,
     Circle: Circle,
