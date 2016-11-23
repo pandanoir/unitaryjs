@@ -1,8 +1,11 @@
 export default function(obj) {
-    const leftBorder = new Unitary.Segment(new Unitary.Point(0, 0), new Unitary.Point(0, this.canvasHeight));
-    const rightBorder = new Unitary.Segment(new Unitary.Point(this.canvasWidth, 0), new Unitary.Point(this.canvasWidth, this.canvasHeight));
-    const topBorder = new Unitary.Segment(new Unitary.Point(0, 0), new Unitary.Point(this.canvasWidth, 0));
-    const bottomBorder = new Unitary.Segment(new Unitary.Point(0, this.canvasHeight), new Unitary.Point(this.canvasWidth, this.canvasHeight));
+    const S = Unitary.Segment, P = Unitary.Point;
+    const width = this.canvasWidth, height = this.canvasHeight;
+
+    const leftBorder = new S(new P(0, 0), new P(0, height));
+    const rightBorder = new S(new P(width, 0), new P(width, height));
+    const topBorder = new S(new P(0, 0), new P(width, 0));
+    const bottomBorder = new S(new P(0, height), new P(width, height));
 
     let leftEndPoint = null, rightEndPoint = null;
     if (leftBorder.intersects(obj)) leftEndPoint = leftBorder.toLine().getIntersection(obj);
@@ -36,6 +39,7 @@ export default function(obj) {
 
     if (leftEndPoint != null && rightEndPoint != null) {
         this.canvas.beginPath();
+        if (this.canvas.setLineDash) this.canvas.setLineDash(obj.getLineDash());
         this.canvas.moveTo(this.X(leftEndPoint.x), this.Y(leftEndPoint.y));
         this.canvas.lineTo(this.X(rightEndPoint.x), this.Y(rightEndPoint.y));
         this.canvas.stroke();

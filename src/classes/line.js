@@ -9,6 +9,7 @@ export default class Line extends UnitaryObject {
             throw new Error('A equals B. So AB couldn\'t construct line.');
         }
         super();
+        this.lineDash = [];
         this.points = [A, B];
         this.a = B.y - A.y;
         this.b = A.x - B.x;
@@ -71,6 +72,13 @@ export default class Line extends UnitaryObject {
             x = -1 * (this.b * y + this.c) / this.a;
         }
         return new Point(x, y);
+    }
+    getLineDash() {
+        return this.lineDash;
+    }
+    setLineDash(lineDash) {
+        this.lineDash = lineDash;
+        return this;
     }
     equals(CD) {
         if (!super.equals(CD)) {
