@@ -19,5 +19,8 @@ export default class Group extends UnitaryObject {
         }
         return new Group(newGroup);
     }
+    push(...objs) {
+        return new Group(this.group.concat(objs));
+    }
     name() { return 'Group'; }
 }
