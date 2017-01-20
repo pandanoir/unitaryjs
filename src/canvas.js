@@ -16,19 +16,21 @@ import SegmentPainter from './painter/segment.js';
 import TextPainter from './painter/text.js';
 
 class Canvas {
-    constructor(id) {
-        if (document.getElementById(id) === null) {
-            if (document.readyState === 'complete') throw new Error('not found canvas.');
-            this.ready = new Promise(resolve => window.addEventListener('load', resolve));
-        } else {
-            this.ready = Promise.resolve();
-        }
+    constructor(id, width = 300, height = 300) {
+        this.ready = Promise.resolve();
+        if (document.readyState !== 'complete') this.ready = new Promise(resolve => window.addEventListener('load', resolve));
         this.ready.then(() => {
-            const canvas = document.getElementById(id);
-            this.canvas = canvas.getContext('2d');
-            this.element = canvas;
-            this.canvasHeight = canvas.height;
-            this.canvasWidth = canvas.width;
+            if (document.getElementById(id) === null) {
+                const canvas = document.createElement('canvas');
+                canvas.setAttribute('id', id);
+                canvas.width = width;
+                canvas.height = height;
+                this.element = canvas;
+            } else this.element = document.getElementById(id);
+
+            this.canvas = this.element.getContext('2d');
+            this.canvasWidth = this.element.width;
+            this.canvasHeight = this.element.height;
         });
         this.id = id;
         this.objects = [];
