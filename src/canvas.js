@@ -36,6 +36,10 @@ class Canvas {
         this.objects = [];
         this.mode = 'graph';
         this.origin = new Unitary.Point(0, 0);
+        const basicListeners = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'keypress', 'keydown', 'keyup']
+        for (let i = 0, _i = basicListeners.length; i < _i; i++) {
+            this.listen(basicListeners[i]);
+        }
     }
     listen(type) {
         this.ready.then(() => this.element.addEventListener(type, eventTrigger.bind(this), false));
