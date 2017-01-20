@@ -18,7 +18,7 @@ import TextPainter from './painter/text.js';
 class Canvas {
     constructor(id, width = 300, height = 300) {
         this.ready = Promise.resolve();
-        if (document.readyState !== 'complete') this.ready = new Promise(resolve => window.addEventListener('load', resolve));
+        if (document.readyState !== 'complete') this.ready = new Promise(resolve => window.addEventListener('DOMContentLoaded', resolve));
         this.ready.then(() => {
             if (document.getElementById(id) === null) {
                 const canvas = document.createElement('canvas');
