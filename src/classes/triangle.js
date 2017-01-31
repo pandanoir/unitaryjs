@@ -73,6 +73,7 @@ export default class Triangle extends Polygon{
         return S;
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         const newObject = super.move(dx, dy);
         const A = newObject.points[0],
             B = newObject.points[1],
@@ -80,6 +81,7 @@ export default class Triangle extends Polygon{
         return new Triangle(A, B, C);
     }
     rotate(rad, center) {
+        if (rad % (2 * Math.PI) === 0) return this;
         if (typeof center === 'undefined') {
             center = this.getCenter();
         }

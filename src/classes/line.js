@@ -35,6 +35,7 @@ export default class Line extends ContouredObject {
         // a > 0 || a == 0 && b > 0
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
     has(P) {

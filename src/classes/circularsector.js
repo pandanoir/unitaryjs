@@ -13,13 +13,22 @@ export default class CircularSector extends ContouredObject {
         this.anticlockwise = false;
     }
     moveTo(x, y) {
-        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).setStyle(this.style).setAnticlockwise(this.anticlockwise);
+        if (this.center.x === x && this.center.y === y) return this;
+        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle)
+            .setStyle(this.style)
+            .setAnticlockwise(this.anticlockwise);
     }
     move(dx, dy) {
-        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).setStyle(this.style).setAnticlockwise(this.anticlockwise);
+        if (dx === 0 && dy === 0) return this;
+        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle)
+            .setStyle(this.style)
+            .setAnticlockwise(this.anticlockwise);
     }
     rotate(rad) {
-        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).setStyle(this.style).setAnticlockwise(this.anticlockwise);
+        if (rad % (2 * Math.PI) === 0) return this;
+        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad)
+            .setStyle(this.style)
+            .setAnticlockwise(this.anticlockwise);
     }
     equals(C) {
         const angleCompare = (A, B) => (A - B) % (2 * Math.PI) === 0;

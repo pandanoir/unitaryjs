@@ -35,6 +35,7 @@ export default class Text_ extends UnitaryObject {
         return this;
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         const newText = new Text_(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
         if (this.strokesOutline) {
             newText.strokeOutline();

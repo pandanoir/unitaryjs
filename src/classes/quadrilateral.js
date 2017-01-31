@@ -22,6 +22,7 @@ export default class Quadrilateral extends Polygon{
         return S1 + S2;
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         const newObject = super.move(dx, dy);
         const A = newObject.points[0],
             B = newObject.points[1],
@@ -30,6 +31,7 @@ export default class Quadrilateral extends Polygon{
         return new Quadrilateral(A, B, C, D);
     }
     rotate(rad, center) {
+        if (rad % (2 * Math.PI) === 0) return this;
         const newObject = super.rotate(rad, center);
         const A = newObject.points[0],
             B = newObject.points[1],

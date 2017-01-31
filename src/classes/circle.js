@@ -12,9 +12,11 @@ export default class Circle extends ContouredObject {
         this.anticlockwise = false;
     }
     moveTo(x, y) {
+        if (this.center.x === x && this.center.y === y) return this;
         return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     getEquation() {

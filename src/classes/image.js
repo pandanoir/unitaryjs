@@ -48,6 +48,7 @@ export default class Image_ extends UnitaryObject {
         return this.src === B.src && this.dx === B.dx && this.dy === B.dy && this.dw === B.dw && this.dh === B.dh && this.sw === B.sw && this.sh === B.sh && this.sx === B.sx && this.sy === B.sy;
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         let newImage = new Image_(this.src, this.startPoint.move(dx, dy));
         if (this.sx !== null) {
             newImage = newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);

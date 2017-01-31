@@ -12,6 +12,7 @@ export default class Segment extends ContouredObject {
         this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
     }
     has(P) {

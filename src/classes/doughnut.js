@@ -10,9 +10,11 @@ export default class Doughnut extends ContouredObject {
         this.outerRadius = outerRadius;
     }
     moveTo(x, y) {
+        if (this.center.x === x && this.center.y === y) return this;
         return new Doughnut(this.center.moveTo(x, y), this.innerRadius, this.outerRadius).setStyle(this.style);
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         return new Doughnut(this.center.move(dx, dy), this.innerRadius, this.outerRadius).setStyle(this.style);
     }
     equals(C) {

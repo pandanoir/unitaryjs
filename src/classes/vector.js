@@ -40,6 +40,7 @@ class BaseVector extends UnitaryObject {
         return product;
     }
     multiple(k) {
+        if (k === 1) return this;
         const component = new Array(this.component.length);
         for (let i = 0, _i = this.component.length; i < _i; i = 0|i+1 ) component[i] = k * this.component[i];
         return new BaseVector(component);
@@ -106,7 +107,10 @@ class Vector extends BaseVector{
     toPoint() {
         return new Point(this.x, this.y);
     }
-    move(dx, dy) { return new Vector(this.x + dx, this.y + dy); }
+    move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
+        return new Vector(this.x + dx, this.y + dy);
+    }
     name() { return 'Vector'; }
 }
 class Vector3D extends BaseVector{
@@ -135,7 +139,10 @@ class Vector3D extends BaseVector{
         const newVector = super.multiple(k);
         return new Vector3D(newVector.component[0], newVector.component[1], newVector.component[2]);
     }
-    move(dx, dy, dz) { return new Vector3D(this.x + dx, this.y + dy, this.z + dz); }
+    move(dx, dy, dz) {
+        if (dx === 0 && dy === 0 && dz === 0) return this;
+        return new Vector3D(this.x + dx, this.y + dy, this.z + dz);
+    }
     name() { return 'Vector3D'; }
 }
 

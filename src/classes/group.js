@@ -13,6 +13,7 @@ export default class Group extends UnitaryObject {
         return false;
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         const newGroup = this.group.concat();
         for (let i = 0, _i = newGroup.length; i < _i; i = 0|i+1) {
             if (newGroup[i].move) newGroup[i] = newGroup[i].move(dx, dy);

@@ -20,6 +20,7 @@ export default class BezierCurve extends ContouredObject {
         return this;
     }
     move(dx, dy) {
+        if (dx === 0 && dy === 0) return this;
         const newBezier = this.controlPoints.concat();
         for (let i = 0, _i = newBezier.length; i < _i; i = 0|i+1) {
             newBezier[i] = newBezier[i].move(dx, dy);
