@@ -36,7 +36,7 @@ class Canvas {
         this.objects = [];
         this.mode = 'graph';
         this.origin = new Unitary.Point(0, 0);
-        const basicListeners = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'keypress', 'keydown', 'keyup']
+        const basicListeners = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'keypress', 'keydown', 'keyup'];
         for (let i = 0, _i = basicListeners.length; i < _i; i++) {
             this.listen(basicListeners[i]);
         }

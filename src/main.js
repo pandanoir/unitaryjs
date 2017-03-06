@@ -18,7 +18,7 @@ import Segment from './classes/segment.js';
 import Text_ from './classes/text.js';
 import Triangle from './classes/triangle.js';
 import {BaseVector, Vector, Vector3D} from './classes/vector.js';
-import {version} from '../package.json';
+import {version as VERSION} from '../package.json';
 
 export default {
     distance: (A, B) => {
@@ -38,28 +38,28 @@ export default {
             return distance(B, A);
         }
     },
-    UnitaryObject: UnitaryObject,
-    ContouredObject: ContouredObject,
-    BaseVector: BaseVector,
-    BezierCurve: BezierCurve,
-    Circle: Circle,
-    CircularSector: CircularSector,
-    Doughnut: Doughnut,
+    UnitaryObject,
+    ContouredObject,
+    BaseVector,
+    BezierCurve,
+    Circle,
+    CircularSector,
+    Doughnut,
     Donut: Doughnut,
-    Graph: Graph,
-    Group: Group,
+    Graph,
+    Group,
     Image: Image_,
-    Line: Line,
-    Point: Point,
-    Polygon: Polygon,
-    Quadrilateral: Quadrilateral,
-    Rect: Rect,
-    Segment: Segment,
+    Line,
+    Point,
+    Polygon,
+    Quadrilateral,
+    Rect,
+    Segment,
     Text: Text_,
-    Triangle: Triangle,
-    Vector3D: Vector3D,
-    Vector: Vector,
+    Triangle,
+    Vector3D,
+    Vector,
     XAxis: new Line(new Point(0, 0), new Point(1, 0)),
     YAxis: new Line(new Point(0, 0), new Point(0, 1)),
-    VERSION: version
+    VERSION
 };
