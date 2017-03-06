@@ -6,8 +6,7 @@ export default function(obj) {
 
     const points = [];
     for (let x = start; x <= end; x = 0|x+1) {
-        const slope = new Unitary.Vector(x, obj.f(x / obj.scale) * obj.scale)
-            .subtract(new Unitary.Vector(x + 1, obj.f((x + 1) / obj.scale) * obj.scale)).theta / (2 * Math.PI) * 360;
+        const slope = new Unitary.Vector(1, (obj.f((x + 1) / obj.scale) - obj.f(x / obj.scale)) * obj.scale).theta / (2 * Math.PI) * 360;
 
         if (!Number.isNaN(obj.f(x / obj.scale))) points[points.length] = new Unitary.Point(x, obj.f(x / obj.scale) * obj.scale);
         if (45 <= slope && slope <= 135 || 225 <= slope && slope <= 315) {
