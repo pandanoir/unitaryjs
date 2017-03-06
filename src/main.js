@@ -5,6 +5,7 @@ import ContouredObject from './classes/contouredobject.js';
 import BezierCurve from './classes/beziercurve.js';
 import Circle from './classes/circle.js';
 import CircularSector from './classes/circularsector.js';
+import Curve from './classes/curve.js';
 import Doughnut from './classes/doughnut.js';
 import Graph from './classes/graph.js';
 import Group from './classes/group.js';
@@ -44,6 +45,7 @@ export default {
     BezierCurve,
     Circle,
     CircularSector,
+    Curve,
     Doughnut,
     Donut: Doughnut,
     Graph,

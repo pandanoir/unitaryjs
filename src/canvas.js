@@ -5,6 +5,7 @@ const errorCatcher = e => {
 import BezierCurvePainter from './painter/beziercurve.js';
 import CirclePainter from './painter/circle.js';
 import CircularSectorPainter from './painter/circularsector.js';
+import CurvePainter from './painter/curve.js';
 import DoughnutPainter from './painter/doughnut.js';
 import GraphPainter from './painter/graph.js';
 import GroupPainter from './painter/group.js';
@@ -180,6 +181,7 @@ Canvas.painter = {};
 Canvas.painter.BezierCurve = BezierCurvePainter;
 Canvas.painter.Circle = CirclePainter;
 Canvas.painter.CircularSector = CircularSectorPainter;
+Canvas.painter.Curve = CurvePainter;
 Canvas.painter.Doughnut = DoughnutPainter;
 Canvas.painter.Graph = GraphPainter;
 Canvas.painter.Group = GroupPainter;

@@ -1,7 +1,7 @@
-const {BezierCurve, Circle, CircularSector, Donut, Graph, Group, Image: Image_, Line, Point, Polygon, Quadrilateral, Rect, Segment, Text: Text_, Triangle} = Unitary;
+const {BezierCurve,Circle, CircularSector, Curve, Donut, Graph, Group, Image: Image_, Line, Point, Polygon, Quadrilateral, Rect, Segment, Text: Text_, Triangle, XAxis, YAxis} = Unitary;
 
 const canvases = {};
-for (const name of ['bezier', 'circle', 'circularSector', 'donut', 'graph', 'group', 'image', 'image2', 'line', 'point', 'polygon', 'polygon2', 'quadrilateral', 'rect', 'segment', 'text', 'triangle']) {
+for (const name of ['bezier', 'circle', 'circularSector', 'curve', 'donut', 'graph', 'group', 'image', 'image2', 'line', 'point', 'polygon', 'polygon2', 'quadrilateral', 'rect', 'segment', 'text', 'triangle']) {
     canvases[name] = new Canvas(name);
 }
 
@@ -18,6 +18,21 @@ canvases.circularSector.listen('click');
 canvases.circularSector.add(new CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', () => console.log('click')));
 canvases.circularSector.add(new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
 canvases.circularSector.add(new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
+// ====================
+
+{
+    const scale = 10;
+    const a = 3;
+    const cos = Math.cos.bind(Math), sin = Math.sin.bind(Math);
+    canvases.curve.origin = new Point(100, 100);
+    canvases.curve.add(XAxis);
+    canvases.curve.add(YAxis);
+    canvases.curve.add(new Curve(theta => a * (1 + cos(theta)) * cos(theta), theta => a * (1 + cos(theta)) * sin(theta), scale));
+    canvases.curve.add(new Text_('1', new Point(scale, 6)));
+    canvases.curve.add(new Rect(new Point(scale, 0), new Point(scale - 1, 5)).setStrokeColor('transparent').setFillColor('#000'));
+    canvases.curve.add(new Text_('1', new Point(6, scale)));
+    canvases.curve.add(new Rect(new Point(0, scale), new Point(5, scale - 1)).setStrokeColor('transparent').setFillColor('#000'));
+}
 // ====================
 
 canvases.donut.add(new Donut(new Point(50, 50), 30, 40));
@@ -70,7 +85,6 @@ canvases.point.add(new Point(30, 30).setFillColor('#f00'));
 canvases.point.add(new Point(50, 30).setFillColor('#f00'));
 // ====================
 
-canvases.polygon.listen('click');
 canvases.polygon.add(new Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', () => {
     canvases.polygon.clear();
     canvases.polygon.objects[0] = canvases.polygon.objects[0].setFillColor('black');
