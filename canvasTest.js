@@ -5,47 +5,61 @@ for (const name of ['bezier', 'circle', 'circularSector', 'curve', 'donut', 'gra
     canvases[name] = new Canvas(name);
 }
 
-canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(30, 90), new Point(70, 90), new Point(90, 10)).setLineDash([5, 8]));
-canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(50, 90), new Point(90, 10)));
-canvases.bezier.add(new BezierCurve(new Point(10, 10), new Point(10, 90), new Point(50, 90), new Point(90, 90), new Point(90, 180)).setLineDash([5, 8]));
+canvases.bezier.add(
+    new BezierCurve(new Point(10, 10), new Point(30, 90), new Point(70, 90), new Point(90, 10)).setLineDash([5, 8]),
+    new BezierCurve(new Point(10, 10), new Point(50, 90), new Point(90, 10)),
+    new BezierCurve(new Point(10, 10), new Point(10, 90), new Point(50, 90), new Point(90, 90), new Point(90, 180)).setLineDash([5, 8])
+);
 // ====================
 
-canvases.circle.add(new Circle(new Point(30, 30), 30));
-canvases.circle.add(new Circle(new Point(60, 90), 20).setFillColor('red').setLineDash([5, 9]));
+canvases.circle.add(
+    new Circle(new Point(30, 30), 30),
+    new Circle(new Point(60, 90), 20).setFillColor('red').setLineDash([5, 9])
+);
 // ====================
 
 canvases.circularSector.listen('click');
-canvases.circularSector.add(new CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', () => console.log('click')));
-canvases.circularSector.add(new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'));
-canvases.circularSector.add(new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue'));
+canvases.circularSector.add(
+    new CircularSector(new Point(30, 30), 30, Math.PI / 2).on('click', () => console.log('click')),
+    new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).move(50, 30).setFillColor('red'),
+    new CircularSector(new Point(30, 30), 30, Math.PI / 2 * 3).setAnticlockwise(true).move(100, 30).setFillColor('blue')
+);
 // ====================
 
 {
     const scale = 10;
     const a = 3;
+    const r = 0.5;
     const cos = Math.cos.bind(Math), sin = Math.sin.bind(Math);
     canvases.curve.origin = new Point(100, 100);
-    canvases.curve.add(XAxis);
-    canvases.curve.add(YAxis);
-    canvases.curve.add(new Curve(theta => a * (1 + cos(theta)) * cos(theta), theta => a * (1 + cos(theta)) * sin(theta), scale));
-    canvases.curve.add(new Text_('1', new Point(scale, 6)));
-    canvases.curve.add(new Rect(new Point(scale, 0), new Point(scale - 1, 5)).setStrokeColor('transparent').setFillColor('#000'));
-    canvases.curve.add(new Text_('1', new Point(6, scale)));
-    canvases.curve.add(new Rect(new Point(0, scale), new Point(5, scale - 1)).setStrokeColor('transparent').setFillColor('#000'));
+    canvases.curve.add(
+        XAxis,
+        YAxis,
+        new Curve(theta => a * (1 + cos(theta)) * cos(theta), theta => a * (1 + cos(theta)) * sin(theta), scale),
+        new Curve(theta => r * cos(theta) * theta, theta => r * sin(theta) * theta, scale).setRange(0, 8 * Math.PI),
+        new Text_('1', new Point(scale, 6)),
+        new Rect(new Point(scale, 0), new Point(scale - 1, 5)).setStrokeColor('transparent').setFillColor('#000'),
+        new Text_('1', new Point(6, scale)),
+        new Rect(new Point(0, scale), new Point(5, scale - 1)).setStrokeColor('transparent').setFillColor('#000')
+    );
 }
 // ====================
 
-canvases.donut.add(new Donut(new Point(50, 50), 30, 40));
-canvases.donut.add(new Donut(new Point(50, 50), 30, 40).moveX(40, 0).setFillColor('red'));
-canvases.donut.add(new Donut(new Point(50, 50), 30, 40).moveX(20, 0).setFillColor('blue'));
+canvases.donut.add(
+    new Donut(new Point(50, 50), 30, 40),
+    new Donut(new Point(50, 50), 30, 40).moveX(40, 0).setFillColor('red'),
+    new Donut(new Point(50, 50), 30, 40).moveX(20, 0).setFillColor('blue')
+);
 // ====================
 
-canvases.graph.add(new Graph(x => x * x, 30));
-canvases.graph.add(new Graph(x => Math.log(x), 30));
-canvases.graph.add(new Text_('1', new Point(27, 6)));
-canvases.graph.add(new Rect(new Point(30, 0), new Point(29, 5)).setStrokeColor('transparent').setFillColor('#000'));
-canvases.graph.add(new Text_('1', new Point(6, 26)));
-canvases.graph.add(new Rect(new Point(0, 30), new Point(5, 29)).setStrokeColor('transparent').setFillColor('#000'));
+canvases.graph.add(
+    new Graph(x => x * x, 30),
+    new Graph(x => Math.log(x), 30),
+    new Text_('1', new Point(27, 6)),
+    new Rect(new Point(30, 0), new Point(29, 5)).setStrokeColor('transparent').setFillColor('#000'),
+    new Text_('1', new Point(6, 26)),
+    new Rect(new Point(0, 30), new Point(5, 29)).setStrokeColor('transparent').setFillColor('#000')
+);
 // ====================
 
 const starTriangle = new Triangle(new Point(0, 0), new Point(30, 0), new Point(15, 15 * Math.sqrt(3)));
@@ -54,8 +68,7 @@ const images = new Group([
     new Image_('logo.png', new Point(0, 180)),
     new Image_('logo.png', new Point(20, 160))
 ]);
-canvases.group.add(star);
-canvases.group.add(images);
+canvases.group.add(star, images);
 // ====================
 
 const logoImage = new Image_('logo.png', new Point(0, 0)),
@@ -63,26 +76,26 @@ const logoImage = new Image_('logo.png', new Point(0, 0)),
     logoTextBackground = new Rect(new Point(0, 0),new Point(140, 60)).setFillColor('#c00');
 
 canvases.image.mode = 'normal';
-canvases.image.add(logoImage);
-canvases.image.add(logoTextBackground);
-canvases.image.add(logoText);
+canvases.image.add(logoImage, logoTextBackground, logoText);
 // ====================
 
 canvases.image2.mode = 'normal';
-canvases.image2.add(logoTextBackground);
-canvases.image2.add(logoText);
-canvases.image2.add(logoImage);
+canvases.image2.add(logoTextBackground, logoText, logoImage);
 // ====================
 
-canvases.line.add(new Line(new Point(0, 0), new Point(30, 30)));
-canvases.line.add(new Line(new Point(0, 50), new Point(10, 50)).setStrokeColor('green').setLineDash([15, 5]));
-canvases.line.add(new Line(new Point(50, 50), new Point(50, 0)).setStrokeColor('blue').setLineWidth(3));
-canvases.line.add(new Line(new Point(30, 50), new Point(50, 30)).setStrokeColor('red'));
+canvases.line.add(
+    new Line(new Point(0, 0), new Point(30, 30)),
+    new Line(new Point(0, 50), new Point(10, 50)).setStrokeColor('green').setLineDash([15, 5]),
+    new Line(new Point(50, 50), new Point(50, 0)).setStrokeColor('blue').setLineWidth(3),
+    new Line(new Point(30, 50), new Point(50, 30)).setStrokeColor('red')
+);
 // ====================
 
-canvases.point.add(new Line(new Point(30, 30), new Point(50, 50)));
-canvases.point.add(new Point(30, 30).setFillColor('#f00'));
-canvases.point.add(new Point(50, 30).setFillColor('#f00'));
+canvases.point.add(
+    new Line(new Point(30, 30), new Point(50, 50)),
+    new Point(30, 30).setFillColor('#f00'),
+    new Point(50, 30).setFillColor('#f00')
+);
 // ====================
 
 canvases.polygon.add(new Polygon(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10), new Point(50, 0)).on('click', () => {
@@ -102,25 +115,33 @@ canvases.polygon2.add(new Polygon(new Point(10, 10), new Point(30, 30), new Poin
 
 const quadrilateral = new Quadrilateral(new Point(70, 19), new Point(40, 50), new Point(70, 90), new Point(120, 50));
 
-canvases.quadrilateral.add(new Quadrilateral(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10)));
-canvases.quadrilateral.add(quadrilateral);
-canvases.quadrilateral.add(quadrilateral.move(30, 0));
-canvases.quadrilateral.add(quadrilateral.move(0, 50));
+canvases.quadrilateral.add(
+    new Quadrilateral(new Point(10, 10), new Point(10, 50), new Point(30, 30), new Point(100, 10)),
+    quadrilateral,
+    quadrilateral.move(30, 0),
+    quadrilateral.move(0, 50)
+);
 // ====================
 
-canvases.rect.add(new Rect(new Point(10, 10), new Point(100, 40)));
-canvases.rect.add(new Rect(new Point(20, 50), new Point(110, 80)).setFillColor('#000'));
+canvases.rect.add(
+    new Rect(new Point(10, 10), new Point(100, 40)),
+    new Rect(new Point(20, 50), new Point(110, 80)).setFillColor('#000')
+);
 // ====================
 
-canvases.segment.add(new Line(new Point(0, 0), new Point(30, 30)));
-canvases.segment.add(new Line(new Point(0, 50), new Point(10, 50)));
-canvases.segment.add(new Line(new Point(50, 50), new Point(50, 0)));
-canvases.segment.add(new Line(new Point(30, 50), new Point(50, 30)));
+canvases.segment.add(
+    new Line(new Point(0, 0), new Point(30, 30)),
+    new Line(new Point(0, 50), new Point(10, 50)),
+    new Line(new Point(50, 50), new Point(50, 0)),
+    new Line(new Point(30, 50), new Point(50, 30))
+);
 
-canvases.segment.add(new Segment(new Point(0, 0), new Point(30, 30)).setStrokeColor('#f00'));
-canvases.segment.add(new Segment(new Point(0, 50), new Point(10, 50)).setStrokeColor('#f00'));
-canvases.segment.add(new Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'));
-canvases.segment.add(new Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00'));
+canvases.segment.add(
+    new Segment(new Point(0, 0), new Point(30, 30)).setStrokeColor('#f00'),
+    new Segment(new Point(0, 50), new Point(10, 50)).setStrokeColor('#f00'),
+    new Segment(new Point(50, 50), new Point(50, 0)).setStrokeColor('#f00'),
+    new Segment(new Point(30, 50), new Point(50, 30)).setStrokeColor('#f00')
+);
 // ====================
 
 canvases.text.ready.then(() => {
@@ -143,10 +164,12 @@ canvases.text.ready.then(() => {
 // ====================
 
 const triangle = new Triangle(new Point(10, 10), new Point(100, 40), new Point(50, 60));
-canvases.triangle.add(triangle);
-canvases.triangle.add(triangle.getCircumcircle());
-canvases.triangle.add(triangle.getIncircle());
-canvases.triangle.add(triangle.move(40, 60).setFillColor('#f90'));
+canvases.triangle.add(
+    triangle,
+    triangle.getCircumcircle(),
+    triangle.getIncircle(),
+    triangle.move(40, 60).setFillColor('#f90')
+);
 // ====================
 
 for (const canvas of Object.values(canvases)) {

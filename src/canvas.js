@@ -45,8 +45,8 @@ class Canvas {
     listen(type) {
         this.ready.then(() => this.element.addEventListener(type, eventTrigger.bind(this), false));
     }
-    add(obj) {
-        this.objects[this.objects.length] = obj;
+    add(...obj) {
+        this.objects.push(...obj);
     }
     removeAllObjects() {
         this.objects = [];
