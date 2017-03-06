@@ -2,10 +2,10 @@ export default function(obj) {
     const S = Unitary.Segment, P = Unitary.Point;
     const width = this.canvasWidth, height = this.canvasHeight;
 
-    const leftBorder = new S(new P(0, 0), new P(0, height));
-    const rightBorder = new S(new P(width, 0), new P(width, height));
-    const topBorder = new S(new P(0, 0), new P(width, 0));
-    const bottomBorder = new S(new P(0, height), new P(width, height));
+    const leftBorder = new S(new P(0, 0), new P(0, height)).move(-this.origin.x, -this.origin.y);
+    const rightBorder = new S(new P(width, 0), new P(width, height)).move(-this.origin.x, -this.origin.y);
+    const topBorder = new S(new P(0, 0), new P(width, 0)).move(-this.origin.x, -this.origin.y);
+    const bottomBorder = new S(new P(0, height), new P(width, height)).move(-this.origin.x, -this.origin.y);
 
     let leftEndPoint = null, rightEndPoint = null;
     if (leftBorder.intersects(obj)) leftEndPoint = leftBorder.toLine().getIntersection(obj);
