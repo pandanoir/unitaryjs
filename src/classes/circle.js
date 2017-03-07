@@ -20,12 +20,7 @@ export default class Circle extends ContouredObject {
         return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
     }
     getEquation() {
-        let res = '(x';
-        if (this.center.x !== 0) res += sign(-this.center.x) + abs(this.center.x);
-        res += ')^2+(y';
-        if (this.center.y !== 0) res += sign(-this.center.y) + abs(this.center.y);
-        res += ')^2=' + this.r + '^2';
-        return res;
+        return `(x${this.center.x === 0 ? '' : sign(-this.center.x) + abs(this.center.x)})^2+(y${this.center.y === 0 ? '' : sign(-this.center.y) + abs(this.center.y)})^2=${this.r}^2`
     }
     equals(C) {
         if (!super.equals(C)) {
