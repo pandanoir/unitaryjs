@@ -57,6 +57,48 @@ describe('Unitary', () => {
             assert.equal(new CircularSector(A, 3).name(), 'CircularSector');
         });
     });
+    describe('Ellipse', () => {
+        const rad = Math.PI / 2;
+        const A = new Point(3, 3);
+        it('moveTo', () => {
+            assert.ok(new Ellipse(A, 3, 4).moveTo(0, 0).equals(new Ellipse(new Point(0, 0), 3, 4)));
+        });
+        it('move', () => {
+            assert.ok(new Ellipse(A, 3, 4).move(109, 31).equals(new Ellipse(new Point(112, 34), 3, 4)));
+        });
+        it('rotate', () => {
+            const ellipse1 = new Ellipse(A, 3, 4);
+            ellipse1.angle = 3;
+            assert.ok(new Ellipse(A, 3, 4).rotate(3).equals(ellipse1));
+        })
+        it('has', () => {
+            const ellipse1 = new Ellipse(A, 3, 4);
+            const ellipse2 = ellipse1.rotate(1 / 2 * Math.PI);
+            assert.ok(!ellipse1.has(new Point(3, 3).move(3, 3)));
+            assert.ok(!ellipse1.has(new Point(3, 4).move(3, 3)));
+            assert.ok(!ellipse1.has(new Point(4, 3).move(3, 3)));
+            assert.ok(ellipse1.has(new Point(2, 0).move(3, 3)));
+            assert.ok(ellipse1.has(new Point(3, 0).move(3, 3)));
+            assert.ok(!ellipse1.has(new Point(4, 0).move(3, 3)));
+            assert.ok(ellipse1.has(new Point(0, 2).move(3, 3)));
+            assert.ok(ellipse1.has(new Point(0, 3).move(3, 3)));
+            assert.ok(ellipse1.has(new Point(0, 4).move(3, 3)));
+
+            assert.ok(!ellipse2.has(new Point(3, 3).move(3, 3)));
+            assert.ok(!ellipse2.has(new Point(3, 4).move(3, 3)));
+            assert.ok(!ellipse2.has(new Point(4, 3).move(3, 3)));
+            assert.ok(ellipse2.has(new Point(2, 0).move(3, 3)));
+            assert.ok(ellipse2.has(new Point(2, 0).move(3, 3)));
+            assert.ok(ellipse2.has(new Point(3, 0).move(3, 3)));
+            assert.ok(ellipse2.has(new Point(4, 0).move(3, 3)));
+            assert.ok(ellipse2.has(new Point(0, 2).move(3, 3)));
+            assert.ok(ellipse2.has(new Point(0, 3).move(3, 3)));
+            assert.ok(!ellipse2.has(new Point(0, 4).move(3, 3)));
+        });
+        it('name', () => {
+            assert.equal(new Ellipse(A, 3, 4).name(), 'Ellipse');
+        });
+    });
     describe('Graph', () => {
     });
     describe('Group', () => {

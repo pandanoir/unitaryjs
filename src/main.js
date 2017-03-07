@@ -7,6 +7,7 @@ import Circle from './classes/circle.js';
 import CircularSector from './classes/circularsector.js';
 import Curve from './classes/curve.js';
 import Doughnut from './classes/doughnut.js';
+import Ellipse from './classes/ellipse.js';
 import Graph from './classes/graph.js';
 import Group from './classes/group.js';
 import Image_ from './classes/image.js';
@@ -48,6 +49,7 @@ export default {
     Curve,
     Doughnut,
     Donut: Doughnut,
+    Ellipse,
     Graph,
     Group,
     Image: Image_,

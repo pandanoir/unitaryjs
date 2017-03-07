@@ -1,7 +1,7 @@
-const {BezierCurve,Circle, CircularSector, Curve, Donut, Graph, Group, Image: Image_, Line, Point, Polygon, Quadrilateral, Rect, Segment, Text: Text_, Triangle, XAxis, YAxis} = Unitary;
+const {BezierCurve,Circle, CircularSector, Curve, Donut, Ellipse, Graph, Group, Image: Image_, Line, Point, Polygon, Quadrilateral, Rect, Segment, Text: Text_, Triangle, XAxis, YAxis} = Unitary;
 
 const canvases = {};
-for (const name of ['bezier', 'circle', 'circularSector', 'curve', 'donut', 'graph', 'group', 'image', 'image2', 'line', 'point', 'polygon', 'polygon2', 'quadrilateral', 'rect', 'segment', 'text', 'triangle']) {
+for (const name of ['bezier', 'circle', 'circularSector', 'curve', 'donut', 'ellipse', 'graph', 'group', 'image', 'image2', 'line', 'point', 'polygon', 'polygon2', 'quadrilateral', 'rect', 'segment', 'text', 'triangle']) {
     canvases[name] = new Canvas(name);
 }
 
@@ -50,6 +50,16 @@ canvases.donut.add(
     new Donut(new Point(50, 50), 30, 40).moveX(40, 0).setFillColor('red'),
     new Donut(new Point(50, 50), 30, 40).moveX(20, 0).setFillColor('blue')
 );
+// ====================
+const ellipse1 = new Ellipse(new Point(50, 50), 30, 40).rotate(1/2 * Math.PI).setStrokeColor('blue');
+const ellipse2 = new Ellipse(new Point(50, 50), 30, 40).move(0, 30).rotate(1/2 * Math.PI);
+const ellipse3 = new Ellipse(new Point(50, 50), 40, 30).move(30, 0).setFillColor('yellow');
+const ellipse4 = new Ellipse(new Point(50, 50), 40, 40).move(30, 30).setFillColor('red');
+canvases.ellipse.add(
+    new Donut(new Point(130, 50), 20, 30),
+    ellipse1, ellipse2, ellipse3, ellipse4,
+    new Donut(new Point(130, 130), 20, 30)
+    );
 // ====================
 
 canvases.graph.add(
