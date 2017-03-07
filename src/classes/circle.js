@@ -32,6 +32,7 @@ export default class Circle extends ContouredObject {
         return new Vector(P).subtract(new Vector(this.center)).abs() <= this.r;
     }
     setAnticlockwise(anticlockwise) {
+        if (this.anticlockwise === anticlockwise) return this;
         const newCircle = new Circle(this.center, this.r).setStyle(this.style);
         newCircle.anticlockwise = anticlockwise;
         return newCircle;

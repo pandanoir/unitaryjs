@@ -44,6 +44,7 @@ export default class CircularSector extends ContouredObject {
             theta <= this.endAngle;
     }
     setAnticlockwise(anticlockwise) {
+        if (this.anticlockwise === anticlockwise) return this;
         const newCircularSector =  new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
         newCircularSector.anticlockwise = anticlockwise;
         return newCircularSector;
