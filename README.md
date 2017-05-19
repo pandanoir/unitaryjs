@@ -6,7 +6,7 @@
 
 UnitaryJS is a library for handling canvas with objects.
 
-Demo: [Demo](http://pandanoir.web.fc2.com/unitaryjs/sample.html)
+Demo: [Demo](http://pandanoir.net/unitaryjs/sample.html)
 
 ## Wiki
 [wiki](http://pandanoir.github.io/unitaryjs)
