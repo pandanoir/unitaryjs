@@ -52,6 +52,8 @@ export default class Image_ extends UnitaryObject {
         let newImage = new Image_(this.src, this.startPoint.move(dx, dy));
         if (this.sx !== null) {
             newImage = newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
+        } else if (this.dw !== null) {
+            newImage = newImage.resize(this.dw, this.dh);
         }
         return newImage;
     }
