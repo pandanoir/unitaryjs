@@ -5,13 +5,13 @@ export default class CircularSector extends ContouredObject {
     constructor(center, radius, endAngle, startAngle = 0) {
         super();
         this.center = center;
-        this.Origin = center;
-        this.radius = radius;
         this.r = radius;
         this.endAngle = endAngle;
         this.startAngle = startAngle;
         this.anticlockwise = false;
     }
+    get Origin() { return this.center; }
+    get radius() { return this.r; }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
         return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle)

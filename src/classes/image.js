@@ -6,8 +6,6 @@ export default class Image_ extends UnitaryObject {
         super();
         this.src = src;
         this.startPoint = startPoint;
-        this.dx = startPoint.x;
-        this.dy = startPoint.y;
         this.dw = null;
         this.dh = null;
         this.sw = null;
@@ -15,8 +13,10 @@ export default class Image_ extends UnitaryObject {
         this.sx = null;
         this.sy = null;
     }
+    get dx() { return this.startPoint.x; }
+    get dy() { return this.startPoint.y; }
     clone() {
-        const res = new Image_(this.src, this.startPoint);
+        const res = new Image_(this.src, this.startPoint).setStyle(this.style);
         for (const key of Object.keys(this)) {
             if (key === 'style') continue;
             res[key] = this[key];

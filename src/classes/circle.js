@@ -6,11 +6,11 @@ export default class Circle extends ContouredObject {
     constructor(center, radius) {
         super();
         this.center = center;
-        this.Origin = center;
         this.r = radius;
-        this.radius = radius;
         this.anticlockwise = false;
     }
+    get Origin() { return this.center; }
+    get radius() { return this.r; }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
         return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);

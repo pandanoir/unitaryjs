@@ -5,7 +5,7 @@ import {abs, sign} from '../utility.js';
 export default class Ellipse extends ContouredObject {
     constructor(center, a, b) {
         super();
-        this.center = this.Origin = center;
+        this.center = center;
         this.a = a;
         this.b = b;
         this.majorAxis = 2 * Math.max(a, b);
@@ -13,6 +13,7 @@ export default class Ellipse extends ContouredObject {
         this.anticlockwise = false;
         this.angle = 0;
     }
+    get Origin() { return this.center; }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
         return new Ellipse(this.center.moveTo(x, y), this.a, this.b).setStyle(this.style).setAnticlockwise(this.anticlockwise);
