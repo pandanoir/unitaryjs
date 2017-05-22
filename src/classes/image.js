@@ -15,14 +15,16 @@ export default class Image_ extends UnitaryObject {
         this.sx = null;
         this.sy = null;
     }
-    trim(startPoint, sw, sh, dw = null, dh = null) {
-        const newImage = new Image_(this.src, this.startPoint);
-        if (dw == null) {
-            dw = sw;
+    clone() {
+        const res = new Image_(this.src, this.startPoint);
+        for (const key of Object.keys(this)) {
+            if (key === 'style') continue;
+            res[key] = this[key];
         }
-        if (dh == null) {
-            dh = sh;
-        }
+        return res;
+    }
+    trim(startPoint, sw, sh, dw = sw, dh = sh) {
+        const newImage = this.clone();
         newImage.sx = startPoint.x;
         newImage.sy = startPoint.y;
         newImage.sw = sw;
@@ -32,7 +34,7 @@ export default class Image_ extends UnitaryObject {
         return newImage;
     };
     resize(dw, dh) {
-        const newImage = new Image_(this.src, this.startPoint);
+        const newImage = this.clone();
         newImage.dw = dw;
         newImage.dh = dh;
         newImage.sw = this.sw;
@@ -49,12 +51,8 @@ export default class Image_ extends UnitaryObject {
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        let newImage = new Image_(this.src, this.startPoint.move(dx, dy));
-        if (this.sx !== null) {
-            newImage = newImage.trim(new Point(this.sx, this.sy), this.sw, this.sh, this.dw, this.dh);
-        } else if (this.dw !== null) {
-            newImage = newImage.resize(this.dw, this.dh);
-        }
+        const newImage = this.clone();
+        newImage.startPoint = this.startPoint.move(dx, dy);
         return newImage;
     }
     name() { return 'Image'; }
