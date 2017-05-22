@@ -51,9 +51,9 @@ export default class Image_ extends UnitaryObject {
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const newImage = this.clone();
-        newImage.startPoint = this.startPoint.move(dx, dy);
-        return newImage;
+        const res = this.clone();
+        res.startPoint = this.startPoint.move(dx, dy);
+        return res;
     }
     name() { return 'Image'; }
 }

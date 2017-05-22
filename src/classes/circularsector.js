@@ -12,23 +12,32 @@ export default class CircularSector extends ContouredObject {
     }
     get Origin() { return this.center; }
     get radius() { return this.r; }
+    clone() {
+        const res = new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
+        for (const key of Object.keys(this)) {
+            if (key === 'style') continue;
+            res[key] = this[key];
+        }
+        return res;
+    }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
-        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle)
-            .setStyle(this.style)
-            .setAnticlockwise(this.anticlockwise);
+        const res = this.clone();
+        res.center = this.center.moveTo(x, y);
+        return res;
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle)
-            .setStyle(this.style)
-            .setAnticlockwise(this.anticlockwise);
+        const res = this.clone();
+        res.center = this.center.move(dx, dy);
+        return res;
     }
     rotate(rad) {
         if (rad % (2 * Math.PI) === 0) return this;
-        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad)
-            .setStyle(this.style)
-            .setAnticlockwise(this.anticlockwise);
+        const res = this.clone();
+        res.endAngle += rad;
+        res.startAngle += rad;
+        return res;
     }
     equals(C) {
         const angleCompare = (A, B) => (A - B) % (2 * Math.PI) === 0;
@@ -45,9 +54,9 @@ export default class CircularSector extends ContouredObject {
     }
     setAnticlockwise(anticlockwise) {
         if (this.anticlockwise === anticlockwise) return this;
-        const newCircularSector =  new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
-        newCircularSector.anticlockwise = anticlockwise;
-        return newCircularSector;
+        const res = this.clone();
+        res.anticlockwise = anticlockwise;
+        return res;
     }
     name() { return 'CircularSector'; }
 }

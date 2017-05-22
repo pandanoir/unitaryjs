@@ -11,13 +11,25 @@ export default class Circle extends ContouredObject {
     }
     get Origin() { return this.center; }
     get radius() { return this.r; }
+    clone() {
+        const res = new Circle(this.center, this.r).setStyle(this.style);
+        for (const key of Object.keys(this)) {
+            if (key === 'style') continue;
+            res[key] = this[key];
+        }
+        return res;
+    }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
-        return new Circle(this.center.moveTo(x, y), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
+        const res = this.clone();
+        res.center = this.center.moveTo(x, y);
+        return res;
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        return new Circle(this.center.move(dx, dy), this.r).setStyle(this.style).setAnticlockwise(this.anticlockwise);
+        const res = this.clone();
+        res.center = this.center.move(dx, dy);
+        return res;
     }
     getEquation() {
         return `(x${this.center.x === 0 ? '' : sign(-this.center.x) + abs(this.center.x)})^2+(y${this.center.y === 0 ? '' : sign(-this.center.y) + abs(this.center.y)})^2=${this.r}^2`
@@ -33,9 +45,9 @@ export default class Circle extends ContouredObject {
     }
     setAnticlockwise(anticlockwise) {
         if (this.anticlockwise === anticlockwise) return this;
-        const newCircle = new Circle(this.center, this.r).setStyle(this.style);
-        newCircle.anticlockwise = anticlockwise;
-        return newCircle;
+        const res = this.clone();
+        res.anticlockwise = anticlockwise;
+        return res;
     }
     name() { return 'Circle'; }
 }
