@@ -14,14 +14,14 @@ export default class Rect extends Polygon{
         const newObject = super.move(dx, dy);
         const A = newObject.points[0],
             B = newObject.points[1];
-        return new Rect(A, B);
+        return new Rect(A, B).setStyle(this.style);
     }
     rotate(rad, center) {
         if (rad % (2 * Math.PI) === 0) return this;
         const newObject = super.rotate(rad, center);
         const A = newObject.points[0],
             B = newObject.points[1];
-        return new Rect(A, B);
+        return new Rect(A, B).setStyle(this.style);
     }
     name() { return 'Rect'; }
 }

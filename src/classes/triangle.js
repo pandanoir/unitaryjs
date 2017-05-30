@@ -78,7 +78,7 @@ export default class Triangle extends Polygon{
         const A = newObject.points[0],
             B = newObject.points[1],
             C = newObject.points[2];
-        return new Triangle(A, B, C);
+        return new Triangle(A, B, C).setStyle(this.style);
     }
     rotate(rad, center) {
         if (rad % (2 * Math.PI) === 0) return this;
@@ -89,7 +89,7 @@ export default class Triangle extends Polygon{
         const A = newObject.points[0],
             B = newObject.points[1],
             C = newObject.points[2];
-        return new Triangle(A, B, C);
+        return new Triangle(A, B, C).setStyle(this.style);
     }
     name() { return 'Triangle'; }
 }

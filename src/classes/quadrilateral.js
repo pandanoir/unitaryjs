@@ -28,7 +28,7 @@ export default class Quadrilateral extends Polygon{
             B = newObject.points[1],
             C = newObject.points[2],
             D = newObject.points[3];
-        return new Quadrilateral(A, B, C, D);
+        return new Quadrilateral(A, B, C, D).setStyle(this.style);
     }
     rotate(rad, center) {
         if (rad % (2 * Math.PI) === 0) return this;
@@ -37,7 +37,7 @@ export default class Quadrilateral extends Polygon{
             B = newObject.points[1],
             C = newObject.points[2],
             D = newObject.points[3];
-        return new Quadrilateral(A, B, C, D);
+        return new Quadrilateral(A, B, C, D).setStyle(this.style);
     }
     name() { return 'Quadrilateral'; }
 }
