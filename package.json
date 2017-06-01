@@ -1,6 +1,6 @@
 {
   "name": "unitaryjs",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Canvas Library",
   "main": "./dist/unitary.js",
   "scripts": {
