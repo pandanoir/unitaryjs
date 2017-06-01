@@ -1,3 +1,28 @@
+# 0.1.0
+
+## Features
+
+* call .setStyle() to retain its styles.
+* support lineDash, lineCap, lineDashOffset, lineJoin and lineWidth.
+* add .push() to Group.
+* add .clone() to Image, Circle, CircularSector and Ellipse.
+* some methods return itself if there is no changes.
+* Canvas.fn.add() now accepts some objects.
+* add Ellipse class.
+* add Curve class.
+* Canvas will create canvas element if there is no elements that has the given id.
+* Canvas listens basic events.
+  Now you don't need to write the code such as `canvas.listen('click')`.
+
+## Breaking Changes
+
+* rename .substract to .subtract()
+
+## Bug Fixes
+
+* fix not drawing the part of line that isn't in first quadrant
+* fix  the algorithm of .rotate() of Point.
+
 # 0.0.8
 
 ## Features
