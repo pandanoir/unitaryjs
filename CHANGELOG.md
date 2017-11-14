@@ -1,3 +1,6 @@
+# 0.1.1
+Now dist/unitary.js and dist/canvas.js are merged.
+
 # 0.1.0
 
 ## Features

@@ -21,7 +21,6 @@ Demo: [Demo](http://pandanoir.net/unitaryjs/sample.html)
     <meta charset="UTF-8">
     <title>Sample</title>
     <script src="./unitary.js"></script>
-    <script src="./canvas.js"></script>
     <script>
     const {Point, Triangle} = Unitary;
     const A = new Point(30,30),
@@ -58,7 +57,7 @@ new Unitary.Vector(1, 1);
 ```
 
 ## Browser
-download [./dist/unitary.js](./dist/unitary.js) and load it.
+download [./dist/unitary.min.js](https://unpkg.com/unitaryjs/dist/unitary.min.js) and load it.
 
 
 ```html
