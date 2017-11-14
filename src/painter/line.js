@@ -1,3 +1,4 @@
+import Unitary from '../unitary.js';
 export default function(obj) {
     const S = Unitary.Segment, P = Unitary.Point;
     const width = this.canvasWidth, height = this.canvasHeight;

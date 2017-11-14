@@ -1,3 +1,4 @@
+import Unitary from '../unitary.js';
 export default function(obj) {
     this.canvas.beginPath();
     const controlPoints = obj.controlPoints;
