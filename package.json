@@ -2,7 +2,7 @@
   "name": "unitaryjs",
   "version": "0.1.0",
   "description": "Canvas Library",
-  "main": "./dist/unitary.js",
+  "main": "./dist/unitary.min.js",
   "scripts": {
     "preversion": "npm test",
     "version": "npm run build && gulp && git add -A",

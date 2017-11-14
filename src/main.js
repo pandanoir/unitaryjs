@@ -1,4 +1,6 @@
 "use strict";
+import Canvas from './canvas.js';
+
 import UnitaryObject from './classes/unitaryobject.js';
 import ContouredObject from './classes/contouredobject.js';
 
@@ -40,6 +42,7 @@ export default {
             return distance(B, A);
         }
     },
+    Canvas,
     UnitaryObject,
     ContouredObject,
     BaseVector,
