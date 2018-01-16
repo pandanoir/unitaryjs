@@ -8,7 +8,8 @@
     "version": "npm run build && gulp && git add -A",
     "postversion": "git push && git push --tags",
     "pretest": "npm run build:unitary",
-    "test": "mocha -R spec",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "build": "rollup src/main.js -c -o dist/unitary.js --name Unitary",
     "build:unitary": "rollup src/unitary.js -c -o dist/onlyunitary.js --name Unitary",
     "build2": "rollup src/canvas.js -c -o dist/canvas.js --name Canvas"
