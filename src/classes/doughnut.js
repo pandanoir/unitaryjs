@@ -1,5 +1,6 @@
 import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
+import {nearlyEquals as eq} from '../utility.js';
 
 export default class Doughnut extends ContouredObject {
     constructor(center, innerRadius, outerRadius) {
@@ -21,11 +22,14 @@ export default class Doughnut extends ContouredObject {
         if (!super.equals(C)) {
             return false;
         }
-        return this.center.equals(C.center) && this.innerRadius === C.innerRadius && this.outerRadius === C.outerRadius;
+        return this.center.equals(C.center) &&
+            eq(this.innerRadius, C.innerRadius) &&
+            eq(this.outerRadius, C.outerRadius);
     }
     has(P) {
         const distance = new Vector(P).subtract(new Vector(this.center)).abs();
-        return  this.innerRadius <= distance && distance <= this.outerRadius;
+        return  (this.innerRadius < distance || eq(this.innerRadius, distance)) &&
+            (distance < this.outerRadius || eq(distance, this.outerRadius));
     }
     name() { return 'Doughnut'; }
 }

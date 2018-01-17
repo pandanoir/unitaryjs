@@ -7,5 +7,6 @@ const gcd = (m, n) => {
     if (n < 0) return gcd(m, -n);
     return n === 0 ? m : gcd(n, m % n);
 }
-const nearlyEqualsZero = n => (0 | n * 10000) / 10000 === 0;
-export {sign, abs, isInteger, gcd, nearlyEqualsZero};
+const nearlyEquals = (a, b) => (0 | a*1e6) / 1e6 === (0 | b*1e6) / 1e6;
+const nearlyEqualsZero = n => nearlyEquals(n, 0);
+export {sign, abs, isInteger, gcd, nearlyEqualsZero, nearlyEquals};

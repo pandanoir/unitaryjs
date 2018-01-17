@@ -1,7 +1,7 @@
 import ContouredObject from './contouredobject.js';
 import Point from './point.js';
 import {Vector} from './vector.js';
-import {sign, abs, isInteger, gcd, nearlyEqualsZero} from '../utility.js';
+import {sign, abs, isInteger, gcd, nearlyEqualsZero, nearlyEquals as eq} from '../utility.js';
 
 export default class Line extends ContouredObject {
     constructor(A, B) {
@@ -53,13 +53,11 @@ export default class Line extends ContouredObject {
         if (c !== 0) res += sign(c) + abs(c);
         return res.slice(1) + '=0';
     }
-    toString() { return this.getEquation(); }
-    inspect() { return this.getEquation(); }
     getNormalVector() {
         return new Vector(this.a, this.b);
     }
     getIntersection(CD) {
-        if (nearlyEqualsZero(this.a * CD.b - CD.a * this.b)) {
+        if (eq(this.a * CD.b, CD.a * this.b)) {
             return false;
         }
         const y = (CD.a * this.c - this.a * CD.c) / (this.a * CD.b - CD.a * this.b); // this.a * CD.b - CD.a * this.b !== 0
@@ -77,9 +75,9 @@ export default class Line extends ContouredObject {
         if (!super.equals(CD)) {
             return false;
         }
-        const ratio1 = nearlyEqualsZero(this.a * CD.b - this.b * CD.a); // a:b = a':b'
-        const ratio2 = nearlyEqualsZero(this.b * CD.c - this.c * CD.b); // b:c = b':c'
-        const ratio3 = nearlyEqualsZero(this.a * CD.c - this.c * CD.a); // a:c = a':c'
+        const ratio1 = eq(this.a * CD.b, this.b * CD.a); // a:b = a':b'
+        const ratio2 = eq(this.b * CD.c, this.c * CD.b); // b:c = b':c'
+        const ratio3 = eq(this.a * CD.c, this.c * CD.a); // a:c = a':c'
         // ratio1 && ratio2 equals a:b:c = a':b':c'
         return ratio1 && ratio2 && ratio3;
     }
@@ -87,7 +85,7 @@ export default class Line extends ContouredObject {
         if (this.equals(CD)) {
             return false;
         }
-        return nearlyEqualsZero(this.a * CD.b - this.b * CD.a);
+        return eq(this.a * CD.b, this.b * CD.a);
     }
     isPerpendicularTo(CD) {
         if (this.equals(CD)) {
@@ -103,3 +101,4 @@ export default class Line extends ContouredObject {
         return new Line(a, a.add(d));
     }
 }
+Line.prototype.toString = Line.prototype.inspect = Line.prototype.getEquation;

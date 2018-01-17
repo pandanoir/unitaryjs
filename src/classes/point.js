@@ -1,5 +1,6 @@
 import UnitaryObject from './unitaryobject.js';
 import {Vector} from './vector.js';
+import {nearlyEquals as eq} from '../utility.js';
 
 export default class Point extends UnitaryObject {
     constructor(x, y) {
@@ -27,7 +28,7 @@ export default class Point extends UnitaryObject {
         if (!super.equals(B)) {
             return false;
         }
-        return this.x === B.x && this.y === B.y;
+        return eq(this.x, B.x) && eq(this.y, B.y);
     }
     toVector() {
         return new Vector(this.x, this.y);

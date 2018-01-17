@@ -1,5 +1,6 @@
 import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
+import {nearlyEquals as eq} from '../utility.js';
 
 export default class CircularSector extends ContouredObject {
     constructor(center, radius, endAngle, startAngle = 0) {
@@ -44,7 +45,7 @@ export default class CircularSector extends ContouredObject {
         if (!super.equals(C)) {
             return false;
         }
-        return this.center.equals(C.center) && this.r === C.r && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
+        return this.center.equals(C.center) && eq(this.r, C.r) && angleCompare(this.startAngle, C.startAngle) && angleCompare(this.endAngle, C.endAngle);
     }
     has(P) {
         const theta = Math.atan2(P.y, P.x);

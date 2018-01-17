@@ -1,6 +1,6 @@
 import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
-import {abs, sign} from '../utility.js';
+import {abs, sign, nearlyEquals as eq} from '../utility.js';
 
 export default class Circle extends ContouredObject {
     constructor(center, radius) {
@@ -38,7 +38,7 @@ export default class Circle extends ContouredObject {
         if (!super.equals(C)) {
             return false;
         }
-        return this.center.equals(C.center) && this.r === C.r;
+        return this.center.equals(C.center) && eq(this.r, C.r);
     }
     has(P) {
         return new Vector(P).subtract(new Vector(this.center)).abs() <= this.r;

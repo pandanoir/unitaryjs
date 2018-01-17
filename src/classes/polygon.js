@@ -1,6 +1,6 @@
 import ContouredObject from './contouredobject.js';
 import {Vector} from './vector.js';
-import {nearlyEqualsZero} from '../utility.js';
+import {nearlyEquals as eq} from '../utility.js';
 
 export default class Polygon extends ContouredObject {
     constructor(...args) {
@@ -43,7 +43,7 @@ export default class Polygon extends ContouredObject {
             rad += Math.acos(cos);
             before_v = v;
         }
-        return nearlyEqualsZero(rad / (2 * Math.PI) * 360 - 360);
+        return eq(rad / (2 * Math.PI) * 360, 360);
     }
     name() { return 'Polygon'; }
 }
