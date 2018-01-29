@@ -9,6 +9,7 @@
     "postversion": "git push && git push --tags",
     "pretest": "npm run build:unitary",
     "test": "jest",
+    "precoverage": "npm run build:unitary",
     "coverage": "jest --coverage",
     "build": "rollup src/main.js -c -o dist/unitary.js --name Unitary",
     "build:unitary": "rollup src/unitary.js -c -o dist/onlyunitary.js --name Unitary",

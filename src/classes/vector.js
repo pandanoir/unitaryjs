@@ -80,6 +80,8 @@ class Vector extends BaseVector{
             super(args[0].x, args[0].y);
             this.x = args[0].x;
             this.y = args[0].y;
+        } else {
+            throw new Error('unexpected arguments was given.');
         }
         this.r = Math.sqrt(this.x * this.x + this.y * this.y);
         this.theta = (Math.atan2(this.y, this.x) + 2 * Math.PI) % (2 * Math.PI);
@@ -126,6 +128,8 @@ class Vector3D extends BaseVector{
             this.x = args[0].x;
             this.y = args[0].y;
             this.z = args[0].z;
+        } else {
+            throw new Error('unexpected arguments was given.');
         }
     }
     add(CD) {
