@@ -4,10 +4,12 @@ import Triangle from './triangle.js';
 
 export default class Quadrilateral extends Polygon{
     constructor(A, B, C, D) {
-        if (new Segment(A, D).intersects(new Segment(B, C))) {
+        if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D)) {
             throw new Error('ABCD is not a quadrilateral.');
         }
-        if (A.equals(B) || A.equals(C) || A.equals(D) || B.equals(C) || B.equals(D) || C.equals(D)) {
+        if (new Segment(A, D).intersects(new Segment(B, C)) ||
+            new Segment(A, B).intersects(new Segment(C, D))
+        ) {
             throw new Error('ABCD is not a quadrilateral.');
         }
         super(A, B, C, D);
