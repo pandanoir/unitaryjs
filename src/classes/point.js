@@ -33,5 +33,8 @@ export default class Point extends UnitaryObject {
     toVector() {
         return new Vector(this.x, this.y);
     }
+    static fromPolar(r, theta) {
+        return new Point(r * Math.cos(theta), r * Math.sin(theta));
+    }
     name() { return 'Point'; }
 }
