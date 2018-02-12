@@ -42,23 +42,23 @@ describe('Unitary', () => {
     describe('ContouredObject', () => {
         it('set*', () => {
             const obj = new ContouredObject();
-            assert.deepEqual(obj.lineDash, []);
+            assert.deepEqual(obj.lineDash, null);
             obj.setLineDash([5, 15]);
             assert.deepEqual(obj.lineDash, [5, 15]);
 
-            assert.equal(obj.lineCap, 'butt');
+            assert.equal(obj.lineCap, null);
             obj.setLineCap('round');
             assert.equal(obj.lineCap, 'round');
 
-            assert.equal(obj.lineDashOffset, 0);
+            assert.equal(obj.lineDashOffset, null);
             obj.setLineDashOffset(5);
             assert.equal(obj.lineDashOffset, 5);
 
-            assert.equal(obj.lineJoin, 'miter');
+            assert.equal(obj.lineJoin, null);
             obj.setLineJoin('round');
             assert.equal(obj.lineJoin, 'round');
 
-            assert.equal(obj.lineWidth, 1);
+            assert.equal(obj.lineWidth, null);
             obj.setLineWidth(5);
             assert.equal(obj.lineWidth, 5);
         });
@@ -204,6 +204,14 @@ describe('Unitary', () => {
             assert.equal(curve.equals(curve), false);
             assert.equal(curve.equals(), false);
         });
+        it('setRange', () => {
+            const curve = new Curve(()=>{}, ()=>{});
+            assert.equal(curve.start, 0);
+            assert.equal(curve.end, 2 * Math.PI);
+            curve.setRange(50, 100);
+            assert.equal(curve.start, 50);
+            assert.equal(curve.end, 100);
+        });
         it('name', () => {
             const curve = new Curve(()=>{}, ()=>{});
             assert.equal(curve.name(), 'Curve');
@@ -316,6 +324,14 @@ describe('Unitary', () => {
             graph.moveX();
             graph.moveY();
         });
+        it('setRange', () => {
+            const graph = new Graph(()=>{});
+            assert.equal(graph.start, null);
+            assert.equal(graph.end, null);
+            graph.setRange(50, 100);
+            assert.equal(graph.start, 50);
+            assert.equal(graph.end, 100);
+        });
         it('name', () => {
             const graph = new Graph(()=>{});
             assert.equal(graph.name(), 'Graph');
@@ -373,11 +389,39 @@ describe('Unitary', () => {
     describe('Image_', () => {
         it('equals', () => {
             assert.ok(new Image_('./hoge.png', new Point(3, 3)).equals(new Image_('./hoge.png', new Point(3, 3))));
-            const newImage = new Image_('./hoge.png', new Point(3, 3));
-            assert.ok(newImage.equals(newImage));
+            const img = new Image_('./hoge.png', new Point(3, 3));
+            assert.equal(img.equals(new UnitaryObject()), false);
+        });
+        it('trim', () => {
+            const img = new Image_('./hoge.png', new Point(3, 3));
+            const newImg = img.trim(new Point(10, 10), 30, 30);
+            assert.equal(img.dw, null);
+            assert.equal(img.dh, null);
+            assert.equal(img.sw, null);
+            assert.equal(img.sh, null);
+            assert.equal(newImg.dw, 30);
+            assert.equal(newImg.dh, 30);
+            assert.equal(newImg.sw, 30);
+            assert.equal(newImg.sh, 30);
+            assert.equal(newImg.sx, 10);
+            assert.equal(newImg.sy, 10);
+        });
+        it('resize', () => {
+            const img = new Image_('./hoge.png', new Point(3, 3));
+            const newImg = img.resize(30, 30);
+            assert.equal(img.dw, null);
+            assert.equal(img.dh, null);
+            assert.equal(newImg.dw, 30);
+            assert.equal(newImg.dh, 30);
         });
         it('move', () => {
-            assert.ok(new Image_('./hoge.png', new Point(3, 3)).move(31, 31).equals(new Image_('./hoge.png', new Point(3, 3).move(31, 31))));
+            const img = new Image_('./hoge.png', new Point(3, 3));
+            assert.ok(
+                new Image_('./hoge.png', new Point(3, 3)).move(31, 31).equals(
+                    new Image_('./hoge.png', new Point(3, 3).move(31, 31))
+                )
+            );
+            assert.strictEqual(img, img.move(0, 0));
         });
         it('name', () => {
             assert.equal(new Image_('./hoge.png', new Point(3, 3)).name(), 'Image');
@@ -405,7 +449,20 @@ describe('Unitary', () => {
             assert.equal(new Line(new Point(0, 0), new Point(10, 10)).getIntersection(new Line(new Point(0, 0), new Point(10,10))), false);
             assert.ok(new Line(new Point(0, 0), new Point(10, 10)).getIntersection(new Line(new Point(0, 20), new Point(1,19))).equals(new Point(10, 10)));
         });
+        it('getNormalVector', () => {
+            const l = new Line(new Point(0, 0), new Point(10, 10));
+            const v = l.getNormalVector();
+            assert.equal(v.x, 1);
+            assert.equal(v.y, -1);
+
+            const l2 = new Line(new Point(10, 10), new Point(0, 0));
+            const v2 = l2.getNormalVector();
+            assert.equal(v2.x, 1);
+            assert.equal(v2.y, -1);
+        });
         it('equals', () => {
+            const l = new Line(new Point(0, 0), new Point(10, 10));
+            assert.equal(l.equals(new UnitaryObject()), false);
             assert.ok(lines[0].equals(lines[0]));
             assert.ok(!lines[0].equals(lines[1]));
             assert.ok(!lines[0].equals(lines[2]));
@@ -447,6 +504,9 @@ describe('Unitary', () => {
             assert.strictEqual(Line.prototype.inspect, Line.prototype.getEquation);
         })
         it('isParallelTo', () => {
+            assert.equal(line1a.isParallelTo(line1a), false);
+            assert.equal(line2a.isParallelTo(line2a), false);
+
             assert.ok(line1a.isParallelTo(line1b));
             assert.ok(line2a.isParallelTo(line2b));
             assert.ok(line3a.isParallelTo(line3b));
@@ -471,6 +531,10 @@ describe('Unitary', () => {
             const line2a = new Line(new Point(0, 0), new Point(0, 1)), line2b = new Line(new Point(10, 0), new Point(10, 1));
             const line3a = new Line(new Point(0, 0), new Point(1, 1)), line3b = new Line(new Point(0, 10), new Point(1, 11));
 
+            assert.equal(line1a.isPerpendicularTo(line1a), false);
+            assert.equal(line2a.isPerpendicularTo(line2a), false);
+            assert.equal(line3a.isPerpendicularTo(line3a), false);
+
             assert.ok(line1a.isPerpendicularTo(line2a));
             assert.ok(line1a.isPerpendicularTo(line2b));
             assert.ok(line1b.isPerpendicularTo(line2a));
@@ -490,6 +554,7 @@ describe('Unitary', () => {
             assert.equal(new Line(new Point(-66, 76), new Point(135, -20)).name(), 'Line');
         });
         it('Line.fromVector', () => {
+            assert.ok(Line.fromVector(new Point(1, 1), new Point(1, 2)).equals(new Line(new Point(1, 1), new Point(2, 3))));
             assert.ok(Line.fromVector(new Point(1, 1), new Point(1, 2)).equals(new Line(new Point(1, 1), new Point(2, 3))));
         });
     });
@@ -526,15 +591,55 @@ describe('Unitary', () => {
         it('name', () => {
             assert.equal(new Polygon(new Point(48,84), new Point(86,65), new Point(29,43), new Point(64,48), new Point(68,41)).name(), 'Polygon');
         });
+        it('rotate', () => {
+            const poly = new Polygon(P(0, 0), P(1, 1), P(1, 0));
+            const newPoly = poly.rotate(Math.PI / 2, P(0, 0));
+            assert.strictEqual(poly, poly.rotate(0, P(0, 0)));
+            assert.strictEqual(poly, poly.rotate(2 * Math.PI, P(0, 0)));
+            assert.strictEqual(poly, poly.rotate(4 * Math.PI, P(0, 0)));
+            assert.ok(poly.points[0].equals(P(0, 0)));
+            assert.ok(newPoly.points[0].equals(P(0, 0).rotate(Math.PI / 2, P(0, 0))));
+            assert.ok(newPoly.points[1].equals(P(1, 1).rotate(Math.PI / 2, P(0, 0))));
+            assert.ok(newPoly.points[2].equals(P(1, 0).rotate(Math.PI / 2, P(0, 0))));
+        });
+        it('has', () => {
+            const poly = new Polygon(P(0, 0), P(1, 1), P(1, 0));
+            assert.ok(poly.has(P(0, 0)));
+            assert.ok(poly.has(P(0.5, 0.5)));
+            assert.equal(poly.has(P(0, 1)), false);
+        });
         it('move', () => {
+            const poly = new Polygon(P(0, 0), P(1, 1), P(1, 0));
             assert.deepEqual(
                 new Polygon(new Point(48,84), new Point(86,65), new Point(29,43), new Point(64,48), new Point(68,41)).move(30, 30),
                 new Polygon(new Point(78,114), new Point(116,95), new Point(59,73), new Point(94,78), new Point(98,71))
             );
+            assert.strictEqual(poly, poly.move(0, 0));
+        });
+        it('equals', () => {
+            const poly = new Polygon(P(0, 0), P(1, 1), P(1, 0));
+            assert.equal(poly.equals(new UnitaryObject()), false);
+            assert.equal(poly.equals(poly), false);
         });
     });
     describe('Quadrilateral', () => {
+        it('constructor', () => {
+            assert.throws(() => {
+                new Quadrilateral(P(0, 0), P(1, 1), P(0, 1), P(1, 0));
+            });
+            assert.throws(() => {
+                new Quadrilateral(P(0, 0), P(0, 1), P(1, 0), P(1, 1));
+            });
+            assert.throws(() => {
+                new Quadrilateral(P(0, 0), P(1, 1), P(1, 1), P(0, 0));
+            });
+            assert.throws(() => {
+                new Quadrilateral(P(0, 0), P(0, 0), P(0, 0), P(0, 0));
+            });
+        });
         it('getArea', () => {
+            const nearlyEquals = (a, b) => (0 | a*1e6) / 1e6 === (0 | b*1e6) / 1e6;
+            assert.ok(nearlyEquals(new Quadrilateral(P(0, 0), P(2, 0), P(1, 1), P(0, 1)).getArea(), (1 + 2) * 1 / 2));
         });
         it('name', () => {
             assert.equal(new Quadrilateral(new Point(48,84), new Point(86,65), new Point(64,48), new Point(29,43)).name(), 'Quadrilateral');
@@ -571,6 +676,8 @@ describe('Unitary', () => {
     describe('Segment', () => {
         it('move', () => {
             assert.ok(SegAB.move(31,19).equals(new Segment(new Point(3, 3).move(31, 19), new Point(0, 0).move(31, 19))));
+            const seg = new Segment(P(0, 0), P(1, 1));
+            assert.strictEqual(seg, seg.move(0, 0));
         });
         it('has', () => {
             const seg = new Segment(new Point(0, 0), new Point(100, 100)); // y = x
@@ -640,12 +747,44 @@ describe('Unitary', () => {
         });
         it('equals', () => {
             assert.ok(new Segment(new Point(48,84), new Point(64,48)).equals(new Segment(new Point(48,84), new Point(64,48))));
+            const seg = new Segment(P(0, 0), P(1, 1));
+            assert.equal(seg.equals(new UnitaryObject()), false);
         });
         it('name', () => {
             assert.equal(SegAB.name(), 'Segment');
         });
     });
     describe('Text_', () => {
+        it('strokeOutline', () => {
+            const text = new Text_('Text', new Point(0, 0));
+            assert.equal(text.strokesOutline, false);
+            text.strokeOutline();
+            assert.equal(text.strokesOutline, true);
+        });
+        it('setAlign', () => {
+            const text = new Text_('Text', new Point(0, 0));
+            assert.equal(text.style.align, 'left');
+            text.setAlign('center');
+            assert.equal(text.style.align, 'center');
+        });
+        it('setOutlineColor', () => {
+            const text = new Text_('Text', new Point(0, 0));
+            assert.equal(text.style.outlineColor, '#000');
+            text.setOutlineColor('#fff');
+            assert.equal(text.style.outlineColor, '#fff');
+        });
+        it('setBaseline', () => {
+            const text = new Text_('Text', new Point(0, 0));
+            assert.equal(text.style.baseline, 'alphabetic');
+            text.setBaseline('middle');
+            assert.equal(text.style.baseline, 'middle');
+        });
+        it('setFont', () => {
+            const text = new Text_('Text', new Point(0, 0));
+            assert.equal(text.style.font, null);
+            text.setFont('sans-serif');
+            assert.equal(text.style.font, 'sans-serif');
+        });
         it('name', () => {
             assert.equal(new Text_('Text', new Point(3, 3)).name(), 'Text');
         });
