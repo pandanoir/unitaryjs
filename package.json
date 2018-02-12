@@ -7,7 +7,7 @@
     "preversion": "yarn-or-npm test",
     "version": "yarn-or-npm run build && yarn-or-npm run build2 && gulp && git add -A",
     "postversion": "git push && git push --tags",
-    "pretest": "yarn-or-npm run build:unitary",
+    "pretest": "rollup src/unitary.js -c -o dist/onlyunitary.js --name Unitary",
     "test": "jest",
     "precoverage": "rollup src/unitary.js -c -o dist/onlyunitary.js --name Unitary",
     "coverage": "jest --coverage",
