@@ -119,11 +119,21 @@ class Canvas {
         if (obj.style && obj.style.strokeStyle !== null) {
             this.canvas.strokeStyle = obj.style.strokeStyle;
         }
-        if (obj.getLineDash && this.canvas.setLineDash) this.canvas.setLineDash(obj.getLineDash());
-        if (obj.getLineCap) this.canvas.lineCap = obj.getLineCap();
-        if (obj.getLineDashOffset) this.canvas.lineDashOffset = obj.getLineDashOffset();
-        if (obj.getLineJoin) this.canvas.lineJoin = obj.getLineJoin();
-        if (obj.getLineWidth) this.canvas.lineWidth = obj.getLineWidth();
+        if (this.canvas.setLineDash) {
+            if (obj.getLineDash && obj.getLineDash() !== null) this.canvas.setLineDash(obj.getLineDash());
+            else this.canvas.setLineDash([]);
+        }
+        if (obj.getLineCap && obj.getLineCap() !== null) this.canvas.lineCap = obj.getLineCap();
+        else this.canvas.lineCap = 'butt';
+
+        if (obj.getLineDashOffset && obj.getLineDashOffset() !== null) this.canvas.lineDashOffset = obj.getLineDashOffset();
+        else this.canvas.lineDashOffset = 0;
+
+        if (obj.getLineJoin && obj.getLineJoin() !== null) this.canvas.lineJoin = obj.getLineJoin();
+        else this.canvas.lineJoin = 'miter';
+
+        if (obj.getLineWidth && obj.getLineWidth() !== null) this.canvas.lineWidth = obj.getLineWidth();
+        else this.canvas.lineWidth = 1;
 
         Canvas.painter[name].call(this, obj);
     }

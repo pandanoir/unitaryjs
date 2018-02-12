@@ -2,11 +2,11 @@ import UnitaryObject from './unitaryobject.js';
 export default class ContouredObject extends UnitaryObject {
     constructor() {
         super();
-        this.lineDash = [];
-        this.lineCap = 'butt';
-        this.lineDashOffset = 0;
-        this.lineJoin = 'miter';
-        this.lineWidth = 1;
+        this.lineDash = null;
+        this.lineCap = null;
+        this.lineDashOffset = null;
+        this.lineJoin = null;
+        this.lineWidth = null;
     }
     getLineDash() { return this.lineDash; }
     setLineDash(lineDash) { this.lineDash = lineDash; return this; }
