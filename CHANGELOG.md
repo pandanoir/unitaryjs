@@ -1,3 +1,10 @@
+# 0.1.2
+
+## Features
+
+* add Point.fromPolar().
+* Group now inherits ContouredObject. So you can set fillStyle, strokeStyle, lineWidth and so on to Group object. However, when objects in Group have its style, it will be applied.
+
 # 0.1.1
 Now dist/unitary.js and dist/canvas.js are merged.
 
