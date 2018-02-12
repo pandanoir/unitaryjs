@@ -39,11 +39,12 @@ export default class Polygon extends ContouredObject {
             v = this.points[i];
             a = new Vector(v).subtract(new Vector(P));
             b = new Vector(before_v).subtract(new Vector(P));
+            if (a.abs() === 0 || b.abs() === 0) return true; // v == P || before_v == p
             cos = a.product(b) / (a.abs() * b.abs());
             rad += Math.acos(cos);
             before_v = v;
         }
-        return eq(rad / (2 * Math.PI) * 360, 360);
+        return eq(rad, 0) || eq(rad, 2 * Math.PI);
     }
     name() { return 'Polygon'; }
 }

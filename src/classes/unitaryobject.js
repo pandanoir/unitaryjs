@@ -11,8 +11,9 @@ export default class UnitaryObject {
     setStrokeColor(color) { this.style.strokeStyle = color; return this; }
     setStrokeStyle(color) { this.style.strokeStyle = color; return this; }
     setStyle(style) {
-        for (const key of Object.keys(style)) {
-            this.style[key] = style[key];
+        const keys = Object.keys(style);
+        for (let i = 0, _i = keys.length; i < _i; i++) {
+            this.style[keys[i]] = style[keys[i]];
         }
         return this;
     }

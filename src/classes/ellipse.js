@@ -16,9 +16,10 @@ export default class Ellipse extends ContouredObject {
     get Origin() { return this.center; }
     clone() {
         const res = new Ellipse(this.center, this.a, this.b).setStyle(this.style);
-        for (const key of Object.keys(this)) {
-            if (key === 'style') continue;
-            res[key] = this[key];
+        const keys = Object.keys(this);
+        for (let i = 0, _i = keys.length; i < _i; i++) {
+            if (keys[i] === 'style') continue;
+            res[keys[i]] = this[keys[i]];
         }
         return res;
     }

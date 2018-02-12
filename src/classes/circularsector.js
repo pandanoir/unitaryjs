@@ -15,9 +15,10 @@ export default class CircularSector extends ContouredObject {
     get radius() { return this.r; }
     clone() {
         const res = new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
-        for (const key of Object.keys(this)) {
-            if (key === 'style') continue;
-            res[key] = this[key];
+        const keys = Object.keys(this);
+        for (let i = 0, _i = keys.length; i < _i; i++) {
+            if (keys[i] === 'style') continue;
+            res[keys[i]] = this[keys[i]];
         }
         return res;
     }
