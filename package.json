@@ -32,7 +32,7 @@
     "unitaryjs"
   ],
   "devDependencies": {
-    "google-closure-compiler": "20180101.0.0",
+    "google-closure-compiler": ">=20180204.0.0",
     "gulp": "3.9.1",
     "gulp-gzip": "1.2.0",
     "gulp-rename": "1.2.2",
