@@ -74,22 +74,18 @@ export default class Triangle extends Polygon{
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const newObject = super.move(dx, dy);
-        const A = newObject.points[0],
-            B = newObject.points[1],
-            C = newObject.points[2];
-        return new Triangle(A, B, C).setStyle(this.style);
+
+        const newObj = super.move(dx, dy);
+        return new Triangle(...newObj.points).copyFrom(this);
     }
     rotate(rad, center) {
         if (rad % (2 * Math.PI) === 0) return this;
         if (typeof center === 'undefined') {
             center = this.getCenter();
         }
-        const newObject = super.rotate(rad, center);
-        const A = newObject.points[0],
-            B = newObject.points[1],
-            C = newObject.points[2];
-        return new Triangle(A, B, C).setStyle(this.style);
+
+        const newObj = super.rotate(rad, center);
+        return new Triangle(...newObj.points).copyFrom(this);
     }
     name() { return 'Triangle'; }
 }

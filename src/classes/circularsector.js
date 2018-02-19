@@ -10,36 +10,24 @@ export default class CircularSector extends ContouredObject {
         this.endAngle = endAngle;
         this.startAngle = startAngle;
         this.anticlockwise = false;
+        this._propsToCopy = this._propsToCopy.concat('anticlockwise');
     }
     get Origin() { return this.center; }
     get radius() { return this.r; }
-    clone() {
-        const res = new CircularSector(this.center, this.r, this.endAngle, this.startAngle).setStyle(this.style);
-        const keys = Object.keys(this);
-        for (let i = 0, _i = keys.length; i < _i; i++) {
-            if (keys[i] === 'style') continue;
-            res[keys[i]] = this[keys[i]];
-        }
-        return res;
-    }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
-        const res = this.clone();
-        res.center = this.center.moveTo(x, y);
-        return res;
+
+        return new CircularSector(this.center.moveTo(x, y), this.r, this.endAngle, this.startAngle).copyFrom(this);
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const res = this.clone();
-        res.center = this.center.move(dx, dy);
-        return res;
+
+        return new CircularSector(this.center.move(dx, dy), this.r, this.endAngle, this.startAngle).copyFrom(this);
     }
     rotate(rad) {
         if (rad % (2 * Math.PI) === 0) return this;
-        const res = this.clone();
-        res.endAngle += rad;
-        res.startAngle += rad;
-        return res;
+
+        return new CircularSector(this.center, this.r, this.endAngle + rad, this.startAngle + rad).copyFrom(this);
     }
     equals(C) {
         const angleCompare = (A, B) => (A - B) % (2 * Math.PI) === 0;
@@ -56,8 +44,10 @@ export default class CircularSector extends ContouredObject {
     }
     setAnticlockwise(anticlockwise) {
         if (this.anticlockwise === anticlockwise) return this;
-        const res = this.clone();
+
+        const res = new CircularSector(this.center, this.r, this.endAngle, this.startAngle).copyFrom(this);
         res.anticlockwise = anticlockwise;
+
         return res;
     }
     name() { return 'CircularSector'; }

@@ -9,4 +9,16 @@ const gcd = (m, n) => {
 }
 const nearlyEquals = (a, b) => (0 | a*1e6) / 1e6 === (0 | b*1e6) / 1e6;
 const nearlyEqualsZero = n => nearlyEquals(n, 0);
-export {sign, abs, isInteger, gcd, nearlyEqualsZero, nearlyEquals};
+const copy = obj => {
+    if (Array.isArray(obj)) return obj.map(copy);
+    if ({}.toString.call(obj) !== '[object Object]') return obj;
+
+    const keys = Object.keys(obj);
+    const res = {};
+    for (let i = 0, _i = keys.length; i < _i; i++) {
+        res[keys[i]] = copy(obj[keys[i]]);
+    }
+    return res;
+}
+
+export {sign, abs, isInteger, gcd, nearlyEqualsZero, nearlyEquals, copy};

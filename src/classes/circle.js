@@ -8,29 +8,19 @@ export default class Circle extends ContouredObject {
         this.center = center;
         this.r = radius;
         this.anticlockwise = false;
+        this._propsToCopy = this._propsToCopy.concat('anticlockwise');
     }
     get Origin() { return this.center; }
     get radius() { return this.r; }
-    clone() {
-        const res = new Circle(this.center, this.r).setStyle(this.style);
-        const keys = Object.keys(this);
-        for (let i = 0, _i = keys.length; i < _i; i++) {
-            if (keys[i] === 'style') continue;
-            res[keys[i]] = this[keys[i]];
-        }
-        return res;
-    }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
-        const res = this.clone();
-        res.center = this.center.moveTo(x, y);
-        return res;
+
+        return new Circle(this.center.moveTo(x, y), this.radius).copyFrom(this);
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const res = this.clone();
-        res.center = this.center.move(dx, dy);
-        return res;
+
+        return new Circle(this.center.move(dx, dy), this.radius).copyFrom(this);
     }
     getEquation() {
         return `(x${this.center.x === 0 ? '' : sign(-this.center.x) + abs(this.center.x)})^2+(y${this.center.y === 0 ? '' : sign(-this.center.y) + abs(this.center.y)})^2=${this.r}^2`
@@ -46,8 +36,10 @@ export default class Circle extends ContouredObject {
     }
     setAnticlockwise(anticlockwise) {
         if (this.anticlockwise === anticlockwise) return this;
-        const res = this.clone();
+
+        const res = new Circle(this.center, this.radius).copyFrom(this);
         res.anticlockwise = anticlockwise;
+
         return res;
     }
     name() { return 'Circle'; }

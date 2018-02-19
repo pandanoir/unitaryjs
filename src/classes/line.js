@@ -36,7 +36,7 @@ export default class Line extends ContouredObject {
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
+        return new Line(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).copyFrom(this);
     }
     has(P) {
         return nearlyEqualsZero(this.a * P.x + this.b * P.y + this.c);

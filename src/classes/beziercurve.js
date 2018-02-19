@@ -8,9 +8,9 @@ export default class BezierCurve extends ContouredObject {
         if (this.controlPoints.length > 4) {
             let distance = 0;
             for (let i = 0, _i = this.controlPoints.length - 1; i < _i; i++) {
-                const x = (this.controlPoints[i + 1].x - this.controlPoints[i].x);
-                const y = (this.controlPoints[i + 1].y - this.controlPoints[i].y);
-                distance += Math.sqrt(x * x + y * y);
+                const dx = (this.controlPoints[i + 1].x - this.controlPoints[i].x);
+                const dy = (this.controlPoints[i + 1].y - this.controlPoints[i].y);
+                distance += Math.sqrt(dx*dx + dy*dy);
             }
             this.step = 1 / distance;
         }
@@ -21,11 +21,8 @@ export default class BezierCurve extends ContouredObject {
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const newBezier = this.controlPoints.concat();
-        for (let i = 0, _i = newBezier.length; i < _i; i = 0|i+1) {
-            newBezier[i] = newBezier[i].move(dx, dy);
-        }
-        return new BezierCurve(newBezier).setStep(this.step);
+
+        return new BezierCurve(this.controlPoints.map(point => point.move(dx, dy))).copyFrom(this);
     }
     name() { return 'BezierCurve'; }
 }

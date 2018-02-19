@@ -1,27 +1,22 @@
 import UnitaryObject from './unitaryobject.js';
+const props = ['lineDash', 'lineCap', 'lineDashOffset', 'lineJoin', 'lineWidth'];
 export default class ContouredObject extends UnitaryObject {
     constructor() {
         super();
-        this.lineDash = null;
-        this.lineCap = null;
-        this.lineDashOffset = null;
-        this.lineJoin = null;
-        this.lineWidth = null;
+        for (let i = 0, _i = props.length; i < _i; i++) {
+            this[props[i]] = null;
+        }
+        this._propsToCopy = this._propsToCopy.concat(['lineDash', 'lineCap', 'lineDashOffset', 'lineJoin', 'lineWidth']);
     }
-    getLineDash() { return this.lineDash; }
-    setLineDash(lineDash) { this.lineDash = lineDash; return this; }
-
-    getLineCap() { return this.lineCap; }
-    setLineCap(lineCap) { this.lineCap = lineCap; return this; }
-
-    getLineDashOffset() { return this.lineDashOffset; }
-    setLineDashOffset(lineDashOffset) { this.lineDashOffset = lineDashOffset; return this; }
-
-    getLineJoin() { return this.lineJoin; }
-    setLineJoin(lineJoin) { this.lineJoin = lineJoin; return this; }
-
-    getLineWidth() { return this.lineWidth; }
-    setLineWidth(lineWidth) { this.lineWidth = lineWidth; return this; }
-
     name() { return 'ContouredObject'; }
+}
+for (let i = 0, _i = props.length; i < _i; i++) {
+    const capitalized = props[i].replace(/./, s => s.toUpperCase());
+    ContouredObject.prototype[`get${capitalized}`] = function() {
+        return this[props[i]];
+    };
+    ContouredObject.prototype[`set${capitalized}`] = function(val) {
+        this[props[i]] = val;
+        return this;
+    };
 }

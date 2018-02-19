@@ -4,16 +4,16 @@ import Line from './line.js';
 export default class Segment extends ContouredObject {
     constructor(A, B) {
         super();
-        if (A.x > B.x) {
-            this.points = [B, A];
-        } else {
-            this.points = [A, B];
-        }
-        this.length = Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
+
+        if (A.x > B.x) this.points = [B, A];
+        else this.points = [A, B];
+
+        const dx = A.x - B.x, dy = A.y - B.y;
+        this.length = Math.sqrt(dx*dx + dy*dy);
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).setStyle(this.style);
+        return new Segment(this.points[0].move(dx, dy), this.points[1].move(dx, dy)).copyFrom(this);
     }
     has(P) {
         const A = this.points[0];

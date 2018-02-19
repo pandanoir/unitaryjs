@@ -17,19 +17,13 @@ export default class Polygon extends ContouredObject {
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const points = [];
-        for (let i = 0, len = this.points.length; i < len; i = 0|i+1) {
-            points[i] = this.points[i].move(dx, dy);
-        }
-        return new Polygon(points).setStyle(this.style);
+
+        return new Polygon(this.points.map(point => point.move(dx, dy))).copyFrom(this);
     }
     rotate(rad, center) {
         if (rad % (2 * Math.PI) === 0) return this;
-        const points = [];
-        for (let i = 0, len = this.points.length; i < len; i = 0|i+1) {
-            points[i] = this.points[i].rotate(rad, center);
-        }
-        return new Polygon(points).setStyle(this.style);
+
+        return new Polygon(this.points.map(point => point.rotate(rad, center))).copyFrom(this);
     }
     has(P) {
         let a, b, cos, v;

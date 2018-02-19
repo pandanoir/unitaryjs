@@ -11,17 +11,15 @@ export default class Rect extends Polygon{
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const newObject = super.move(dx, dy);
-        const A = newObject.points[0],
-            B = newObject.points[1];
-        return new Rect(A, B).setStyle(this.style);
+
+        const newObj = super.move(dx, dy);
+        return new Rect(...newObj.points).copyFrom(this);
     }
     rotate(rad, center) {
         if (rad % (2 * Math.PI) === 0) return this;
-        const newObject = super.rotate(rad, center);
-        const A = newObject.points[0],
-            B = newObject.points[1];
-        return new Rect(A, B).setStyle(this.style);
+
+        const newObj = super.rotate(rad, center);
+        return new Rect(...newObj.points).copyFrom(this);
     }
     name() { return 'Rect'; }
 }

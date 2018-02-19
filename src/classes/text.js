@@ -36,11 +36,13 @@ export default class Text_ extends UnitaryObject {
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const newText = new Text_(this.string, this.P.move(dx, dy), this.style.align, this.style.maxWidth).setStyle(this.style);
-        if (this.strokesOutline) {
-            newText.strokeOutline();
-        }
-        return newText;
+
+        const res = new Text_(this.string, this.P.move(dx, dy)).copyFrom(this);
+        res.style.align = this.style.align;
+        res.style.maxWidth = this.style.maxWidth
+        res.strokesOutline = this.strokesOutline;
+
+        return res;
     }
     name() { return 'Text'; }
 }

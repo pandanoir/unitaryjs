@@ -1,19 +1,21 @@
+import {copy} from '../utility.js';
 export default class UnitaryObject {
     constructor() {
         this.style = {
             fillStyle: null,
             strokeStyle: null
         };
+        this._propsToCopy = ['style'];
     }
     equals(B) { return this.name() === B.name(); }
     setFillColor(color) { this.style.fillStyle = color; return this; }
     setFillStyle(color) { this.style.fillStyle = color; return this; }
     setStrokeColor(color) { this.style.strokeStyle = color; return this; }
     setStrokeStyle(color) { this.style.strokeStyle = color; return this; }
-    setStyle(style) {
-        const keys = Object.keys(style);
-        for (let i = 0, _i = keys.length; i < _i; i++) {
-            this.style[keys[i]] = style[keys[i]];
+    copyFrom(obj) {
+        for (let i = 0, _i = obj._propsToCopy.length; i < _i; i++) {
+            const prop = obj._propsToCopy[i];
+            this[prop] = copy(obj[prop]);
         }
         return this;
     }

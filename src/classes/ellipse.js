@@ -12,32 +12,22 @@ export default class Ellipse extends ContouredObject {
         this.minorAxis = 2 * Math.min(a, b);
         this.anticlockwise = false;
         this.angle = 0;
+        this._propsToCopy = this._propsToCopy.concat(['anticlockwise', 'angle']);
     }
     get Origin() { return this.center; }
-    clone() {
-        const res = new Ellipse(this.center, this.a, this.b).setStyle(this.style);
-        const keys = Object.keys(this);
-        for (let i = 0, _i = keys.length; i < _i; i++) {
-            if (keys[i] === 'style') continue;
-            res[keys[i]] = this[keys[i]];
-        }
-        return res;
-    }
     moveTo(x, y) {
         if (this.center.x === x && this.center.y === y) return this;
-        const res = this.clone();
-        res.center = this.center.moveTo(x, y);
-        return res;
+
+        return new Ellipse(this.center.moveTo(x, y), this.a, this.b).copyFrom(this);
     }
     move(dx, dy) {
         if (dx === 0 && dy === 0) return this;
-        const res = this.clone();
-        res.center = this.center.move(dx, dy);
-        return res;
+
+        return new Ellipse(this.center.move(dx, dy), this.a, this.b).copyFrom(this);
     }
     rotate(rad) {
         if (rad % (2 * Math.PI) === 0) return this;
-        const res = this.clone();
+        const res = new Ellipse(this.center, this.a, this.b).copyFrom(this);
         res.angle += rad;
         return res;
     }
@@ -53,7 +43,8 @@ export default class Ellipse extends ContouredObject {
     }
     setAnticlockwise(anticlockwise) {
         if (this.anticlockwise === anticlockwise) return this;
-        const res = this.clone();
+
+        const res = new Ellipse(this.center, this.a, this.b).copyFrom(this);
         res.anticlockwise = anticlockwise;
         return res;
     }
