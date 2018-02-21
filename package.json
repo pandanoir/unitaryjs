@@ -13,7 +13,8 @@
     "coverage": "jest --coverage",
     "postcoverage": "rm dist/onlyunitary.js",
     "build": "rollup src/main.js -c -o dist/unitary.js --name Unitary",
-    "build2": "rollup src/canvas.js -c -o dist/canvas.js --name Canvas"
+    "build2": "rollup src/canvas.js -c -o dist/canvas.js --name Canvas",
+    "compile": "gulp minify"
   },
   "files": [
     "CHANGELOG.md",
