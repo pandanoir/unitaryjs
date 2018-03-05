@@ -628,6 +628,10 @@ cloneable-readable@^1.0.0:
     process-nextick-args "^1.0.6"
     through2 "^2.0.1"
 
+closure-gun@0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/closure-gun/-/closure-gun-0.1.12.tgz#10b831c16c087ab8bd4dfb967203cf118ba67f92"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -1375,7 +1379,7 @@ glogg@^1.0.0:
   dependencies:
     sparkles "^1.0.0"
 
-google-closure-compiler@20180204.0.0:
+google-closure-compiler@>=20180204.0.0:
   version "20180204.0.0"
   resolved "https://registry.yarnpkg.com/google-closure-compiler/-/google-closure-compiler-20180204.0.0.tgz#b097ffb750c65ca07a2da469d76c551d3b8e21a3"
   dependencies:

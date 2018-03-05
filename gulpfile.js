@@ -1,6 +1,10 @@
 const gulp = require('gulp');
 const compilerPackage = require('google-closure-compiler');
 const closureCompiler = compilerPackage.gulp();
+
+compilerPackage.compiler.JAR_PATH = undefined;
+compilerPackage.compiler.prototype.javaPath = './node_modules/.bin/closure-gun';
+
 const rename = require("gulp-rename");
 const gzip = require('gulp-gzip');
 
