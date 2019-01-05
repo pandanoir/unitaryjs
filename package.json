@@ -33,16 +33,16 @@
     "unitaryjs"
   ],
   "devDependencies": {
-    "closure-gun": "0.1.12",
-    "google-closure-compiler": ">=20180204.0.0",
-    "gulp": "3.9.1",
-    "gulp-gzip": "1.2.0",
-    "gulp-rename": "1.2.2",
-    "jest": "22.1.1",
-    "mocha": "3.1.2",
-    "rollup": "0.36.3",
-    "rollup-plugin-json": "2.0.2",
-    "yarn-or-npm": "2.0.4"
+    "closure-gun": "^0.1.12",
+    "google-closure-compiler": "^20181210.0.0",
+    "gulp": "^4.0.0",
+    "gulp-gzip": "^1.4.2",
+    "gulp-rename": "^1.4.0",
+    "jest": "^23.6.0",
+    "mocha": "^5.2.0",
+    "rollup": "^1.0.1",
+    "rollup-plugin-json": "^3.1.0",
+    "yarn-or-npm": "^2.0.4"
   },
   "author": "Naoto Ikuno <moon_in_france@yahoo.co.jp>",
   "license": "MIT",

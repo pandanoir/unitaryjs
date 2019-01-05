@@ -8,7 +8,7 @@ compilerPackage.compiler.prototype.javaPath = './node_modules/.bin/closure-gun';
 const rename = require("gulp-rename");
 const gzip = require('gulp-gzip');
 
-gulp.task('minify', () => {
+gulp.task('minify', done => {
     closureCompiler({
         js: './dist/canvas.js',
         compilation_level: 'SIMPLE',
@@ -30,10 +30,11 @@ gulp.task('minify', () => {
     .on('end', () => {
         const files = ['unitary.browser.js', 'unitary.browser.min.js', 'unitary.browser.min.js.gz'];
         for (const file of files) {
-        gulp.src('./dist/' + file.replace('.browser', ''))
-            .pipe(rename(file))
-            .pipe(gulp.dest('./dist'));
+            gulp.src('./dist/' + file.replace('.browser', ''))
+                .pipe(rename(file))
+                .pipe(gulp.dest('./dist'));
         }
+        done();
     });
 });
-gulp.task('default', ['minify']);
+gulp.task('default', gulp.series(gulp.parallel(['minify'])));

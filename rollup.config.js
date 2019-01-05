@@ -2,8 +2,10 @@
 import json from 'rollup-plugin-json';
 
 export default {
-    format: 'umd',
+    output: {
+        format: 'umd',
+    },
     plugins: [
-        json()
-    ]
-}
+        json(),
+    ],
+};
